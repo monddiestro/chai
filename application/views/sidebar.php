@@ -6,7 +6,7 @@
   <div class="sidebar-brand-icon rotate-n-15">
     <i class="fas fa-laugh-wink"></i>
   </div>
-  <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+  <div class="sidebar-brand-text mx-3">CHHAI</div>
 </a>
 
 <!-- Divider -->
@@ -24,8 +24,20 @@
 
 <!-- Heading -->
 <div class="sidebar-heading">
-  Interface
+  Records
 </div>
+
+<!-- Units Nav -->
+<li class="nav-item <?php echo $nav == "units" ? 'active' : '' ?>">
+  <a class="nav-link" href="<?php echo base_url('admin/units') ?>">
+    <i class="fas fa-fw fa-home"></i>
+    <span>Units</span></a>
+</li>
+<li class="nav-item <?php echo $nav == "members" ? 'active' : '' ?>">
+  <a class="nav-link" href="<?php echo base_url('admin/members') ?>">
+    <i class="fas fa-fw fa-users"></i>
+    <span>Members</span></a>
+</li>
 
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
