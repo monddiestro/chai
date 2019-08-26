@@ -83,7 +83,7 @@
                                     <span class="text">Add Members</span>
                                 </a>
                                 <!-- view -->
-                                <a href="#" class="btn btn-sm btn-success btn-icon-split mb-2">
+                                <a href="<?php echo base_url('admin/members/'.$u->id) ?>" class="btn btn-sm btn-success btn-icon-split mb-2">
                                     <span class="icon text-white-50">
                                     <i class="fas fa-sm fa-clipboard-list"></i>
                                     </span>

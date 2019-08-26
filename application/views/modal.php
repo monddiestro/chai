@@ -75,8 +75,8 @@
     <?php echo form_close(); ?>
   </div>
 
-    <!-- Members Modal -->
-    <div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true">
+  <!-- Members Modal -->
+  <div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true">
         <?php echo form_open_multipart(base_url('admin/new_member/')) ?>
         <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -122,7 +122,7 @@
                 </div>
                 <div class="form-group">
                     <label for="mobile">Mobile #</label>
-                    <input type="number" name="number" class="form-control" id="mobile" placeholder="Ex. 091234567890">
+                    <input type="number" name="mobile" class="form-control" id="mobile" placeholder="Ex. 091234567890">
                 </div>
                 
             </div>
@@ -133,4 +133,4 @@
         </div>
         </div>
         <?php echo form_close(); ?>
-    </div>
+  </div>

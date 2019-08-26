@@ -33,17 +33,33 @@
     <i class="fas fa-fw fa-home"></i>
     <span>Units</span></a>
 </li>
+
+<!-- Members Nav -->
 <li class="nav-item <?php echo $nav == "members" ? 'active' : '' ?>">
   <a class="nav-link" href="<?php echo base_url('admin/members') ?>">
     <i class="fas fa-fw fa-users"></i>
     <span>Members</span></a>
 </li>
 
-<!-- Nav Item - Pages Collapse Menu -->
+<!-- Cars Nav -->
+<li class="nav-item <?php echo $nav == "cars" ? 'active' : '' ?>">
+  <a class="nav-link" href="<?php echo base_url('admin/cars') ?>">
+    <i class="fas fa-fw fa-car-side"></i>
+    <span>Cars</span></a>
+</li>
+
+<!-- Helpers -->
+<li class="nav-item <?php echo $nav == "helpers" ? 'active' : '' ?>">
+  <a class="nav-link" href="<?php echo base_url('admin/members') ?>">
+    <i class="fas fa-fw fa-hands-helping"></i>
+    <span>Helpers</span></a>
+</li>
+
+<!-- Settings Collapse -->
 <li class="nav-item">
   <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
     <i class="fas fa-fw fa-cog"></i>
-    <span>Components</span>
+    <span>Settings</span>
   </a>
   <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
