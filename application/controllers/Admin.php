@@ -10,16 +10,19 @@ class Admin extends CI_Controller {
         $this->load->model('unit_model');
         $this->load->model('member_model');
         $this->load->model('car_model');
+        $this->check_session();
     }
     
+	
+    // check session and 
+    function check_session() {
+        if(empty($this->session->userdata('user_id'))) {
+            $this->view('login');
+        }
+    }
 
-	function index() {
-        $this->load->view('head');
-        $this->load->view('sidebar');
-        $this->load->view('top-bar');
-        $this->load->view('content');
-        $this->load->view('modal');
-        $this->load->view('footer');
+    function index() {
+        
     }
 
     // function to view units 
