@@ -16,7 +16,7 @@ class Unit_model extends CI_Model
     
     // update unit
     function push_update($data,$id) {
-        $this->db->where('id',$id);
+        $this->db->where('unit_id',$id);
         $this->db->update('units_tbl',$data);
     }
 }

@@ -68,7 +68,7 @@
                             <td><?php echo date("F d, Y h:i A",strtotime($u->date_created)); ?></td>
                             <td>
                                 <!-- edit -->
-                                <a href="#" data-toggle="modal" data-target="#unitModal<?php echo $u->id ?>" class="btn btn-sm btn-info btn-icon-split mb-2">
+                                <a href="#" data-toggle="modal" data-target="#unitModal<?php echo $u->unit_id ?>" class="btn btn-sm btn-info btn-icon-split mb-2">
                                     <span class="icon text-white-50">
                                     <i class="fas fa-sm fa-pencil-alt"></i>
                                     </span>
@@ -76,14 +76,14 @@
                                 </a>
                                 <!-- add -->
                                 <a href="#" id="newMember" data-toggle="modal" data-target="#memberModal" class="btn btn-sm btn-primary btn-icon-split mb-2">
-                                    <input type="hidden" class="unit_id" value="<?php echo $u->id ?>">
+                                    <input type="hidden" class="unit_id" value="<?php echo $u->unit_id ?>">
                                     <span class="icon text-white-50">
                                     <i class="fas fa-sm fa-user-plus"></i>
                                     </span>
                                     <span class="text">Add Members</span>
                                 </a>
                                 <!-- view -->
-                                <a href="<?php echo base_url('admin/members/'.$u->id) ?>" class="btn btn-sm btn-success btn-icon-split mb-2">
+                                <a href="<?php echo base_url('admin/members/'.$u->unit_id) ?>" class="btn btn-sm btn-success btn-icon-split mb-2">
                                     <span class="icon text-white-50">
                                     <i class="fas fa-sm fa-clipboard-list"></i>
                                     </span>
@@ -105,7 +105,7 @@
 
 <?php foreach($units as $u): ?>
 <!-- Unit Modal -->
-<div class="modal fade" id="unitModal<?php echo $u->id ?>" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true">
+<div class="modal fade" id="unitModal<?php echo $u->unit_id ?>" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true">
     <?php echo form_open(base_url('admin/update_unit/')) ?>
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -116,7 +116,7 @@
           </button>
         </div>
         <div class="modal-body">
-            <input type="hidden" name="id" value="<?php echo $u->id ?>">
+            <input type="hidden" name="id" value="<?php echo $u->unit_id ?>">
             <div class="form-group">
                 <label for="number">No. #</label>
                 <input type="text" value="<?php echo $u->number ?>" name="number" class="form-control" id="number" aria-describedby="numberHelp" placeholder="Enter unit number" required>

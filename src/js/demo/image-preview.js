@@ -1,6 +1,10 @@
 // Call the dataTables jQuery plugin
-$('#btnSelectImage').on('change',function() {
-    var image_preview = $('#imagePreview');
+$('input[name="user_image"]').on('change',function() {
+    var image_preview = $(this).closest('.modal-content').find('#imagePreview');
+    readURL(this,image_preview);
+});
+$('input[name="car_image"]').on('change',function() {
+    var image_preview = $(this).closest('.modal-content').find('#imagePreview');
     readURL(this,image_preview);
 });
 

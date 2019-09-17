@@ -31,7 +31,7 @@
 <li class="nav-item <?php echo $nav == "units" ? 'active' : '' ?>">
   <a class="nav-link" href="<?php echo base_url('admin/units') ?>">
     <i class="fas fa-fw fa-home"></i>
-    <span>Units</span></a>
+    <span>House</span></a>
 </li>
 
 <!-- Members Nav -->

@@ -9,6 +9,7 @@ class Admin extends CI_Controller {
         //load all models need first
         $this->load->model('unit_model');
         $this->load->model('member_model');
+        $this->load->model('car_model');
     }
     
 
@@ -249,5 +250,139 @@ class Admin extends CI_Controller {
         $this->session->set_flashdata('result',$result_data);
         // redirect page to referer
         redirect($referer);
+    }
+    // cars view
+    function cars() {
+
+        // pass data to header view
+        $head["nav"] = "cars";
+
+        // pull data from members_tbl using model
+        $data["units"] = $this->unit_model->pull_units();
+        $data["cars"] = $this->car_model->pull_car("");
+        $data["members"] = $this->member_model->pull_members('');
+
+        // views
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('cars',$data);
+        $this->load->view('modal');
+        $this->load->view('footer');
+    }
+
+    // create new car entry
+    function add_car() {
+        $referer = $this->input->server('HTTP_REFERER');
+        $make = $this->input->post('make');
+        $model = $this->input->post('model');
+        $color = $this->input->post('color');
+        $plate_number = $this->input->post('plate_no');
+        $member_id = $this->input->post('member_id');
+        $unit_id = $this->input->post('unit_id');
+        $image = "";
+
+        // upload image
+        $config["upload_path"] = './img/'; // directory for uploads
+        $config['allowed_types'] = 'gif|jpg|png'; // file types
+        $this->load->library('upload', $config); // load library
+        if($this->upload->do_upload('car_image')) { // attempt to upload
+            // if success set the file directory
+            $image = 'img/' . $this->upload->data('raw_name').$this->upload->data('file_ext');
+        }
+        // create data array
+        $data = array(
+            'make' => $make,
+            'model' => $model,
+            'color' => $color,
+            'plate_number' => $plate_number,
+            'member_id' => $member_id,
+            'unit_id' => $unit_id,
+            'image' => $image,
+            'date_created' => date('Y-m-d H:i:s')
+        );
+        // push data to db
+        $this->car_model->push_car($data);
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> " . $make . " " . $model . " " . $plate_number .  " has been added to database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+    }
+
+    // function to modify car details
+    function modify_car() {
+        $referer = $this->input->server('HTTP_REFERER');
+        $car_id = $this->input->post('car_id');
+        $image = "";
+        $unit_id = $this->input->post('unit_id');
+        $member_id = $this->input->post('member_id');
+        $make = $this->input->post('make');
+        $model = $this->input->post('model');
+        $color = $this->input->post('color');
+        $plate_number = $this->input->post('plate_no');
+
+        // upload image
+        $config["upload_path"] = './img/'; // directory for uploads
+        $config['allowed_types'] = 'gif|jpg|png'; // file types
+        $this->load->library('upload', $config); // load library
+
+        if(!empty($_FILES["car_image"]["name"])) {
+            if($this->upload->do_upload('car_image')){
+
+                // check first if image dir is not empty delete the old file
+                $old_image = $this->car_model->pull_car_image($car_id);
+                // new image 
+                // if success set the file directory
+                $image = 'img/' . $this->upload->data('raw_name').$this->upload->data('file_ext');
+                $data = array(
+                    'image' => $image
+                );
+                $this->car_model->push_update($data,$car_id);
+                // delete old
+                if(!empty($old_image)) {
+                    unlink("./".$old_image);
+                }
+            }
+        }
+        // data array to update columns
+        $data = array(
+            'unit_id' => $unit_id,
+            'member_id' => $member_id,
+            'make' => $make,
+            'model' => $model,
+            'color' => $color,
+            'plate_number' => $plate_number
+        );
+
+        // push data to update
+        $this->car_model->push_update($data,$car_id);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> " . $make . " " . $model . " " . $plate_number .  " has been updated."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+
+    }
+
+    // API 
+    function unit_members(){
+        $unit_id = $this->input->post('unit_id');
+        $members = $this->member_model->pull_members($unit_id);
+        $option = "";
+        foreach($members as $m) {
+            $option .= "<option value='".$m->member_id."'>".$m->f_name." ".$m->l_name."</option>";
+        }
+        echo $option;
+
     }
 }
