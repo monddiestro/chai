@@ -7,17 +7,13 @@ class Account extends CI_Controller
         parent::__construct();
         //load all models need first
         $this->load->model('account_model');
-        $this->check_session();
     }
 
     function index() {
-        $this->load->view('login');
-    }
-
-    // check session and 
-    function check_session() {
-        if(!empty($this->session->userdata('user_id'))) {
-            $this->uac_view($this->session->userdata('uac'));
+        if($this->session->has_userdata('user_id')) {
+            $this->uac_view($this->session->userdata($uac)); 
+        } else {
+            $this->load->view('login');
         }
     }
 
@@ -38,7 +34,8 @@ class Account extends CI_Controller
                         'user_id' => $u->user_id,
                         'f_name' => $u->f_name,
                         'l_name' => $u->l_name,
-                        'uac' => $u->uac
+                        'uac' => $u->uac,
+                        'image' => $u->image
                     );
                     $uac = $u->uac;
                 } 
@@ -69,8 +66,15 @@ class Account extends CI_Controller
             redirect(base_url('admin'));
         } elseif($uac == "editor") {
             redirect(base_url('editor'));
-        } else {
+        } elseif($uac == "user") {
             redirect(base_url('user'));
+        } else {
+            $this->load->view('login');
         }
+    }
+
+    function signout() {
+        $this->session->sess_destroy();
+        redirect(base_url());
     }
 }

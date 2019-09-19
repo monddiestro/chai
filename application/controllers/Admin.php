@@ -16,13 +16,29 @@ class Admin extends CI_Controller {
 	
     // check session and 
     function check_session() {
-        if(empty($this->session->userdata('user_id'))) {
-            $this->view('login');
+        if(!$this->session->has_userdata('user_id')) {
+             // create flash data session for notification
+            $result_data = array(
+                'class' => "warning",
+                'message' => "<strong>Oops!</strong> Your session expired. Please login again."
+            );
+            // store temporary session
+          $this->session->set_flashdata('result',$result_data);
+            redirect(base_url());
         }
     }
 
     function index() {
-        
+
+        // pass data to header view
+        $head["nav"] = "dashboard";
+
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('dashboard');
+        $this->load->view('modal');
+        $this->load->view('footer');
     }
 
     // function to view units 
