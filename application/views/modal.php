@@ -135,4 +135,34 @@
         <?php echo form_close(); ?>
   </div>
 
+  <!-- Work Modal -->
+  <div class="modal fade" id="newWorkModal" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true">
+        <?php echo form_open(base_url('admin/new_work/')) ?>
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="unitModalLabel">New Work Information</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                  <label for="type">Work Title</label>
+                  <input type="text" class="form-control" placeholder="Ex. Cabin Cleaner" name="title" required/>
+                </div>
+                <div class="form-group">
+                  <label for="type">Work Description</label>
+                  <textarea name="description" id="" cols="30" rows="10" class="form-control" placeholder="Ex. Carry linens, towels, toilet items, and cleaning supplies, using wheeled carts."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        </div>
+        </div>
+        <?php echo form_close(); ?>
+  </div>
+
   

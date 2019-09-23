@@ -180,7 +180,7 @@
 
 <div class="modal fade" id="dropMemberModal<?php echo $m->member_id ?>" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
     <?php echo form_open(base_url('admin/drop_member/')) ?>
-    <div class="modal-dialog role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
             <strong class="modal-title text-danger" id="unitModalLabel"><i class="fas fa-fw fa-exclamation-circle"></i> Warning</strong>

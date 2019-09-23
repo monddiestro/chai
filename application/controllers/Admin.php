@@ -10,6 +10,7 @@ class Admin extends CI_Controller {
         $this->load->model('unit_model');
         $this->load->model('member_model');
         $this->load->model('car_model');
+        $this->load->model('work_model');
         $this->check_session();
     }
     
@@ -397,6 +398,102 @@ class Admin extends CI_Controller {
         // redirect page to referer
         redirect($referer);
 
+    }
+
+    // view for the helpers work registered
+    function helpers_work() {
+
+        // pass data to header view
+        $head["nav"] = "settings";
+
+        // pull works from db
+        $data["works"] = $this->work_model->pull_work("");
+
+        // views
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('helpers_work',$data);
+        $this->load->view('modal');
+        $this->load->view('footer');
+    }
+
+    //  create new work
+    function new_work() {
+        // referer of post data
+        $referer = $this->input->server('HTTP_REFERER');
+        // post data
+        $title = $this->input->post('title');
+        $description = $this->input->post('description');
+        // data array
+        $data = array(
+            'work_title' => $title,
+            'work_desc' => $description
+        );
+
+        // pass data to model
+        $this->work_model->push_work($data);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$title." added to database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+
+    }
+
+    // update the work information
+    function update_work() {
+        // post referer
+        $referer = $this->input->server('HTTP_REFERER');
+        // post data
+        $work_id = $this->input->post('work_id');
+        $title = $this->input->post('title');
+        $description = $this->input->post('description');
+        // set of data to update
+        $data = array(
+            'work_title' => $title,
+            'work_desc' => $description
+        );
+
+        // post data to update
+        $this->work_model->push_update($data,$work_id);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$title." information has been updated."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+    }
+
+    // drop work
+    function drop_work() {
+        // post referer
+        $referer = $this->input->server('HTTP_REFERER');
+        // post data
+         $work_id = $this->input->post('work_id');
+         $title = $this->input->post('title');
+
+        // remove work
+        $this->work_model->drop_work($work_id);  
+        
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$title." has been removed from database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
     }
 
     // API 
