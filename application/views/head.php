@@ -21,6 +21,10 @@
   <!-- Custom styles for this page -->
   <link href="<?php echo base_url('src/vendor/datatables/dataTables.bootstrap4.min.css') ?>" rel="stylesheet">
 
+  <!-- Bootstrap select -->
+  <link href="<?php echo base_url('src/css/bootstrap-select.min.css') ?>" rel="stylesheet">
+  
+
 </head>
 
 <body id="page-top">

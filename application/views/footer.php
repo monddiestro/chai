@@ -17,6 +17,9 @@
   <script src="<?php echo base_url('src/js/demo/image-preview.js') ?>"></script>
   <script src="<?php echo base_url('src/js/demo/custom-script.js') ?>"></script>
 
+  <!-- Bootstrap select -->
+  <script src="<?php echo base_url('src/js/bootstrap-select.min.js') ?>"></script>
+
 </body>
 
 </html>

@@ -496,6 +496,31 @@ class Admin extends CI_Controller {
         redirect($referer);
     }
 
+    // helpers view
+    function helpers() {
+
+        // pass data to header view
+        $head["nav"] = "helpers";
+
+        // pull works from db
+        $data["works"] = $this->work_model->pull_work("");
+ 
+        // views
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('helpers',$data);
+        $this->load->view('modal');
+        $this->load->view('footer');
+
+    }
+
+    // add new helper
+    function new_helper() {
+        // referer of post data
+        $referer = $this->input->server('HTTP_REFERER');
+    }
+
     // API 
     function unit_members(){
         $unit_id = $this->input->post('unit_id');
