@@ -19,4 +19,10 @@ class Unit_model extends CI_Model
         $this->db->where('unit_id',$id);
         $this->db->update('units_tbl',$data);
     }
+
+    // function pull units registered
+    function pull_unit_cnt() {
+        $query = $this->db->get('units_tbl');
+        return $query->num_rows();
+    }
 }

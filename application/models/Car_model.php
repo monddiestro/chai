@@ -30,5 +30,11 @@ class Car_model extends CI_Model
         $this->db->update('cars_tbl');
     }
 
+    // pull total counts of car registered
+    function pull_car_cnt() {
+        $query = $this->db->get('cars_tbl');
+        return $query->num_rows();
+    }
+
     
 }

@@ -39,4 +39,11 @@ class Member_model extends CI_Model
         $this->db->where('member_id',$member_id);
         $this->db->delete('members_tbl');
     }
+
+    // function to pull all members registered
+    // pull total counts of car registered
+    function pull_member_cnt() {
+        $query = $this->db->get('members_tbl');
+        return $query->num_rows();
+    }
 }

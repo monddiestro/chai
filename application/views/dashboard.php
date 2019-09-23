@@ -33,7 +33,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Members</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">400</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo empty($member_cnt) ? '0' : $member_cnt ?></div>
                         </div>
                         <div class="col-auto">
                         <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -50,7 +50,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Units</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">400</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo empty($unit_cnt) ? '0' : $unit_cnt ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-home fa-2x text-gray-300"></i>
@@ -67,7 +67,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Cars</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">400</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo empty($car_cnt) ? '0' : $car_cnt ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-car-side fa-2x text-gray-300"></i>
@@ -84,7 +84,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php  echo empty($pending) ? '0' : $pending ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-comments fa-2x text-gray-300"></i>

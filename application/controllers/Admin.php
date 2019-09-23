@@ -33,10 +33,16 @@ class Admin extends CI_Controller {
         // pass data to header view
         $head["nav"] = "dashboard";
 
+        // data for dashboard
+        $data["member_cnt"] = $this->member_model->pull_member_cnt();
+        $data["unit_cnt"] = $this->unit_model->pull_unit_cnt();
+        $data["car_cnt"] = $this->car_model->pull_car_cnt();
+        $data["pending"] = "";
+
         $this->load->view('head',$head);
         $this->load->view('sidebar');
         $this->load->view('top-bar');
-        $this->load->view('dashboard');
+        $this->load->view('dashboard',$data);
         $this->load->view('modal');
         $this->load->view('footer');
     }
