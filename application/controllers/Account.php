@@ -11,7 +11,7 @@ class Account extends CI_Controller
 
     function index() {
         if($this->session->has_userdata('user_id')) {
-            $this->uac_view($this->session->userdata($uac)); 
+            $this->uac_view($this->session->userdata('uac')); 
         } else {
             $this->load->view('login');
         }
