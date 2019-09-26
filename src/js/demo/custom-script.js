@@ -11,8 +11,9 @@ $("select[name='unit_id']").on('change',function(){
          type: "POST",
          data: { 'unit_id' : unit_id },
          success: function(data) {
-            var opt = '<option value="" hidden>Select Car Owner</option>' + data;
+            var opt = data;
             sel.html(opt);
+            $('.selectpicker').selectpicker('refresh');
          }
     });
 });

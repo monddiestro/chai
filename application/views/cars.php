@@ -131,8 +131,7 @@
                 </div>
                 <div class="form-group">
                     <label>Unit Number</label>
-                    <select name="unit_id" id="unit_id" class="form-control">
-                        <option value="" hidden>Select Unit Number</option>
+                    <select name="unit_id" id="unit_id" class="selectpicker form-control" title="Ex. House number">
                         <?php foreach($units as $u): ?>
                         <option value="<?php echo $u->unit_id ?>"><?php echo $u->number ?></option>
                         <?php endforeach; ?>
@@ -140,8 +139,7 @@
                 </div>     
                 <div class="form-group">
                     <label>Car Owner</label>
-                    <select class="form-control" name="member_id" id="member_id">
-                        <option value="" hidden>Select Car Owner</option>
+                    <select class="selectpicker form-control" name="member_id" id="member_id" title="Ex. Juan Dela Curz">
                     </select>
                 </div>
                 <div class="form-group">
@@ -195,7 +193,7 @@
                 </div>
                 <div class="form-group">
                     <label>Unit Number</label>
-                    <select name="unit_id" id="unit_id" class="form-control">
+                    <select name="unit_id" id="unit_id" class="selectpicker form-control" title="Ex. House Number">
                         <option value="" hidden>Select Unit Number</option>
                         <?php foreach($units as $u): ?>
                         <option value="<?php echo $u->unit_id ?>" <?php echo $c->unit_id == $u->unit_id ?  'selected' : '' ?>><?php echo $u->number ?></option>
@@ -204,8 +202,7 @@
                 </div>     
                 <div class="form-group">
                     <label>Car Owner</label>
-                    <select class="form-control" name="member_id" id="member_id">
-                        <option value="" hidden>Select Car Owner</option>
+                    <select class="selectpicker form-control" name="member_id" id="member_id" title="Ex. Juan Dela Cruz">
                         <?php foreach($members as $m): ?>
                             <option value="<?php echo $m->member_id ?>" <?php echo ($m->member_id == $c->member_id) ? 'selected' : '' ?>><?php echo $m->f_name . " " . $m->l_name ?></option>
                         <?php endforeach; ?>

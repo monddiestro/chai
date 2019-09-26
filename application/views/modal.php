@@ -99,7 +99,7 @@
                 </div>
                 <div class="form-group">
                     <label for="type">Member Type</label>
-                    <select name="type" id="type" class="form-control">
+                    <select name="type" id="type" class="selectpicker form-control" title="Ex. Owner">
                         <option value="1">Owner</option>
                         <option value="2">Member</option>
                     </select>

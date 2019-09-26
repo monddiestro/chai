@@ -133,15 +133,14 @@
                 </div>
                 <div class="form-group">
                     <label for="type">Member Type</label>
-                    <select name="type" id="type" class="form-control">
+                    <select name="type" id="type" class="selectpicker form-control" title="Ex. Owner">
                         <option value="1" <?php echo ($m->type == 1) ? 'selected' : '' ?>>Owner</option>
                         <option value="2" <?php echo ($m->type == 2) ? 'selected' : '' ?>>Member</option>
-                        <option value="3" <?php echo ($m->type == 3) ? 'selected' : '' ?>>Helper</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="unit_id">Unit Number</label>
-                    <select name="unit_id" id="unit_id" class="form-control">
+                    <select name="unit_id" id="unit_id" class="selectpicker form-control" title="Ex. House Number">
                         <?php foreach($units as $u): ?>
                         <option value="<?php echo $u->unit_id ?>" <?php echo $u->unit_id == $m->unit_id ? 'selected' : '' ?>><?php echo $u->number ?></option>
                         <?php endforeach ?>
@@ -228,14 +227,14 @@
                 </div>
                 <div class="form-group">
                     <label for="type">Member Type</label>
-                    <select name="type" id="type" class="form-control">
+                    <select name="type" id="type" class="selectpicker form-control" title="Ex. Owner">
                         <option value="1">Owner</option>
                         <option value="2">Member</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="unit_id">Unit Number</label>
-                    <select name="unit_id" id="unit_id" class="form-control">
+                    <select name="unit_id" id="unit_id" class="selectpicker form-control" title="Ex. House Number"> 
                         <?php foreach($units as $u): ?>
                         <option value="<?php echo $u->unit_id ?>"><?php echo $u->number ?></option>
                         <?php endforeach ?>
