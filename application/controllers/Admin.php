@@ -11,6 +11,7 @@ class Admin extends CI_Controller {
         $this->load->model('member_model');
         $this->load->model('car_model');
         $this->load->model('work_model');
+        $this->load->model('helper_model');
         $this->check_session();
     }
     
@@ -504,7 +505,14 @@ class Admin extends CI_Controller {
 
         // pull works from db
         $data["works"] = $this->work_model->pull_work("");
- 
+
+        // pull helpers from db
+        $data["helpers"] = $this->helper_model->pull_data("");
+
+        // pull works 
+        $data["helpers_work"] = $this->helper_model->pull_helper_work("");
+
+
         // views
         $this->load->view('head',$head);
         $this->load->view('sidebar');
@@ -519,7 +527,163 @@ class Admin extends CI_Controller {
     function new_helper() {
         // referer of post data
         $referer = $this->input->server('HTTP_REFERER');
+        $l_name = $this->input->post('l_name');
+        $f_name = $this->input->post('f_name');
+        $email = $this->input->post('email');
+        $address = $this->input->post('address');
+        $phone = $this->input->post('phone');
+        $mobile = $this->input->post('mobile');
+        $image = '';
+        // multiple post data of work
+        $work = $this->input->post('work_id[]');
+        
+        // upload image
+        $config["upload_path"] = './img/'; // directory for uploads
+        $config['allowed_types'] = 'gif|jpg|png'; // file types
+        $this->load->library('upload', $config); // load library
+        if($this->upload->do_upload('user_image')) { // attempt to upload
+            // if success set the file directory
+            $image = 'img/' . $this->upload->data('raw_name').$this->upload->data('file_ext');
+        }
+
+        // create data array push to db
+        $data = array(
+            'l_name' => $l_name,
+            'f_name' => $f_name,
+            'email' => $email,
+            'address' => $address,
+            'phone' => $phone,
+            'mobile' => $mobile,
+            'status' => 'available',
+            'image' => $image,
+            'date_created' => date('Y-m-d H:i:s')
+        );
+
+        // call mopdel and push data to database
+        $helper_id = $this->helper_model->push_data($data);
+
+        // loop posted work
+        foreach($work as $w) {
+            $data = array(
+                'work_id' => $w,
+                'helper_id' => $helper_id
+            );
+            // push data to database
+            $this->helper_model->push_helper_work($data);
+        }
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$f_name . " " . $l_name ." has been added to database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
     }
+
+    // update helper info
+    function update_helper() {
+        $referer = $this->input->server('HTTP_REFERER');
+        $helper_id = $this->input->post('helper_id');
+        $l_name = $this->input->post('l_name');
+        $f_name = $this->input->post('f_name');
+        $email = $this->input->post('email');
+        $address = $this->input->post('address');
+        $phone = $this->input->post('phone');
+        $mobile = $this->input->post('mobile');
+        $image = '';
+
+        if(!empty($_FILES["user_image"]["name"])) {
+            // upload image
+            $config["upload_path"] = './img/'; // directory for uploads
+            $config['allowed_types'] = 'gif|jpg|png'; // file types
+            $this->load->library('upload', $config); // load library
+            if($this->upload->do_upload('user_image')){
+
+                // check first if image dir is not empty delete the old file
+                $old_image = $this->helper_model->pull_helper_image($helper_id);
+                // new image 
+                // if success set the file directory
+                $image = 'img/' . $this->upload->data('raw_name').$this->upload->data('file_ext');
+                $data = array(
+                    'image' => $image
+                );
+                $this->helper_model->push_update($data,$helper_id);
+                // delete old
+                if(!empty($old_image)) {
+                    unlink("./".$old_image);
+                }
+            }
+        }
+
+        // multiple post data of work
+        $work = $this->input->post('work_id[]');
+        // drop all work related to helper
+        $this->helper_model->drop_work($helper_id);
+        // loop posted work
+        foreach($work as $w) {
+            $data = array(
+                'work_id' => $w,
+                'helper_id' => $helper_id
+            );
+            // push data to database
+            $this->helper_model->push_helper_work($data);
+        }
+
+        // update post data
+        // create data array push to db
+        $data = array(
+            'l_name' => $l_name,
+            'f_name' => $f_name,
+            'email' => $email,
+            'address' => $address,
+            'phone' => $phone,
+            'mobile' => $mobile,
+        );
+        // push to db
+        $this->helper_model->push_update($data,$helper_id);
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$f_name . " " . $l_name ." data has been updated."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+
+    }
+
+    // drop helper
+    function drop_helper() {
+        $referer = $this->input->server('HTTP_REFERER');
+        $helper_id = $this->input->post('helper_id');
+        $helper_name = $this->input->post('helper_name');
+
+        // call method to drop helper
+        // drop work related to 
+        $this->helper_model->drop_work($helper_id);
+        // drop image
+        $old_image = $this->helper_model->pull_helper_image($helper_id);
+        if(!empty($old_image)) {
+            unlink("./".$old_image);
+        }
+        // drop helper data
+        $this->helper_model->drop_helper($helper_id);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$f_name . " " . $l_name ." has been removed to database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+    }
+        
 
     // API 
     function unit_members(){
