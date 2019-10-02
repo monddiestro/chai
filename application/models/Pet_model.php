@@ -22,4 +22,15 @@ class Pet_model extends CI_Model
         $this->db->where('type_id',$type_id);
         $this->db->delete('pet_type_tbl');
     }
+
+    function push_pet($data) {
+        $this->db->insert('pets_tbl',$data);
+    }
+
+    function pull_pet() {
+        $this->db->join('units_tbl', 'pets_tbl.unit_id = units_tbl.unit_id','left');
+        $this->db->join('pet_type_tbl','pets_tbl.type_id = pet_type_tbl.type_id', 'left');
+        $query = $this->db->get('pets_tbl');
+        return $query->result();
+    }
 }

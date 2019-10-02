@@ -690,13 +690,58 @@ class Admin extends CI_Controller {
         // pass data to header view
         $head["nav"] = "pets";
 
+        // data for view
+        $data["types"] = $this->pet_model->pull_type("");
+        $data["units"] = $this->unit_model->pull_units();
+        $data["pets"] = $this->pet_model->pull_pet();
+
         // views
         $this->load->view('head',$head);
         $this->load->view('sidebar');
         $this->load->view('top-bar');
-        $this->load->view('pets');
+        $this->load->view('pets',$data);
         $this->load->view('modal');
         $this->load->view('footer');
+    }
+
+    // create new pet record
+    function new_pet() {
+        // post data
+        $referer = $this->input->server('HTTP_REFERER');
+        $unit_id = $this->input->post('unit_id');
+        $type_id = $this->input->post('type_id');
+        $breed = $this->input->post('breed');
+        $image = "";
+
+        // upload image
+        $config["upload_path"] = './img/'; // directory for uploads
+        $config['allowed_types'] = 'gif|jpg|png'; // file types
+        $this->load->library('upload', $config); // load library
+        if($this->upload->do_upload('pet_image')) { // attempt to upload
+            // if success set the file directory
+            $image = 'img/' . $this->upload->data('raw_name').$this->upload->data('file_ext');
+        }
+        echo $image;
+        $data = array(
+            'unit_id' => $unit_id,
+            'type_id' => $type_id,
+            'breed' => $breed,
+            'image' => $image,
+            'date_created' => date('Y-m-d H:i:s')
+        );
+
+        // call model and post data
+        $this->pet_model->push_pet($data);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$breed . " has been added to database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
     }
 
     // view for pet types
@@ -706,6 +751,7 @@ class Admin extends CI_Controller {
 
         // data for view
         $data["types"] = $this->pet_model->pull_type("");
+        $data["pets"] = $this->pet_model->pull_pet();
 
         // views
         $this->load->view('head',$head);
