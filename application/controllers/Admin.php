@@ -12,6 +12,7 @@ class Admin extends CI_Controller {
         $this->load->model('car_model');
         $this->load->model('work_model');
         $this->load->model('helper_model');
+        $this->load->model('pet_model');
         $this->check_session();
     }
     
@@ -684,6 +685,102 @@ class Admin extends CI_Controller {
         redirect($referer);
     }
         
+    // view for pets
+    function pets() {
+        // pass data to header view
+        $head["nav"] = "pets";
+
+        // views
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('pets');
+        $this->load->view('modal');
+        $this->load->view('footer');
+    }
+
+    // view for pet types
+    function pet_types() {
+        // pass data to header view
+        $head["nav"] = "settings";
+
+        // data for view
+        $data["types"] = $this->pet_model->pull_type("");
+
+        // views
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('pet-types',$data);
+        $this->load->view('modal');
+        $this->load->view('footer');
+    }
+
+    // create new pet type
+    function new_pet_type() {
+        // post data
+        $referer = $this->input->server('HTTP_REFERER');
+        $type_desc = $this->input->post('type_desc');
+
+        // create data array and push to db
+        $data = array('type_desc' => $type_desc);
+
+        // call model and push data
+        $this->pet_model->push_type($data);
+        
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$type_desc . " has been added to database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+    }
+
+    function update_pet_type() {
+        // post data
+        $referer = $this->input->server('HTTP_REFERER');
+        $type_desc = $this->input->post('type_desc');
+        $type_id = $this->input->post('type_id');
+
+        // create data array and push to db
+        $data = array('type_desc' => $type_desc);
+
+        // call model and update 
+        $this->pet_model->push_type_update($data,$type_id);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$type_desc . " has been updated."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+    }
+
+    function drop_pet_type() {
+        // post data
+        $referer = $this->input->server('HTTP_REFERER');
+        $type_desc = $this->input->post('type_desc');
+        $type_id = $this->input->post('type_id');
+
+        // call model and remove pet type
+        $this->pet_model->drop_pet_type($type_id);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$type_desc . " has been removed from database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+    }
 
     // API 
     function unit_members(){

@@ -6,7 +6,7 @@
   <div class="sidebar-brand-icon rotate-n-15">
     <i class="fas fa-clipboard"></i>
   </div>
-  <div class="sidebar-brand-text mx-3">CHHAI</div>
+  <!-- <div class="sidebar-brand-text mx-3">CHHAI</div> -->
 </a>
 
 <!-- Divider -->
@@ -48,6 +48,13 @@
     <span>Cars</span></a>
 </li>
 
+<!-- Pets Nav -->
+<li class="nav-item <?php echo $nav == "pets" ? 'active' : '' ?>">
+  <a class="nav-link" href="<?php echo base_url('admin/pets') ?>">
+    <i class="fas fa-fw fa-paw"></i>
+    <span>Pets</span></a>
+</li>
+
 <!-- Helpers -->
 <li class="nav-item <?php echo $nav == "helpers" ? 'active' : '' ?>">
   <a class="nav-link" href="<?php echo base_url('admin/helpers') ?>">
@@ -64,7 +71,7 @@
 </div>
 
 <!-- Settings Collapse -->
-<li class="nav-item <?php echo $nav == "settings" ? 'active' : '' ?>"">
+<li class="nav-item <?php echo $nav == "settings" ? 'active' : '' ?>">
   <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
     <i class="fas fa-fw fa-cog"></i>
     <span>Settings</span>
@@ -72,7 +79,8 @@
   <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
       <h6 class="collapse-header">System Settings</h6>
-      <a class="collapse-item" href="<?php echo base_url('admin/helpers_work') ?>">Helpers</a>
+      <a class="collapse-item" href="<?php echo base_url('admin/helpers_work') ?>">Helper Works</a>
+      <a class="collapse-item" href="<?php echo base_url('admin/pet_types') ?>">Pet Types</a>
       <a class="collapse-item" href="<?php echo base_url('admin/account') ?>">Account</a>
     </div>
   </div>
