@@ -33,4 +33,23 @@ class Pet_model extends CI_Model
         $query = $this->db->get('pets_tbl');
         return $query->result();
     }
+
+    function pull_pet_image($pet_id) {
+        $this->db->where('pet_id',$pet_id);
+        $this->db->select('image');
+        $query = $this->db->get('pets_tbl');
+        $query = $query->row();
+        return $query->image;
+    }
+
+    function push_update($data,$pet_id) {
+        $this->db->where('pet_id',$pet_id);
+        $this->db->set($data);
+        $this->db->update('pets_tbl');
+    }
+
+    function drop_pet($pet_id) {
+        $this->db->where('pet_id',$pet_id);
+        $this->db->delete('pets_tbl');
+    }
 }

@@ -63,7 +63,7 @@
                         <?php foreach($pets as $p): ?>
                         <tr>
                             <td>
-                                <img style="width:50px;height:auto;display:inline;" src="<?php echo empty($p->image) ? base_url('src/img/no-profile-image.png') : base_url($p->image) ?>" alt="">
+                                <img style="width:50px;height:auto;display:inline;" src="<?php echo empty($p->image) ? base_url('src/img/no-image.png') : base_url($p->image) ?>" alt="">
                             </td>
                             <td>
                                 <?php echo $p->type_desc ?>
@@ -76,7 +76,7 @@
                             </td>
                             <td>
                                 <!-- edit -->
-                                <a href="#" data-toggle="modal" data-target="#memberModal<?php echo $p->pet_id ?>" class="btn btn-sm btn-info btn-icon-split mb-2">
+                                <a href="#" data-toggle="modal" data-target="#editPetModal<?php echo $p->pet_id ?>" class="btn btn-sm btn-info btn-icon-split mb-2">
                                     <span class="icon text-white-50">
                                     <i class="fas fa-fw fa-pencil-alt"></i>
                                     </span>
@@ -84,7 +84,7 @@
                                 </a>
                                 <!-- delete -->
                                 <!-- edit -->
-                                <a href="#" data-toggle="modal" data-target="#dropMemberModal<?php echo $p->pet_id ?>" class="btn btn-sm btn-danger btn-icon-split mb-2">
+                                <a href="#" data-toggle="modal" data-target="#dropPetModal<?php echo $p->pet_id ?>" class="btn btn-sm btn-danger btn-icon-split mb-2">
                                     <span class="icon text-white-50">
                                     <i class="fas fa-fw fa-trash"></i>
                                     </span>
@@ -117,7 +117,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <img style="width:200px; height:auto" src="<?php echo base_url('src/img/no-profile-image.png') ?>" id="imagePreview" name="image" alt="profile picture" class="img-thumbnail">
+                    <img style="width:200px; height:auto" src="<?php echo base_url('src/img/no-image.png') ?>" id="imagePreview" name="image" alt="profile picture" class="img-thumbnail">
                     <br/>
                     <br/>
                     <label class="btn btn-light">
@@ -155,3 +155,97 @@
     </div>
     <?php echo form_close(); ?>
 </div>
+
+<!-- Modification Modal -->
+<?php foreach($pets as $p): ?>
+<div class="modal fade" id="editPetModal<?php echo $p->pet_id ?>" tabindex="-1" role="dialog" aria-labelledby="editPetLabel" aria-hidden="true">
+    <?php echo form_open_multipart(base_url('admin/update_pet/')) ?>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unitModalLabel">New Pet</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" value="<?php echo $p->pet_id ?>" name="pet_id"/>
+                <div class="form-group">
+                    <img style="width:200px; height:auto" src="<?php echo empty($p->image) ? base_url('src/img/no-image.png') : base_url($p->image) ?>" id="imagePreview" name="image" alt="profile picture" class="img-thumbnail">
+                    <br/>
+                    <br/>
+                    <label class="btn btn-light">
+                        <input type="file" name="pet_image" id="btnSelectImage" accept="image/*" style="display:none;" data-error-msg="Please place your image here.">
+                        Browse ...
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="">Unit No</label>
+                    <select name="unit_id" class="selectpicker form-control" id="" title="Ex. 2302">
+                        <?php foreach($units as $u): ?>
+                        <?php 
+                            $selected = "";
+                            if($u->unit_id == $p->unit_id) {
+                                $selected = "selected";
+                            }
+                        ?>
+                        <option value="<?php echo $u->unit_id ?>" <?php echo $selected ?>><?php echo $u->number ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Pet Type</label>
+                    <select name="type_id" id="" class="selectpicker form-control" title="Ex. Dog" required>
+                        <?php foreach($types as $t): ?>
+                        <?php 
+                            $selected = "";
+                            if($t->type_id == $p->type_id) {
+                                $selected = "selected";
+                            }
+                        ?>
+                        <option value="<?php echo $t->type_id ?>" <?php echo $selected ?>><?php echo $t->type_desc ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Breed</label>
+                    <input type="text" name="breed" value="<?php echo $p->breed ?>" class="form-control" placeholder="Ex. American Bully" required>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+      </div>
+    </div>
+    <?php echo form_close(); ?>
+</div>
+
+<div class="modal fade" id="dropPetModal<?php echo $p->pet_id ?>" tabindex="-1" role="dialog" aria-labelledby="dropPetLabel" aria-hidden="true">
+    <?php echo form_open(base_url('admin/drop_pet/')) ?>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unitModalLabel">Remove Pet</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <input type="hidden" value="<?php echo $p->pet_id ?>" name="pet_id">
+            <div class="modal-body">
+                <input type="hidden" id="pet_id" value="<?php echo $p->pet_id ?>" name="type_id">
+                <input type="hidden" value="<?php echo $p->breed . " (" . $p->type_desc.")" ?>" name="breed">
+                Are you sure you want to remove <strong><?php echo $p->breed ?></strong> from pets?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" type="submit">Remove</button>
+            </div>
+      </div>
+    </div>
+    <?php echo form_close(); ?>
+</div>
+
+
+<?php endforeach ?>

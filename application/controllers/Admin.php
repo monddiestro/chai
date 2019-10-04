@@ -744,6 +744,80 @@ class Admin extends CI_Controller {
         redirect($referer);
     }
 
+    // update pet
+    function update_pet() {
+         // post data
+         $referer = $this->input->server('HTTP_REFERER');
+         $pet_id = $this->input->post('pet_id');
+         $unit_id = $this->input->post('unit_id');
+         $type_id = $this->input->post('type_id');
+         $breed = $this->input->post('breed');
+
+         if(!empty($_FILES["pet_image"]["name"])) {
+            // upload image
+            $config["upload_path"] = './img/'; // directory for uploads
+            $config['allowed_types'] = 'gif|jpg|png'; // file types
+            $this->load->library('upload', $config); // load library
+            if($this->upload->do_upload('pet_image')){
+                // check first if image dir is not empty delete the old file
+                $old_image = $this->pet_model->pull_pet_image($car_id);
+                // new image 
+                // if success set the file directory
+                $image = 'img/' . $this->upload->data('raw_name').$this->upload->data('file_ext');
+                $data = array(
+                    'image' => $image
+                );
+                $this->pet_model->push_update($data,$pet_id);
+                // delete old
+                if(!empty($old_image)) {
+                    unlink("./".$old_image);
+                }
+            }
+        }
+        // create array of data
+        $data = array(
+            'unit_id' => $unit_id,
+            'type_id' => $type_id,
+            'breed' => $breed
+        );
+
+        // call model and push data
+        $this->pet_model->push_update($data,$pet_id);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$breed . " has been updated."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+         
+    }
+
+    // drop pet
+    function drop_pet() {
+        // post data
+        $referer = $this->input->server('HTTP_REFERER');
+        $breed = $this->input->post('breed');
+        $pet_id = $this->input->post('pet_id');
+
+        // call model to drop pet
+        $this->pet_model->drop_pet($pet_id);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$breed . " has been removed from database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+
+    }
+
     // view for pet types
     function pet_types() {
         // pass data to header view
