@@ -60,7 +60,7 @@
                                     <?php endif ?>
                                         <?php echo form_open(base_url('account/check_user/')) ?>
                                             <div class="form-group">
-                                                <input type="text" name="username" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Username" required>
+                                                <input type="text" name="username" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email Address" required>
                                             </div>
                                             <div class="form-group">
                                                 <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" required>

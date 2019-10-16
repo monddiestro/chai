@@ -13,6 +13,7 @@ class Admin extends CI_Controller {
         $this->load->model('work_model');
         $this->load->model('helper_model');
         $this->load->model('pet_model');
+        $this->load->model('account_model');
         $this->check_session();
     }
     
@@ -900,6 +901,160 @@ class Admin extends CI_Controller {
         $this->session->set_flashdata('result',$result_data);
         // redirect page to referer
         redirect($referer);
+    }
+
+    // system accounts
+    function account() {
+        $referer = $this->input->server('HTTP_REFERER');
+
+        // pass data to header view
+        $head["nav"] = "settings";
+
+        // view data
+        $data["users"] = $this->account_model->pull_account('');
+
+        // views
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('account',$data);
+        $this->load->view('modal');
+        $this->load->view('footer');
+    }
+
+    function new_user() {
+        // post data
+        $referer = $this->input->server('HTTP_REFERER');
+        $l_name = $this->input->post('l_name');
+        $f_name = $this->input->post('f_name');
+        $uac = $this->input->post('uac');
+        $contact = $this->input->post('contact');
+        $email = $this->input->post('email');
+        $password = $this->input->post('password');
+        $image = "";
+
+        // upload image
+        $config["upload_path"] = './img/'; // directory for uploads
+        $config['allowed_types'] = 'gif|jpg|png'; // file types
+        $this->load->library('upload', $config); // load library
+        if($this->upload->do_upload('user_image')) { // attempt to upload
+            // if success set the file directory
+            $image = 'img/' . $this->upload->data('raw_name').$this->upload->data('file_ext');
+        }
+
+        // create array and pass data to model
+        $data = array(
+            'l_name' => $l_name,
+            'f_name' => $f_name,
+            'username' => $email,
+            'password' => md5($password),
+            'uac' => $uac,
+            'image' => $image,
+            'contact' => $contact,
+            'email' => $email
+        );
+
+        $this->account_model->push_user($data);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$f_name . " " . $l_name ." has been added to database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+        
+    }
+
+    function update_user() {
+        // post data
+        $referer = $this->input->server('HTTP_REFERER');
+        $user_id = $this->input->post('user_id');
+        $l_name = $this->input->post('l_name');
+        $f_name = $this->input->post('f_name');
+        $uac = $this->input->post('uac');
+        $contact = $this->input->post('contact');
+        $email = $this->input->post('email');
+        $image = "";
+        
+        // check if there are new image uploaded on the post
+        if(!empty($_FILES["user_image"]["name"])) {
+            // upload image
+            $config["upload_path"] = './img/'; // directory for uploads
+            $config['allowed_types'] = 'gif|jpg|png'; // file types
+            $this->load->library('upload', $config); // load library
+            if($this->upload->do_upload('user_image')){
+
+                // check first if image dir is not empty delete the old file
+                $old_image = $this->account_model->pull_user_image($user_id);
+                // new image 
+                // if success set the file directory
+                $image = 'img/' . $this->upload->data('raw_name').$this->upload->data('file_ext');
+                $data = array(
+                    'image' => $image
+                );
+                $this->account_model->push_update($data,$user_id);
+                // delete old
+                if(!empty($old_image)) {
+                    unlink("./".$old_image);
+                }
+            }
+        }
+
+        // create data array and pass to model
+        $data = array(
+            'l_name' => $l_name,
+            'f_name' => $f_name,
+            'uac' => $uac,
+            'contact' => $contact,
+            'email' => $email,
+            'username' => $email
+        );
+
+        // call model
+        $this->account_model->push_update($data,$user_id);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> ".$f_name . " " . $l_name ." information has been added updated."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+    }
+
+    //  method to drop user
+    function drop_user() {
+
+        // post data
+        $referer = $this->input->server('HTTP_REFERER');
+        $user_id = $this->input->post('user_id');
+        $name = $this->input->post('user_name');
+
+        // get image url to remove also the photo
+        $old_image = $this->account_model->pull_user_image($user_id);
+        // delete the file
+        if(!empty($old_image)) {
+            unlink("./".$old_image);
+        }
+        // call model to drop member
+        $this->account_model->drop_user($user_id);
+        
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> " . $name .  " has been removed from database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
+
+
     }
 
     // API 

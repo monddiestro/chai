@@ -1,5 +1,6 @@
 <!-- Bootstrap core JavaScript-->
   <script src="<?php echo base_url("src/vendor/jquery/jquery.min.js") ?>"></script>
+
   <script src="<?php echo base_url("src/vendor/bootstrap/js/bootstrap.bundle.min.js") ?>"></script>
 
   <!-- Core plugin JavaScript-->
