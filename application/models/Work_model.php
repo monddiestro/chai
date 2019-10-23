@@ -25,4 +25,13 @@ class Work_model extends CI_Model
         $this->db->where('work_id',$work_id);
         $this->db->delete('work_tbl');
     }
+
+    function pull_helpers($work_id) {
+        $this->db->where('helpers_work_tbl.work_id', $work_id);
+        $this->db->where('status','available');
+        $this->db->join('helpers_tbl','helpers_work_tbl.helper_id = helpers_tbl.helper_id','left');
+        $this->db->join('works_tbl','helpers_work_tbl.work_id = work_tbl.work_id', 'left');
+        $query = $this->db->get('helpers_work_tbl');
+        return $query->result;
+    }
 }

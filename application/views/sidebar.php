@@ -19,6 +19,12 @@
     <span>Dashboard</span></a>
 </li>
 
+<li class="nav-item <?php echo $nav == "inbox" ? 'active' : '' ?>">
+  <a class="nav-link" href="<?php echo base_url('request'); ?>">
+    <i class="fas fa-fw fa-inbox"></i>
+    <span>Requests</span></a>
+</li>
+
 <!-- Divider -->
 <hr class="sidebar-divider">
 

@@ -49,4 +49,5 @@ class Helper_model extends CI_Model
         $this->db->where('helper_id', $helper_id);
         $this->db->delete('helpers_tbl');
     }
+
 }

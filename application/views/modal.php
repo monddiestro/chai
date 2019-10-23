@@ -59,7 +59,7 @@
             </div>
             <div class="form-group">
                 <label for="type">Type</label>
-                <input type="text" name="type" class="form-control" id="type" aria-describedby="typeHelp" placeholder="Enter unit type">
+                <input type="text" name="type" class="form-control" aria-describedby="typeHelp" placeholder="Enter unit type">
             </div>
             <div class="form-group">
                 <label for="address">Type</label>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="form-group">
                     <label for="type">Member Type</label>
-                    <select name="type" id="type" class="selectpicker form-control" title="Ex. Owner">
+                    <select name="type" class="selectpicker form-control" title="Ex. Owner">
                         <option value="1">Owner</option>
                         <option value="2">Member</option>
                     </select>

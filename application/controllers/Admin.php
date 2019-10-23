@@ -1053,6 +1053,40 @@ class Admin extends CI_Controller {
         $this->session->set_flashdata('result',$result_data);
         // redirect page to referer
         redirect($referer);
+    }
+
+    function check_password() {
+        $user_id = $this->input->post('user_id');
+        $password = $this->input->post('current');
+
+        $result = $this->account_model->pull_password($user_id);
+
+        echo $result == md5($password) ? '1' : '0';
+        
+    }
+
+    function update_password() {
+        // post data
+        $referer = $this->input->server('HTTP_REFERER');
+        $user_id = $this->input->post('user_id');
+        $password = $this->input->post('confirm');
+        $name = $this->input->post('name');
+        
+        // create data array
+        $data = array( 'password' => md5($password));
+        
+        // call model to update password 
+        $this->account_model->push_update($data,$user_id);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> " . $name .  " password has been updated."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+        // redirect page to referer
+        redirect($referer);
 
 
     }

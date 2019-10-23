@@ -85,7 +85,7 @@
                                     <span class="text">Remove</span>
                                 </a>
                                 <!-- password reset -->
-                                <a href="#"  data-toggle="modal" data-target="#restPasswordModal<?php echo $u->user_id ?>" class="btn btn-sm btn-success btn-icon-split mb-2">
+                                <a href="#"  data-toggle="modal" data-target="#resetPasswordModal<?php echo $u->user_id ?>" class="btn btn-sm btn-success btn-icon-split mb-2">
                                     <span class="icon text-white-50">
                                     <i class="fas fa-fw fa-sync"></i>
                                     </span>
@@ -122,7 +122,7 @@
                     <br/>
                     <br/>
                     <label class="btn btn-light">
-                        <input type="file" name="user_image" id="btnSelectImage" accept="image/*" style="display:none;" data-error-msg="Please place your image here.">
+                        <input type="file" name="user_image" accept="image/*" style="display:none;" data-error-msg="Please place your image here.">
                         Browse ...
                     </label>
                 </div>
@@ -136,23 +136,23 @@
                 </div>
                 <div class="form-group">
                     <label for="l_name">Last Name</label>
-                    <input type="text" name="l_name" class="form-control" id="l_name" placeholder="Ex. Dela Cruz" required>
+                    <input type="text" name="l_name" class="form-control" placeholder="Ex. Dela Cruz" required>
                 </div>
                 <div class="form-group">
                     <label for="f_name">First Name</label>
-                    <input type="text" name="f_name" class="form-control" id="f_name" placeholder="Ex. Juan" required>
+                    <input type="text" name="f_name" class="form-control" placeholder="Ex. Juan" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" name="email" class="form-control" id="email" placeholder="Ex. juandelacruz@email.com" required>
+                    <input type="email" name="email" class="form-control" placeholder="Ex. juandelacruz@email.com" required>
                 </div>
                 <div class="form-group">
                     <label for="phone">Contact #</label>
-                    <input type="number" name="contact" class="form-control" id="contact" placeholder="Ex. 091234567890">
+                    <input type="number" name="contact" class="form-control" placeholder="Ex. 091234567890">
                 </div>
                 <div class="form-group">
                     <label for="phone">Password</label>
-                    <input type="password" name="password" class="form-control" id="password" placeholder="Type user password here">
+                    <input type="password" name="password" class="form-control" placeholder="Type user password here">
                 </div>
             </div>
             <div class="modal-footer">
@@ -171,7 +171,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="unitModalLabel">Update User Information</h5>
+            <h5 class="modal-title">Update User Information</h5>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">×</span>
             </button>
@@ -183,13 +183,13 @@
                     <br/>
                     <br/>
                     <label class="btn btn-light">
-                        <input type="file" name="user_image" id="btnSelectImage" accept="image/*" style="display:none;" data-error-msg="Please place your image here.">
+                        <input type="file" name="user_image" accept="image/*" style="display:none;" data-error-msg="Please place your image here.">
                         Browse ...
                     </label>
                 </div>
                 <div class="form-group">
                     <label for="type">Role</label>
-                    <select name="uac" id="uac" class="selectpicker form-control" title="Ex. Owner">
+                    <select name="uac" class="selectpicker form-control" title="Ex. Owner">
                         <option value="administrator" <?php echo $u->uac == 'administrator' ? 'selected' : '' ?>>Administrator</option>
                         <option value="editor" <?php echo $u->uac == 'editor' ? 'selected' : '' ?>>Editor</option>
                         <option value="user" <?php echo $u->uac == 'user' ? 'selected' : '' ?>>User</option>
@@ -197,19 +197,19 @@
                 </div>
                 <div class="form-group">
                     <label for="l_name">Last Name</label>
-                    <input type="text" name="l_name" class="form-control" id="l_name" placeholder="Ex. Dela Cruz" value="<?php echo $u->l_name ?>" required>
+                    <input type="text" name="l_name" class="form-control" placeholder="Ex. Dela Cruz" value="<?php echo $u->l_name ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="f_name">First Name</label>
-                    <input type="text" name="f_name" class="form-control" id="f_name" placeholder="Ex. Juan" value="<?php echo $u->f_name ?>" required>
+                    <input type="text" name="f_name" class="form-control" placeholder="Ex. Juan" value="<?php echo $u->f_name ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" name="email" class="form-control" id="email" placeholder="Ex. juandelacruz@email.com" value="<?php echo $u->email ?>" required>
+                    <input type="email" name="email" class="form-control" placeholder="Ex. juandelacruz@email.com" value="<?php echo $u->email ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="phone">Contact #</label>
-                    <input type="number" name="contact" class="form-control" id="contact" placeholder="Ex. 091234567890" value="<?php echo $u->contact ?>" required>
+                    <input type="number" name="contact" class="form-control" placeholder="Ex. 091234567890" value="<?php echo $u->contact ?>" required>
                 </div>
             </div>
             <div class="modal-footer">
@@ -232,7 +232,7 @@
             </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" id="user_id" value="<?php echo $u->user_id ?>" name="user_id">
+                <input type="hidden" value="<?php echo $u->user_id ?>" name="user_id">
                 <input type="hidden" value="<?php echo $u->f_name . " " . $u->l_name ?>" name="user_name">
                 Are you sure you want to remove <strong><?php echo $u->f_name . " " . $u->l_name ?></strong> from user list?
                 <hr>
@@ -241,6 +241,41 @@
             <div class="modal-footer">
                 <button class="btn btn-light" type="button" data-dismiss="modal">Cancel</button>
                 <button class="btn btn-danger" type="submit">Yes</button>
+            </div>
+        </div>
+    </div>
+    <?php echo form_close(); ?>
+</div>
+
+<div class="modal fade" id="resetPasswordModal<?php echo $u->user_id ?>" tabindex="-1" role="dialog" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+    <?php echo form_open(base_url('admin/update_password/')) ?>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <strong class="modal-title" id="unitModalLabel">Passsworrd Reset</strong>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" value="<?php echo $u->user_id ?>" name="user_id">
+                <input type="hidden" name="name" value="<?php echo $u->f_name . " " . $u->l_name ?>">
+                <div class="form-group">
+                    <label for="current">Current Password</label>
+                    <input type="password" value="" class="form-control" name="current" placeholder="Current Password">
+                </div>
+                <div class="form-group">
+                    <label for="new">New Password</label>
+                    <input type="password" value="" class="form-control" name="new" placeholder="New Password" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="new">Confirm Password</label>
+                    <input type="password" value="" class="form-control" name="confirm" placeholder="Confirm Password" disabled>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" disabled>Save</button>
             </div>
         </div>
     </div>

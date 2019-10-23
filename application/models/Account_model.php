@@ -42,4 +42,12 @@ class Account_model extends CI_Model
         $this->db->where('user_id',$user_id);
         $this->db->delete('accounts_tbl');
     }
+
+    function pull_password($user_id) {
+        $this->db->where('user_id',$user_id);
+        $this->db->select('password');
+        $query = $this->db->get('accounts_tbl');
+        $query = $query->row();
+        return $query->password;
+    }
 }
