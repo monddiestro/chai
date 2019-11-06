@@ -19,99 +19,91 @@
            $display = $class = $message = "";
         }
     ?>
-
+    <?php if(!empty($display)): ?>
     <div class="alert alert-<?php echo $class ?> alert-dismissible fade <?php echo $display ?>" role="alert">
         <?php echo $message; ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <?php endif ?>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Information</h6>
-            </div>
             <div class="card-body">
-                <?php if(empty($members)): // if empty units don't render tables ?>
-                <center>
-                    <h3>No records found.</h3>
-                    <i class="fas fa-folder-open fa-10x"></i>
-                </center>
+                <?php if(empty($requests)): // if empty units don't render tables ?>
+                    <div class="d-none d-md-block">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <span class="font-weight-bold">Unit No.</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <span class="font-weight-bold">Request Type & Description</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <span class="font-weight-bold">Request Date</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <center>
+                        <h3>No records found.</h3>
+                        <i class="fas fa-folder-open fa-10x"></i>
+                    </center>
                 <?php else: ?>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="units" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Unit #</th>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Mobile</th>
-                            <th>Type</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Unit #</th>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Mobile</th>
-                            <th>Type</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        <?php foreach($members as $m): ?>
-                        <tr>
-                            <td><?php echo $m->number ?></td>
-                            <td>
-                                <img style="width:50px;height:auto;display:inline;" src="<?php echo base_url($m->image) ?>" alt="member_pic">
-                                <span><?php echo $m->f_name . " " . $m->l_name ?></span>
-                            </td>
-                            <td><?php echo $m->address ?></td>
-                            <td><?php echo $m->email ?></td>
-                            <td><?php echo $m->phone ?></td>
-                            <td><?php echo $m->mobile ?></td>
-                            <td><?php echo $m->type == 1 ? 'Owner' : 'Member' ?></td>
-                            <td>
-                                <!-- edit -->
-                                <a href="#" data-toggle="modal" data-target="#memberModal<?php echo $m->member_id ?>" class="btn btn-sm btn-info btn-icon-split mb-2">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-fw fa-pencil-alt"></i>
-                                    </span>
-                                    <span class="text">Edit</span>
-                                </a>
-                                <!-- delete -->
-                                <!-- edit -->
-                                <a href="#" data-toggle="modal" data-target="#dropMemberModal<?php echo $m->member_id ?>" class="btn btn-sm btn-danger btn-icon-split mb-2">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-fw fa-trash"></i>
-                                    </span>
-                                    <span class="text">Remove</span>
-                                </a>
-                            </td>
-                        </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                    </table>
-                </div>
+                    <?php foreach($requests as $r): ?>
+                    <div class="d-none d-md-block">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <span class="font-weight-bold">Unit No.</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="font-weight-bold">Request Type & Description</span>
+                            </div>
+                            <div class="col-sm-4">
+                                <span class="font-weight-bold">Request Date</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row <?php echo $r->status == 'in-progress' ? 'border-left-success' : 'border-left-warning' ?>">
+                        <div class="col-sm-2">
+                            <?php echo $r->number ?>
+                        </div>
+                        <div class="col-sm-6">
+                            <?php echo $r->work_title . " : " . $r->request_desc ?>
+                        </div>
+                        <div class="col-sm-3 mb-3">
+                            <?php echo date('F d, Y',strtotime($r->date_request)) ?>
+                        </div>
+                        <div class="col-sm-1 text-right">
+                            <?php if($r->status == 'in-progress'): ?>
+                            <button data-toggle="modal" data-target="#markDone_<?php echo $r->request_id?>" class="btn btn-primary btn-sm font-weight-bold">
+                                <i class="fas fa-fw fa-check" data-toggle="tooltip" data-placement="right" title="Mark as Done"></i>
+                            </button>
+                            <?php else: ?>
+                            <button data-toggle="modal" data-target="#assign_<?php echo $r->request_id?>" class="btn btn-primary btn-sm font-weight-bold">
+                                <i class="fas fa-fw fa-user-tag" data-toggle="tooltip" data-placement="right" title="Assign Helper"></i>
+                            </button>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                    
+                    <?php endforeach ?>
                 <?php endif ?>
+                <hr/>
             </div>
           </div>
 
 <!-- page content close tag -->
 </div>
-<!-- /.container-fluid -->
+<!-- /.container-fluid --> 
 
 
 <!-- request modal -->
 <div class="modal fade" id="newRequestModal" tabindex="-1" role="dialog" aria-labelledby="newRequestModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
+        <?php echo form_open(base_url('request/new/')) ?>
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="newRequestModalLabel">Create New Request</h5>
@@ -140,11 +132,81 @@
                         <?php endforeach ?>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="request_desc">Description</label>
+                    <textarea class="form-control" name="request_desc" id="request_desc" cols="10" rows="5" placeholder="Add your request description here ..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="date_request">Request Date</label>
+                    <input type="date" class="form-control" name="date_request">
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                 <button class="btn btn-primary" type="submit">Save</button>
             </div>
         </div>
+        <?php echo form_close() ?>
     </div>
 </div>
+<!-- mark as done -->
+<?php foreach($requests as $r): ?>
+    <?php if($r->status == 'in-progress'): ?>
+    <div class="modal fade" id="markDone_<?php echo $r->request_id?>" tabindex="-1" role="dialog" aria-labelledby="markDoneLabel_<?php echo $r->request_id?>" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <?php echo form_open(base_url('request/change_status/')) ?>
+            <div class="modal-content">
+                <div class="modal-body">
+                    <input type="hidden" name="status" value="done"/>
+                    <input type="hidden" name="request_id" value="<?php echo $r->request_id ?>">
+                    <input type="hidden" name="helper_id" value="<?php echo $r->helper_id ?>">
+                    Are you sure you want to change the status of this request to done?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">No</button>
+                    <button class="btn btn-primary" type="submit">Yes</button>
+                </div>
+            </div>
+            <?php echo form_close() ?>
+        </div>
+    </div>
+    <?php endif ?>
+    <?php if($r->status == 'pending'): ?>
+    <div class="modal fade" id="assign_<?php echo $r->request_id?>" tabindex="-1" role="dialog" aria-labelledby="assignLabel_<?php echo $r->request_id?>" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <?php echo form_open(base_url('request/change_status/')) ?>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="unitModalLabel">Assign Helper</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="status" value="in-progress"/>
+                    <input type="hidden" name="request_id" value="<?php echo $r->request_id ?>">
+                    <div class="form-group">
+                    <label for="type">Helper Name</label>
+                        <select name="helper_id" id="helper_id" class="selectpicker form-control" title="Select Helper">
+                            <?php foreach($helpers as $h): ?>
+                                <?php if($h->work_id == $r->work_id): ?>
+                                <option value="<?php echo $h->helper_id ?>"><?php echo $h->f_name . " " . $h->l_name ?></option>
+                                <?php endif ?>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Yes</button>
+                </div>
+            </div>
+            <?php echo form_close() ?>
+        </div>
+    </div>
+    <?php endif ?>
+    
+
+    
+
+<?php endforeach; ?>

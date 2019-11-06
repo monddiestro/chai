@@ -55,9 +55,15 @@ $('input[name="confirm"]').keyup(function () {
 });
 
 $('#newRequestModal #work_id').on('change',function() {
-    // var work_id = $(this).val();
-    // var sel = $(this).closest('.modal-body').find('#helper_id');
-    // $.ajax({
-    //     url: base_url + ""
-    // })
+    var work_id = $(this).val();
+    var sel = $(this).closest('.modal-body').find('#helper_id');
+    $.ajax({
+        url: base_url + "request/pull_available_helpers/",
+        type: "POST",
+        data: { 'work_id':work_id },
+        success: function(data) {
+            sel.html(data);
+            $('.selectpicker').selectpicker('refresh');
+        }
+    })
 });
