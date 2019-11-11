@@ -106,8 +106,6 @@ class Request extends CI_Controller
             $this->helper_model->push_update(array('status' => 'not available'),$helper_id);
         }
         $this->request_model->push_update($data,$request_id);
-        
-
         // create flash data session for notification
         $result_data = array(
             'class' => "success",
@@ -120,8 +118,25 @@ class Request extends CI_Controller
 
     }
 
-    
+    function archive() {
 
+        // pass data to header view
+        $head["nav"] = "archive";
+
+        // data for dashboard
+        $data["requests"] = $this->request_model->pull_request("",'done');
+        $data["helpers"] = $this->request_model->pull_helpers();
+
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('archive',$data);
+        $this->load->view('modal');
+        $this->load->view('footer');
+
+    }
+
+    
     // API
     function pull_available_helpers() {
         $work_id = $this->input->post('work_id');

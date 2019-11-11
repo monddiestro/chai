@@ -25,6 +25,12 @@
     <span>Requests</span></a>
 </li>
 
+<li class="nav-item <?php echo $nav == "archive" ? 'active' : '' ?>">
+  <a class="nav-link" href="<?php echo base_url('request/archive'); ?>">
+    <i class="fas fa-fw fa-archive"></i>
+    <span>Archive</span></a>
+</li>
+
 <!-- Divider -->
 <hr class="sidebar-divider">
 

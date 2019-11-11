@@ -12,13 +12,14 @@ class Request_model extends CI_Model
     function pull_request($request_id,$status) {
         !empty($request_id) ? $this->db->where('request_id',$request_id) : '';
         if($status == 'done') {
-            $this->db->where('status','done');
+            $this->db->where('request_tbl.status','done');
         } else {
-            $this->db->where('status','in-progress');
-            $this->db->or_where('status','pending');
+            $this->db->where('request_tbl.status','in-progress');
+            $this->db->or_where('request_tbl.status','pending');
 
         }
         $this->db->order_by('date_request', 'DESC');
+        $this->db->join('helpers_tbl', 'request_tbl.helper_id = helpers_tbl.helper_id','left');
         $this->db->join('units_tbl','request_tbl.unit_id = units_tbl.unit_id','left');
         $this->db->join('work_tbl', 'request_tbl.work_id = work_tbl.work_id');
         $query = $this->db->get('request_tbl');
@@ -39,6 +40,8 @@ class Request_model extends CI_Model
         $query = $this->db->get('helpers_work_tbl');
         return $query->result();
     }
+
+
 
     
 
