@@ -14,6 +14,7 @@ class Admin extends CI_Controller {
         $this->load->model('helper_model');
         $this->load->model('pet_model');
         $this->load->model('account_model');
+        $this->load->model('activity_model');
         $this->check_session();
     }
     
@@ -83,6 +84,9 @@ class Admin extends CI_Controller {
         );
         // call model and pass data
         $this->unit_model->push_unit($data);
+        // push activity
+        $this->push_activity('created new unit');
+
         // create flash data session for notification
         $result_data = array(
           'class' => "success",
@@ -110,6 +114,10 @@ class Admin extends CI_Controller {
             'address' => $address,
             'date_created' => date('Y-m-d H:i:s')
         );
+
+        // push activity
+        $this->push_activity('update details of unit '.$number);
+
         // call model and pass data
         $this->unit_model->push_update($data,$id);
         // create flash data session for notification
@@ -183,8 +191,13 @@ class Admin extends CI_Controller {
             'class' => "success",
             'message' => "<strong>Success!</strong> " . $f_name . " " . $l_name . " has been added to members database."
         );
+        
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('created new member account for '.$f_name. ' '.$l_name);
+
         // redirect page to referer
         redirect($referer);
 
@@ -249,6 +262,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('update member details of '. $f_name . ' '.$l_name);
+
         // redirect page to referer
         redirect($referer);
 
@@ -278,6 +295,10 @@ class Admin extends CI_Controller {
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
         // redirect page to referer
+
+        // push activity
+        $this->push_activity('removed member '. $member_name);
+
         redirect($referer);
     }
     // cars view
@@ -339,6 +360,11 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $member_name = $this->member_model->pull_member_name($member_id);
+        $this->push_activity('add car record to  '. $member_name);
+
         // redirect page to referer
         redirect($referer);
     }
@@ -398,6 +424,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('updated record of  '. $plate_number);
+
         // redirect page to referer
         redirect($referer);
 
@@ -444,6 +474,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('created new work '.$title);
+
         // redirect page to referer
         redirect($referer);
 
@@ -473,6 +507,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('update details of work '.$title);
+
         // redirect page to referer
         redirect($referer);
     }
@@ -493,8 +531,13 @@ class Admin extends CI_Controller {
             'class' => "success",
             'message' => "<strong>Success!</strong> ".$title." has been removed from database."
         );
+        
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('removed '.$title." work");
+
         // redirect page to referer
         redirect($referer);
     }
@@ -513,7 +556,6 @@ class Admin extends CI_Controller {
 
         // pull works 
         $data["helpers_work"] = $this->helper_model->pull_helper_work("");
-
 
         // views
         $this->load->view('head',$head);
@@ -581,6 +623,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('create helper account for '.$f_name.' '.$l_name);
+
         // redirect page to referer
         redirect($referer);
     }
@@ -653,6 +699,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('update helper details of '.$f_name . " ". $l_name);
+
         // redirect page to referer
         redirect($referer);
 
@@ -682,6 +732,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('removed helper '.$helper_name);
+
         // redirect page to referer
         redirect($referer);
     }
@@ -741,6 +795,12 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push data
+        // unit number 
+        $unit_number = $this->unit_model->pull_unit_number($unit_id);
+        $this->push_activity('add '.$breed.' to unit '.$unit_number);
+
         // redirect page to referer
         redirect($referer);
     }
@@ -792,6 +852,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('update pet details of '.$breed);
+
         // redirect page to referer
         redirect($referer);
          
@@ -814,6 +878,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('removed pet '.$breed);
+
         // redirect page to referer
         redirect($referer);
 
@@ -856,6 +924,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('create new pet type '.$type_desc);
+
         // redirect page to referer
         redirect($referer);
     }
@@ -879,6 +951,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('update pet type '.$type_desc);
+
         // redirect page to referer
         redirect($referer);
     }
@@ -899,6 +975,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('removed pet type '.$type_desc);
+
         // redirect page to referer
         redirect($referer);
     }
@@ -963,6 +1043,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('create new account for '.$f_name." ".$l_name);
+
         // redirect page to referer
         redirect($referer);
         
@@ -1023,6 +1107,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity('update user details of '. $f_name." ".$l_name);
+
         // redirect page to referer
         redirect($referer);
     }
@@ -1051,6 +1139,10 @@ class Admin extends CI_Controller {
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        // push activity
+        $this->push_activity("removed user account of ".$name);
+
         // redirect page to referer
         redirect($referer);
     }
@@ -1102,5 +1194,16 @@ class Admin extends CI_Controller {
         }
         echo $option;
 
+    }
+
+    function push_activity($activity) {
+        // insert activity
+        $data = array(
+            'user_id' => $this->session->userdata('user_id'),
+            'act_desc' => $activity,
+            'date_created' => data("Y-m-d H:i:s")
+        );
+        // insert activity pass array to model
+        $this->activity_model->push_activity($data);
     }
 }

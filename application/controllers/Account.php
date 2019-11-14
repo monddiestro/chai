@@ -7,6 +7,7 @@ class Account extends CI_Controller
         parent::__construct();
         //load all models need first
         $this->load->model('account_model');
+        $this->load->model('activity_model');
     }
 
     function index() {
@@ -38,8 +39,17 @@ class Account extends CI_Controller
                         'image' => $u->image
                     );
                     $uac = $u->uac;
-                } 
+                    // create data array for activity
+                    $act_data = array(
+                        'user_id' => $u->user_id,
+                        'act_desc' => 'sign in to website',
+                        'date_created' => date('Y-m-d H:i:s')
+                    );
+                }
+                // insert activity pass array to model
+                $this->activity_model->push_activity($act_data);
                 $this->session->set_userdata($user_data);
+                // load view
                 $this->uac_view($uac);
             } else {
                 $this->error_message("<strong>Oops!</strong> Invalid Password.");
@@ -74,6 +84,13 @@ class Account extends CI_Controller
     }
 
     function signout() {
+        $data = array(
+            'user_id' => $this->session->userdata('user_id'),
+            'act_desc' => 'sign out to website',
+            'date_created' => date("Y-m-d H:i:s")
+        );
+        // insert activity pass array to model
+        $this->activity_model->push_activity($data);
         $this->session->sess_destroy();
         redirect(base_url());
     }

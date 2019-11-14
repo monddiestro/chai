@@ -46,4 +46,12 @@ class Member_model extends CI_Model
         $query = $this->db->get('members_tbl');
         return $query->num_rows();
     }
+
+    function pull_member_name($member_id) {
+        $this->db->where('member_id',$member_id);
+        $this->db->select('CONCAT(f_name," ", l_name)','name');
+        $query = $this->db->get('member_tbl');
+        $query = $query->row();
+        return $query->name;
+    }
 }
