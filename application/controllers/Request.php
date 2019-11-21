@@ -10,6 +10,7 @@ class Request extends CI_Controller
         $this->load->model('work_model');
         $this->load->model('request_model');
         $this->load->model('helper_model');
+        $this->load->model('activity_model');
     }
 
      // check session and 
@@ -84,6 +85,12 @@ class Request extends CI_Controller
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+        $unit_number = $this->unit_model->pull_unit_number($unit_id);
+
+        // push activity
+        $this->push_activity('New request created for unit '.$unit_number);
+
         // redirect page to referer
         redirect($referer);
 
@@ -101,9 +108,11 @@ class Request extends CI_Controller
             // pass the data to model for update
             $data = array('status' => $status);
             $this->helper_model->push_update(array('status' => 'available'),$helper_id);
+            $this->push_activity('Change status of request id:'.$request_id." to done");
         } else {
             $data = array('status' => $status, 'helper_id' => $helper_id);
             $this->helper_model->push_update(array('status' => 'not available'),$helper_id);
+            $this->push_activity('Change status of request id:'.$request_id." to in-progress");
         }
         $this->request_model->push_update($data,$request_id);
         // create flash data session for notification
@@ -113,6 +122,8 @@ class Request extends CI_Controller
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);
+
+
         // redirect page to referer
         redirect($referer);
 
@@ -145,6 +156,18 @@ class Request extends CI_Controller
         foreach($helpers as $h) {
             echo '<option value="'.$h->helper_id.'">'.$h->f_name. " ".$h->l_name.'</option>';
         }
+    }
+
+
+    function push_activity($activity) {
+        // insert activity
+        $data = array(
+            'user_id' => $this->session->userdata('user_id'),
+            'act_desc' => $activity,
+            'date_created' => data("Y-m-d H:i:s")
+        );
+        // insert activity pass array to model
+        $this->activity_model->push_activity($data);
     }
 
 

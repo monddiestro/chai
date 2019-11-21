@@ -1206,4 +1206,16 @@ class Admin extends CI_Controller {
         // insert activity pass array to model
         $this->activity_model->push_activity($data);
     }
+
+    function api_password_update() {
+        $user_id = $this->input->post('user_id');
+        $password = $this->input->post('password');
+
+        // create data array
+        $data = array( 'password' => md5($password));
+        
+        // call model to update password 
+        $this->account_model->push_update($data,$user_id);
+
+    }
 }

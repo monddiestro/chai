@@ -67,3 +67,114 @@ $('#newRequestModal #work_id').on('change',function() {
         }
     })
 });
+
+$('#btnChangePwd').on('click',function(){
+    $('#currentPwd').prop('disabled',false);
+    $(this).hide()
+    $('#changePwd').show();
+});
+
+// set interval value to 0
+var _changeInterval = null;
+
+$('#currentPwd').on('keyup', function() {
+    var current = $(this).val();
+    var obj = $(this);
+    var user_id = $('#user_id').val();
+    // clear interval to avoid infinite loop
+    clearInterval(_changeInterval);
+    _changeInterval = setInterval(function() {
+        // after typing with 1 second interval pull data through ajax
+        clearInterval(_changeInterval);
+        checkPassword(current,user_id,obj);
+    }, 100);
+});
+// function to check password using ajax
+function checkPassword(current, user_id,obj) {
+    $.ajax({
+        url: base_url + "admin/check_password/",
+        type: "POST",
+        data: { 'current': current, 'user_id': user_id },
+        success: function(data) {
+            if(data == "1") {
+                obj.addClass('is-valid');
+                obj.removeClass('is-invalid');
+                $('#passwordFeedback').addClass('valid-feedback');
+                $('#passwordFeedback').removeClass('invalid-feedback');
+                $('#passwordFeedback').html('Password match!');
+                $('#newPassword').show();
+            } else {
+                obj.addClass('is-invalid');
+                obj.removeClass('is-valid');
+                $('#passwordFeedback').addClass('invalid-feedback');
+                $('#passwordFeedback').removeClass('valid-feedback');
+                $('#passwordFeedback').html('Password did not match!');
+                $('#newPassword').hide();
+            }
+        }
+    });
+}
+
+$('#confirm_password').on('keyup',function(){
+    var new_pwd = $('#new_password').val();
+    var obj = $(this);
+    var confirm_pwd = $(this).val();
+    // clear interval to avoid infinite loop
+    clearInterval(_changeInterval);
+    _changeInterval = setInterval(function() {
+        // after typing with 1 second interval pull data through ajax
+        clearInterval(_changeInterval);
+        checkMatchPassword(new_pwd,confirm_pwd,obj);
+    }, 100);
+});
+
+function checkMatchPassword(new_pwd,confirm_pwd,obj) {
+    if(new_pwd == confirm_pwd) {
+        obj.addClass('is-valid');
+        obj.removeClass('is-invalid');
+        $('#confirmFeedback').removeClass('invalid-feedback').addClass('valid-feedback').html('Password match!');
+        $('#btnSave').prop('disabled',false);
+    } else {
+        obj.addClass('is-invalid');
+        obj.removeClass('is-valid');
+        $('#confirmFeedback').removeClass('valid-feedback').addClass('invalid-feedback').html('Password did not match!');
+        $('#btnSave').prop('disabled',true);
+    }
+}
+
+$('#btnCancel').on('click',function(){
+    resetInputs();
+});
+
+function resetInputs() {
+    $('#btnChangePwd').show();
+    $('#changePwd,#newPassword').hide();
+    $('#new_password').val('');
+    $('#confirm_password').val('');
+    $('#currentPwd').val('');
+    $('#currentPwd').prop('disabled',true);
+    $('#btnSave').prop('disabled',true);
+    $('#currentPwd,#new_password,#confirm_password').removeClass('is-invalid').removeClass('is-valid');
+    $('#passwordFeedback,#confirmFeedback').hide();
+    
+}
+
+$('#btnSave').on('click',function(){
+    var pwd = $('#confirm_password').val();
+    var user_id = $('#user_id').val();
+    $.ajax({
+        url: base_url + 'admin/api_password_update/',
+        type: "POST",
+        data: { 
+            'password': pwd,
+            'user_id': user_id
+        },
+        success: function(data) {
+            $('#successPassword').show();
+            $('#btnCancel').click();
+        }
+    });
+});
+
+
+

@@ -50,4 +50,5 @@ class Account_model extends CI_Model
         $query = $query->row();
         return $query->password;
     }
+
 }
