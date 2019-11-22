@@ -1170,6 +1170,9 @@ class Admin extends CI_Controller {
         // call model to update password 
         $this->account_model->push_update($data,$user_id);
 
+        // push activity
+        $this->push_activity('updated account password of '.$name);
+
         // create flash data session for notification
         $result_data = array(
             'class' => "success",
@@ -1201,7 +1204,7 @@ class Admin extends CI_Controller {
         $data = array(
             'user_id' => $this->session->userdata('user_id'),
             'act_desc' => $activity,
-            'date_created' => data("Y-m-d H:i:s")
+            'date_created' => date("Y-m-d H:i:s")
         );
         // insert activity pass array to model
         $this->activity_model->push_activity($data);
@@ -1213,6 +1216,9 @@ class Admin extends CI_Controller {
 
         // create data array
         $data = array( 'password' => md5($password));
+
+        // push activity
+        $this->push_activity('update user account password');
         
         // call model to update password 
         $this->account_model->push_update($data,$user_id);

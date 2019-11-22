@@ -1,5 +1,6 @@
 <?php 
-class Logs extends CI_Contoller
+defined('BASEPATH') OR exit('No direct script access allowed');
+class Logs extends CI_Controller
 {
     public function __construct()
     {
@@ -9,5 +10,8 @@ class Logs extends CI_Contoller
         $this->load->model('activity_model');
     }
 
+    function index() {
+
+    }
     
 }

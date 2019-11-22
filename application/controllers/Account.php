@@ -123,4 +123,15 @@ class Account extends CI_Controller
         $this->load->view('footer');
     }
 
+    function push_activity($activity) {
+        // insert activity
+        $data = array(
+            'user_id' => $this->session->userdata('user_id'),
+            'act_desc' => $activity,
+            'date_created' => date("Y-m-d H:i:s")
+        );
+        // insert activity pass array to model
+        $this->activity_model->push_activity($data);
+    }
+
 }

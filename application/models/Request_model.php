@@ -19,6 +19,15 @@ class Request_model extends CI_Model
 
         }
         $this->db->order_by('date_request', 'DESC');
+        //$this->db->join('helpers_tbl', 'request_tbl.helper_id = helpers_tbl.helper_id','left');
+        $this->db->join('units_tbl','request_tbl.unit_id = units_tbl.unit_id','left');
+        $this->db->join('work_tbl', 'request_tbl.work_id = work_tbl.work_id');
+        $query = $this->db->get('request_tbl');
+        return $query->result();
+    }
+
+    function pull_request_details() {
+        $this->db->order_by('date_request', 'DESC');
         $this->db->join('helpers_tbl', 'request_tbl.helper_id = helpers_tbl.helper_id','left');
         $this->db->join('units_tbl','request_tbl.unit_id = units_tbl.unit_id','left');
         $this->db->join('work_tbl', 'request_tbl.work_id = work_tbl.work_id');

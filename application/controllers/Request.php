@@ -135,7 +135,7 @@ class Request extends CI_Controller
         $head["nav"] = "archive";
 
         // data for dashboard
-        $data["requests"] = $this->request_model->pull_request("",'done');
+        $data["requests"] = $this->request_model->pull_request_details();
         $data["helpers"] = $this->request_model->pull_helpers();
 
         $this->load->view('head',$head);
@@ -164,7 +164,7 @@ class Request extends CI_Controller
         $data = array(
             'user_id' => $this->session->userdata('user_id'),
             'act_desc' => $activity,
-            'date_created' => data("Y-m-d H:i:s")
+            'date_created' => date("Y-m-d H:i:s")
         );
         // insert activity pass array to model
         $this->activity_model->push_activity($data);
