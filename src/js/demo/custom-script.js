@@ -1,5 +1,5 @@
 // update base_url 
-var base_url = "http://localhost/toteng/";
+var base_url = "http://localhost/chai/";
 $('#newMember').on('click',function() {
     var unit_id = $(this).find('.unit_id').val();
     $('#unit_id').val(unit_id);
