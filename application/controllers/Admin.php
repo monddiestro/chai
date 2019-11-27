@@ -15,6 +15,7 @@ class Admin extends CI_Controller {
         $this->load->model('pet_model');
         $this->load->model('account_model');
         $this->load->model('activity_model');
+        $this->load->model('request_model');
         $this->check_session();
     }
     
@@ -42,7 +43,9 @@ class Admin extends CI_Controller {
         $data["member_cnt"] = $this->member_model->pull_member_cnt();
         $data["unit_cnt"] = $this->unit_model->pull_unit_cnt();
         $data["car_cnt"] = $this->car_model->pull_car_cnt();
-        $data["pending"] = "";
+        $data["pending"] = $this->request_model->pull_request_details("pending");
+        $data["helpers"] = $this->request_model->pull_helpers();
+        $data["log"] = $this->activity_model->pull_activity();
 
         $this->load->view('head',$head);
         $this->load->view('sidebar');

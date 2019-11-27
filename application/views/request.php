@@ -51,7 +51,6 @@
                         <i class="fas fa-folder-open fa-10x"></i>
                     </center>
                 <?php else: ?>
-                    <?php foreach($requests as $r): ?>
                     <div class="d-none d-md-block">
                         <div class="row">
                             <div class="col-sm-2">
@@ -65,6 +64,7 @@
                             </div>
                         </div>
                     </div>
+                    <?php foreach($requests as $r): ?>
                     <hr>
                     <div class="row <?php echo $r->status == 'in-progress' ? 'border-left-success' : 'border-left-warning' ?>">
                         <div class="col-sm-2">

@@ -26,7 +26,8 @@ class Request_model extends CI_Model
         return $query->result();
     }
 
-    function pull_request_details() {
+    function pull_request_details($status) {
+        empty($status) ? '' : $this->db->where('request_tbl.status',$status);
         $this->db->order_by('date_request', 'DESC');
         $this->db->join('helpers_tbl', 'request_tbl.helper_id = helpers_tbl.helper_id','left');
         $this->db->join('units_tbl','request_tbl.unit_id = units_tbl.unit_id','left');

@@ -135,7 +135,7 @@ class Request extends CI_Controller
         $head["nav"] = "archive";
 
         // data for dashboard
-        $data["requests"] = $this->request_model->pull_request_details();
+        $data["requests"] = $this->request_model->pull_request_details('done');
         $data["helpers"] = $this->request_model->pull_helpers();
 
         $this->load->view('head',$head);
