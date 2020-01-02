@@ -27,7 +27,7 @@
     </div>
     <div class="row">
         <!-- 1st division -->
-        <div class="col-sm-9">
+        <div class="col-sm-9 mb-3">
             <div class="row">
                 <!-- Earnings (Monthly) Card Example -->
                 <div class="col-xl-4 col-md-6 mb-4">
@@ -129,11 +129,10 @@
                             <?php
                                 $activity_time = "";
                                 $act_date = date("Y-m-d",strtotime($a->date_created));
-
                                 if($act_date == date('Y-m-d')) {
                                     $hour = intdiv($a->date_diff,60);
                                     $minute = $a->date_diff % 60;
-                                    $activity_time = ($hour > 1) ? $hour . " hours ago" : ($hour == 1) ? $hour . " hour ago" : $minute . " minutes ago";  
+                                    $activity_time = ($hour > 1) ? $hour . " hour ago" : ($hour == 1) ? $hour . " hours ago" : ($minute > 1 ) ? $minute . " minutes ago" : "less than a minute" ;  
                                 } else {
                                     $activity_time = date('F d, Y h:i A',strtotime($a->date_created));
                                 }

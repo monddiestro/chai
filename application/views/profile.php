@@ -29,7 +29,7 @@
     <?php endif ?>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-8 mb-2">
             <!-- personal information -->
             <div class="card">
                 <div class="card-header">
