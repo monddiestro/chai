@@ -41,35 +41,35 @@
 
 <!-- Units Nav -->
 <li class="nav-item <?php echo $nav == "units" ? 'active' : '' ?>">
-  <a class="nav-link" href="<?php echo base_url('admin/units') ?>">
+  <a class="nav-link" href="<?php echo ($this->session->userdata('uac') == 'administrator') ?  base_url('admin/units') : base_url('editor/units') ?>">
     <i class="fas fa-fw fa-home"></i>
     <span>House</span></a>
 </li>
 
 <!-- Members Nav -->
 <li class="nav-item <?php echo $nav == "members" ? 'active' : '' ?>">
-  <a class="nav-link" href="<?php echo base_url('admin/members') ?>">
+  <a class="nav-link" href="<?php echo ($this->session->userdata('uac') == 'administrator') ? base_url('admin/members') : base_url('editor/members'); ?>">
     <i class="fas fa-fw fa-users"></i>
     <span>Members</span></a>
 </li>
 
 <!-- Cars Nav -->
 <li class="nav-item <?php echo $nav == "cars" ? 'active' : '' ?>">
-  <a class="nav-link" href="<?php echo base_url('admin/cars') ?>">
+  <a class="nav-link" href="<?php echo ($this->session->userdata('uac') == 'administrator') ? base_url('admin/cars') : base_url('editor/cars') ?>">
     <i class="fas fa-fw fa-car-side"></i>
     <span>Cars</span></a>
 </li>
 
 <!-- Pets Nav -->
 <li class="nav-item <?php echo $nav == "pets" ? 'active' : '' ?>">
-  <a class="nav-link" href="<?php echo base_url('admin/pets') ?>">
+  <a class="nav-link" href="<?php echo ($this->session->userdata('uac') == 'administrator') ? base_url('admin/pets') : base_url('editor/pets') ?>">
     <i class="fas fa-fw fa-paw"></i>
     <span>Pets</span></a>
 </li>
 
 <!-- Helpers -->
 <li class="nav-item <?php echo $nav == "helpers" ? 'active' : '' ?>">
-  <a class="nav-link" href="<?php echo base_url('admin/helpers') ?>">
+  <a class="nav-link" href="<?php echo ($this->session->userdata('uac') == 'administrator') ? base_url('admin/helpers') : base_url('editor/helpers') ?>">
     <i class="fas fa-fw fa-hands-helping"></i>
     <span>Helpers</span></a>
 </li>
@@ -91,9 +91,11 @@
   <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
       <h6 class="collapse-header">System Settings</h6>
-      <a class="collapse-item" href="<?php echo base_url('admin/helpers_work') ?>">Helper Works</a>
-      <a class="collapse-item" href="<?php echo base_url('admin/pet_types') ?>">Pet Types</a>
+      <a class="collapse-item" href="<?php echo ($this->session->userdata('uac') == 'administrator') ? base_url('admin/helpers_work') : base_url('editor/helpers_work')  ?>">Helper Works</a>
+      <a class="collapse-item" href="<?php echo ($this->session->userdata('uac') == 'administrator') ? base_url('admin/pet_types') :  base_url('editor/pet_types') ?>">Pet Types</a>
+      <?php if($this->session->userdata('uac') == "administrator"): ?>
       <a class="collapse-item" href="<?php echo base_url('admin/account') ?>">Account</a>
+      <?php endif ?>
     </div>
   </div>
 </li>
