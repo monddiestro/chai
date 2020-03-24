@@ -1,0 +1,42 @@
+/* class for auto-complete */
+.autocomplete {
+    z-index: 999999;
+    -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    position: absolute;
+}
+
+.autocomplete ul  {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    outline: 0;
+    background: #fff;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 250px;
+}
+
+.autocomplete ul::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #DCDDE1;
+}
+
+.autocomplete ul::-webkit-scrollbar {
+    width: 7px;
+    background-color: #DCDDE1;
+}
+
+.autocomplete ul::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(47, 54, 64, 0.4);
+}
+
+.autocomplete ul li.ui-menu-item {
+    padding: 5px 12px;
+    cursor: pointer;
+}
+
+.autocomplete ul li.ui-menu-item:hover {
+    background: #F5F6FA;
+}

@@ -18,7 +18,7 @@
     <i class="fas fa-fw fa-tachometer-alt"></i>
     <span>Dashboard</span></a>
 </li>
-
+<?php if($this->session->userdata('uac') != 'user'): ?>
 <li class="nav-item <?php echo $nav == "inbox" ? 'active' : '' ?>">
   <a class="nav-link" href="<?php echo base_url('request'); ?>">
     <i class="fas fa-fw fa-inbox"></i>
@@ -99,7 +99,7 @@
     </div>
   </div>
 </li>
-
+<?php endif ?>
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">
 

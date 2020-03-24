@@ -8,9 +8,12 @@ class Member_model extends CI_Model
     }
 
     // function to pull members from members_tbl
-    function pull_members($unit_id) {
+    function pull_members($unit_id,$member_id) {
         if(!empty($unit_id)) {
             $this->db->where('members_tbl.unit_id',$unit_id);
+        }
+        if(!empty($member_id)) {
+            $this->db->where('members_tbl.member_id',$member_id);
         }
         $this->db->join('units_tbl', 'members_tbl.unit_id = units_tbl.unit_id', 'left');
         $this->db->select('units_tbl.unit_id,units_tbl.number, units_tbl.address, members_tbl.member_id, members_tbl.f_name, members_tbl.l_name, members_tbl.email, members_tbl.phone, members_tbl.mobile,members_tbl.image, members_tbl.type');
@@ -54,4 +57,13 @@ class Member_model extends CI_Model
         $query = $query->row();
         return $query->name;
     }
+
+    function pull_name($member_id) {
+        $this->db->where('member_id',$member_id);
+        $this->db->select('CONCAT(f_name," ",l_name) as name');
+        $query = $this->db->get('members_tbl');
+        $query = $query->row();
+        return $query->name;
+    }
+
 }

@@ -10,6 +10,8 @@ class Unit_model extends CI_Model
 
     // get all data from units table
     function pull_units() {
+        $this->db->where('members_tbl.type','1');
+        $this->db->join('members_tbl','units_tbl.unit_id = members_tbl.unit_id');
         $query = $this->db->get('units_tbl');
         return $query->result();
     }

@@ -121,7 +121,7 @@
                     <?php if($count <= 5): ?>
                     <div class="row">
                         <div class="col-3 align-self-center">
-                            <img style="width:50px;" src="<?php echo empty($a->image) ? base_url('src/img/no-image.png') : base_url($a->image) ?>" alt="">
+                            <img style="width:50px;height:50px;" class="img-profile rounded-circle" src="<?php echo empty($a->image) ? base_url('src/img/no-image.png') : base_url($a->image) ?>" alt="">
                         </div>
                         <div class="col-9">
                             <span><?php echo $a->act_desc    ?></span>
