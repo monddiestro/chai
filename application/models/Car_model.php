@@ -36,5 +36,14 @@ class Car_model extends CI_Model
         return $query->num_rows();
     }
 
+    function pull_unit_cars($unit_id) {
+        $this->db->where('cars_tbl.unit_id',$unit_id);
+        $this->db->join('members_tbl','cars_tbl.member_id = members_tbl.member_id', 'left');
+        $this->db->select('members_tbl.image as member_image,f_name,l_name,cars_tbl.image,make,model,color,plate_number');
+        $query = $this->db->get('cars_tbl');
+        return $query->result();
+    }
+    
+
     
 }

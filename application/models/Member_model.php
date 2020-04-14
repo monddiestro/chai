@@ -52,18 +52,26 @@ class Member_model extends CI_Model
 
     function pull_member_name($member_id) {
         $this->db->where('member_id',$member_id);
-        $this->db->select('CONCAT(f_name," ", l_name)','name');
-        $query = $this->db->get('member_tbl');
-        $query = $query->row();
-        return $query->name;
-    }
-
-    function pull_name($member_id) {
-        $this->db->where('member_id',$member_id);
-        $this->db->select('CONCAT(f_name," ",l_name) as name');
+        $this->db->select('CONCAT(f_name," ", l_name) as name');
         $query = $this->db->get('members_tbl');
         $query = $query->row();
         return $query->name;
     }
+
+    function pull_member_unit($member_id) {
+        $this->db->where('member_id',$member_id);
+        $this->db->select('unit_id');
+        $query = $this->db->get('members_tbl');
+        $query = $query->row();
+        return $query->unit_id;
+    }
+    
+    function pull_unit_members($member_id, $unit_id) {
+        $this->db->where('unit_id',$unit_id);
+        $this->db->where('member_id <>',$member_id);
+        $query = $this->db->get('members_tbl');
+        return $query->result();
+    }
+
 
 }

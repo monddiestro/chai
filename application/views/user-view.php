@@ -33,7 +33,7 @@
                             <tr>
                                 <td><?php echo $m->f_name . " " . $m->l_name ?></td>
                                 <td><?php echo $m->number ?></td>
-                                <td><a href="<?php echo base_url('users/details/'.$m->member_id) ?>" class="btn btn-primary">View Details</a></td>
+                                <td><a href="<?php echo base_url('user/details/'.$m->member_id) ?>" class="btn btn-primary">View Details</a></td>
                             </tr>
                         <?php endforeach; ?>
                         <?php endif ?>

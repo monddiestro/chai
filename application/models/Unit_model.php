@@ -35,4 +35,13 @@ class Unit_model extends CI_Model
         $query = $query->row();
         return $query->number;
     }
+
+    function pull_unit($unit_id) {
+        $this->db->where('unit_id');
+        $query = $this->db->get('units_tbl');
+        return $query->result();
+    }
+
+    
 }
+

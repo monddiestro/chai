@@ -143,7 +143,7 @@ class Admin extends CI_Controller {
         $head["nav"] = "members";
 
         // pull data from members_tbl using model
-        $data["members"] = $this->member_model->pull_members($unit_id);
+        $data["members"] = $this->member_model->pull_members($unit_id,'');
         $data["units"] = $this->unit_model->pull_units();
         
         $this->load->view('head',$head);

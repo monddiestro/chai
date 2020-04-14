@@ -79,10 +79,10 @@ class User extends CI_Controller
         $data["members"] = $this->member_model->pull_members('',$member_id);
         // set homepage query to empty
         $data["q_member"] = $member_id;
-        $data["q_name"] = $this->member_model->pull_name($member_id);
+        $data["q_name"] = $this->member_model->pull_member_name($member_id);
         // create json file
         $json["members"] = $this->generateJSON($this->member_model->pull_members('',''));
-        // pull all cars
+        // pull all carspull
         $data["cars"] = $this->car_model->pull_car('');
 
 
@@ -96,6 +96,34 @@ class User extends CI_Controller
         $this->load->view('modal');
         $this->load->view('footer',$json);
         
+    }
+
+
+    function details() {
+
+        // member id to show details
+        $member_id = $this->uri->segment(3);
+        
+        // pass data to header view
+        $head["nav"] = "details";
+
+        // get unit number
+        $unit_id = $this->member_model->pull_member_unit($member_id);
+        // pull unit information
+        $data["unit"] = $this->unit_model->pull_unit($unit_id);
+        // pull unit members
+        $data["members"] = $this->member_model->pull_unit_members($member_id,$unit_id);
+        // pull cars in unit
+        $data["cars"] = $this->car_model->pull_unit_cars($unit_id);
+        // pull pet
+        $data["pets"] = $this->pet_model->pull_unit_pet($unit_id);
+
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('user-details',$data);
+        $this->load->view('modal');
+        $this->load->view('footer');
     }
 
     // create json array for auto suggest
