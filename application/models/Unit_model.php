@@ -9,13 +9,14 @@ class Unit_model extends CI_Model
     }
 
     // get all data from units table
-    function pull_units() {
-        $this->db->where('members_tbl.type','1');
-        $this->db->join('members_tbl','units_tbl.unit_id = members_tbl.unit_id');
+    function pull_units($unit_id,$limit,$offset) {
+        !empty($unit_id) ? $this->db->where('unit_id',$unit_id) : '';
+        !empty($limit) ? $this->db->limit($limit,$offset) : '';
+        $this->db->order_by('number','ASC');
         $query = $this->db->get('units_tbl');
         return $query->result();
     }
-    
+
     // update unit
     function push_update($data,$id) {
         $this->db->where('unit_id',$id);

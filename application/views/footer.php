@@ -47,6 +47,46 @@
     function search_user(member_id) {
       window.location.href = search_url + member_id;
     }
+    // script in clearing search bar
+    $('#search_number').on('keyup' ,function() {
+        var q = $(this).val();
+        if(q=="") {
+            window.location.href = "<?php echo base_url('user/'); ?>";
+        }
+    });
+  </script>
+  <?php endif ?>
+  <?php if(!empty($units_list)): ?>
+  <!--  script for searching units -->
+  <script>
+    var units_json = <?php print_r($units_list) ?>;
+    $('#unit_number').autocomplete({
+      source:units_json,
+      select: function(event,ui) {
+        var selectedObj = ui.item;
+        $('#q_unit').val(selectedObj.number);
+        search_unit(selectedObj.unit_id);
+      },
+        autoFocus: true,
+        appendTo: '#list',
+        minLength: 0
+      }).change(function(){
+        $(this).autocomplete('search', $(this).val()
+      );
+    });
+
+    var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
+    var search_url = "<?php echo base_url('admin/unit_q/') ?>";   
+    function search_unit(unit_id) {
+      window.location.href = search_url + unit_id;
+    }
+    // script in clearing search bar
+    $('#unit_number').on('keyup' ,function() {
+        var q = $(this).val();
+        if(q=="") {
+            window.location.href = "<?php echo base_url('admin/units/'); ?>";
+        }
+    });
   </script>
   <?php endif ?>
 

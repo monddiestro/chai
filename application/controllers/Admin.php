@@ -58,11 +58,24 @@ class Admin extends CI_Controller {
     // function to view units 
     function units() {
 
+        // delimit query
+        $limit = 20;
+        $offset = 0;
+
         // pass data to header view
         $head["nav"] = "units";
 
         // call units model and get the data and pass it to units view
-        $data["units"]= $this->unit_model->pull_units();
+        $data["units"]= $this->unit_model->pull_units("",$limit,$offset);
+        // set homepage query to empty
+        $data["q_unit"] = "";
+        $data["q_number"] = "";
+        // create json file 
+        $data["units_list"] = $this->generateUnitJSON($this->unit_model->pull_units("","",$offset));
+        // create pagination
+        $units_cnt = $this->unit_model->pull_unit_cnt();
+        $pagination_config = $this->units_pagination($units_cnt);
+        $data["pagination"] = $this->generate_pagination($pagination_config);
 
         $this->load->view('head',$head);
         $this->load->view('sidebar');
@@ -71,6 +84,113 @@ class Admin extends CI_Controller {
         $this->load->view('modal');
         $this->load->view('footer');
     }
+
+    // create json file
+    function generateUnitJSON($units) {
+        $data = array();
+        foreach ($units as $u) {
+            $data[] = array(
+                'label' => $u->number,
+                'value' => $u->number,
+                'unit_id' => $u->unit_id
+            );
+        }
+        return json_encode($data,TRUE);
+    }
+
+    // query units
+
+    function unit_q() {
+
+        $q_unit = $this->uri->segment(3);
+
+        // pass data to header view
+        $head["nav"] = "units";
+
+        // call units model and get the data and pass it to units view
+        $data["units"]= $this->unit_model->pull_units($q_unit,"","");
+        // set homepage query to empty
+        $data["q_unit"] = $q_unit;
+        $data["q_number"] = $this->unit_model->pull_unit_number($q_unit);
+        // create json file 
+        $data["units_list"] = $this->generateUnitJSON($this->unit_model->pull_units("","",""));
+        
+
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('units',$data);
+        $this->load->view('modal');
+        $this->load->view('footer');
+
+    } 
+
+    function units_page() {
+        // page number
+        $page = $this->uri->segment(3);
+        $page = empty($page) ? 0 : $page - 1;
+
+        // delimit query
+        $limit = 20;
+        $offset = empty($page) ? 0 : 20 * $page;
+
+        // pass data to header view
+        $head["nav"] = "units";
+
+        // call units model and get the data and pass it to units view
+        $data["units"]= $this->unit_model->pull_units("",$limit,$offset);
+        // set homepage query to empty
+        $data["q_unit"] = "";
+        $data["q_number"] = "";
+        // create json file 
+        $data["units_list"] = $this->generateUnitJSON($this->unit_model->pull_units("","",$offset));
+        // create pagination
+        $units_cnt = $this->unit_model->pull_unit_cnt();
+        $pagination_config = $this->units_pagination($units_cnt);
+        $data["pagination"] = $this->generate_pagination($pagination_config);
+
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('units',$data);
+        $this->load->view('modal');
+        $this->load->view('footer');
+    }
+
+    // units pagination config
+
+    function units_pagination($units_cnt) {
+        $config["base_url"] = base_url('admin/units_page/');
+        $config["total_rows"] = $units_cnt;
+        $config["per_page"] = 20;
+        $config['num_links'] = 1;
+        $config['attributes'] = array('class' => 'page-link');
+        $config['use_page_numbers'] = TRUE;
+        $config['full_tag_open'] = '<nav aria-label="Page navigation"><ul class="pagination justify-content-end">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['first_link'] = FALSE;
+        $config['last_link'] = FALSE;
+        $config['next_link'] = '<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_link'] = '<span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        return $config;
+    }
+
+    // create units pagination
+
+    function generate_pagination($config) {
+        
+        $this->pagination->initialize($config);
+        return $this->pagination->create_links();
+    }
+
     // function on creating new unit
     function new_unit() {
         // users referer link for redirection
@@ -1227,4 +1347,8 @@ class Admin extends CI_Controller {
         $this->account_model->push_update($data,$user_id);
 
     }
+
+
+
+    
 }

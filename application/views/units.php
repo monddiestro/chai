@@ -2,11 +2,26 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Units</h1>
-        <a href="#" data-toggle="modal" data-target="#unitModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Unit</a>
+    <div class="d-sm-flex">
+        <div class="mr-auto p-1">
+            <h1 class="h4 mb-0 text-gray-800 text-center">Units</h1>
+        </div>
+        <div class="p-1">
+            <div class="search">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                    </div>
+                    <input type="text" id="unit_number" value="<?php echo (empty($q_number)) ? '' : $q_number ?>" class="form-control" name="unit_number" placeholder="Search Unit Number" aria-label="Unit Number" aria-describedby="basic-addon1">
+                    <input type="hidden" id="q_unit" value="<?php echo (empty($q_unit)) ? '' : $q_unit ?>"/>      
+                </div>
+                <div id="list" class="autocomplete"></div>
+            </div>
+        </div>
+        <div class="p-1">
+            <a href="#" data-toggle="modal" data-target="#unitModal" class="btn btn-sm btn-primary btn-block shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Unit</a>
+        </div>
     </div>
-
     <?php 
         // check flash session for notification
         $session = $this->session->flashdata('result');
@@ -19,86 +34,86 @@
            $display = $class = $message = "";
         }
     ?>
-
+    <?php if(!empty($display)): ?>
     <div class="alert alert-<?php echo $class ?> alert-dismissible fade <?php echo $display ?>" role="alert">
         <?php echo $message; ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <?php endif ?>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Information</h6>
-            </div>
-            <div class="card-body">
-                <?php if(empty($units)): // if empty units don't render tables ?>
-                <center>
-                    <h3>No records found.</h3>
-                    <i class="fas fa-folder-open fa-10x"></i>
-                </center>
-                <?php else: ?>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="units" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
+        <?php if(empty($units)): // if empty units don't render tables ?>
+        <center>
+            <h3>No records found.</h3>
+            <i class="fas fa-folder-open fa-10x"></i>
+        </center>
+        <?php else: ?>
+        <div class="table-responsive">
+            <table class="table table-striped" id="units" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
                         <th>Number</th>
                         <th>Type</th>
                         <th>Address</th>
                         <th>Date Created</th>
                         <th></th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Number</th>
-                        <th>Type</th>
-                        <th>Address</th>
-                        <th>Date Created</th>
-                        <th></th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        <?php foreach($units as $u): ?>
-                        <tr>
-                            <td><?php echo $u->number ?></td>
-                            <td><?php echo $u->type ?></td>
-                            <td><?php echo $u->address ?></td>
-                            <td><?php echo date("F d, Y h:i A",strtotime($u->date_created)); ?></td>
-                            <td>
-                                <!-- edit -->
-                                <a href="#" data-toggle="modal" data-target="#unitModal<?php echo $u->unit_id ?>" class="btn btn-sm btn-info btn-icon-split mb-2">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-sm fa-pencil-alt"></i>
-                                    </span>
-                                    <span class="text">Edit Details</span>
-                                </a>
-                                <!-- add -->
-                                <a href="#" id="newMember" data-toggle="modal" data-target="#memberModal" class="btn btn-sm btn-primary btn-icon-split mb-2">
-                                    <input type="hidden" class="unit_id" value="<?php echo $u->unit_id ?>">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-sm fa-user-plus"></i>
-                                    </span>
-                                    <span class="text">Add Members</span>
-                                </a>
-                                <!-- view -->
-                                <a href="<?php echo base_url('admin/members/'.$u->unit_id) ?>" class="btn btn-sm btn-success btn-icon-split mb-2">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-sm fa-clipboard-list"></i>
-                                    </span>
-                                    <span class="text">View Members</span>
-                                </a> 
-                            </td>
-                        </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                    </table>
-                </div>
-                <?php endif ?>
-            </div>
-          </div>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($units as $u): ?>
+                    <tr>
+                        <td><?php echo $u->number ?></td>
+                        <td><?php echo $u->type ?></td>
+                        <td><?php echo $u->address ?></td>
+                        <td><?php echo date("F d, Y h:i A",strtotime($u->date_created)); ?></td>
+                        <td class="text-right">
+                        <!-- edit -->
+                            <a href="#" data-toggle="modal" data-target="#unitModal<?php echo $u->unit_id ?>" class="btn btn-sm btn-info mb-2">
+                                <i class="fas fa-sm fa-pencil-alt"></i>
+                            </a>
+                            <!-- add -->
+                            <a href="#" id="newMember" data-toggle="modal" data-target="#memberModal" class="btn btn-sm btn-primary mb-2">
+                                <input type="hidden" class="unit_id" value="<?php echo $u->unit_id ?>">
+                                <i class="fas fa-sm fa-user-plus"></i>
+                            </a>
+                            <!-- view -->
+                            <a href="<?php echo base_url('admin/members/'.$u->unit_id) ?>" class="btn btn-sm btn-success mb-2">
+                                <i class="fas fa-sm fa-clipboard-list"></i>
+                            </a> 
+                        </td>
+                    </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </div>
+        <?php endif ?>
+    </div>
 
+    <div class="d-flex flex-row-reverse">
+    <!-- <nav>
+        <ul class="pagination">
+            <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+            </li>
+        </ul>
+    </nav> -->
+    <?php echo !empty($pagination) ? $pagination : '' ?>
+    </div>
 <!-- page content close tag -->
 </div>
 <!-- /.container-fluid -->
@@ -110,7 +125,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="unitModalLabel">Modify Unit Details</h5>
+          <h5 class="modal-title">Modify Unit Details</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -119,15 +134,15 @@
             <input type="hidden" name="id" value="<?php echo $u->unit_id ?>">
             <div class="form-group">
                 <label for="number">No. #</label>
-                <input type="text" value="<?php echo $u->number ?>" name="number" class="form-control" id="number" aria-describedby="numberHelp" placeholder="Enter unit number" required>
+                <input type="text" value="<?php echo $u->number ?>" name="number" class="form-control" aria-describedby="numberHelp" placeholder="Enter unit number" required>
             </div>
             <div class="form-group">
                 <label for="type">Type</label>
-                <input type="text" value="<?php echo $u->type ?>" name="type" class="form-control" id="type" aria-describedby="typeHelp" placeholder="Enter unit type">
+                <input type="text" value="<?php echo $u->type ?>" name="type" class="form-control"  aria-describedby="typeHelp" placeholder="Enter unit type">
             </div>
             <div class="form-group">
                 <label for="address">Type</label>
-                <input type="text" value="<?php echo $u->address ?>" name="address" class="form-control" id="address" aria-describedby="addressHelp" placeholder="Enter unit address" required>
+                <input type="text" value="<?php echo $u->address ?>" name="address" class="form-control" aria-describedby="addressHelp" placeholder="Enter unit address" required>
             </div>
         </div>
         <div class="modal-footer">
