@@ -46,10 +46,23 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <?php if(empty($units)): // if empty units don't render tables ?>
-        <center>
-            <h3>No records found.</h3>
-            <i class="fas fa-folder-open fa-10x"></i>
-        </center>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Type</th>
+                        <th>Address</th>
+                        <th>Date Created</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="text-center mt-5 mb-5">
+                <h4>No records found.</h4>
+                <i class="fas fa-folder-open fa-4x"></i>
+            </div>
+        </div>
         <?php else: ?>
         <div class="table-responsive">
             <table class="table table-striped" id="units" width="100%" cellspacing="0">
@@ -80,7 +93,7 @@
                                 <i class="fas fa-sm fa-user-plus"></i>
                             </a>
                             <!-- view -->
-                            <a href="<?php echo base_url('admin/members/'.$u->unit_id) ?>" class="btn btn-sm btn-success mb-2">
+                            <a href="<?php echo base_url('admin/unit_member/'.$u->unit_id) ?>" class="btn btn-sm btn-success mb-2">
                                 <i class="fas fa-sm fa-clipboard-list"></i>
                             </a> 
                         </td>
@@ -93,25 +106,6 @@
     </div>
 
     <div class="d-flex flex-row-reverse">
-    <!-- <nav>
-        <ul class="pagination">
-            <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-            </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-            </a>
-            </li>
-        </ul>
-    </nav> -->
     <?php echo !empty($pagination) ? $pagination : '' ?>
     </div>
 <!-- page content close tag -->

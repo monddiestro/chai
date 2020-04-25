@@ -43,15 +43,30 @@
     });
 
     var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
-    var search_url = "<?php echo base_url('user/q/') ?>";   
+    var search_url = "";
+    if(uac_id == "administrator") {
+      search_url = "<?php echo base_url('admin/members_q/') ?>";
+    } else if(uac_ud == "editor") {
+      search_url = "<?php echo base_url('editor/members_q/') ?>";
+    } else {
+      search_url = "<?php echo base_url('user/q/') ?>";
+    }
     function search_user(member_id) {
       window.location.href = search_url + member_id;
     }
+
     // script in clearing search bar
-    $('#search_number').on('keyup' ,function() {
+    $('#search_member').on('keyup' ,function() {
         var q = $(this).val();
+        var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
         if(q=="") {
-            window.location.href = "<?php echo base_url('user/'); ?>";
+            if(uac_id == "administrator") {
+              window.location.href = "<?php echo base_url('admin/members/'); ?>";
+            } else if(uac_id == "editor") {
+              window.location.href = "<?php echo base_url('editor/members/'); ?>";
+            } else {
+              window.location.href = "<?php echo base_url('user/'); ?>";
+            }
         }
     });
   </script>
@@ -89,7 +104,41 @@
     });
   </script>
   <?php endif ?>
+  
+  <?php if(!empty($car_list)): ?>
+  <!--  script for searching cars -->
+  <script>
+    var cars_json = <?php print_r($car_list) ?>;
+    $('#q_car').autocomplete({
+      source:cars_json,
+      select: function(event,ui) {
+        var selectedObj = ui.item;
+        $('#car_id').val(selectedObj.car_id);
+        search_car(selectedObj.car_id);
+      },
+        autoFocus: true,
+        appendTo: '#list',
+        minLength: 0
+      }).change(function(){
+        $(this).autocomplete('search', $(this).val()
+      );
+    });
 
+    var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
+    var search_url = "<?php echo base_url('admin/car_q/') ?>";   
+    function search_car(car_id) {
+      window.location.href = search_url + car_id;
+    }
+    // script in clearing search bar
+    $('#q_car').on('keyup' ,function() {
+        var q = $(this).val();
+        if(q=="") {
+            window.location.href = "<?php echo base_url('admin/cars/'); ?>";
+        }
+    });
+  </script>
+
+  <?php endif ?>
 </body>
 
 </html>

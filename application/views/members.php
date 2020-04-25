@@ -2,9 +2,26 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Registered Members</h1>
-        <a href="#" data-toggle="modal" data-target="#newMemberModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Member</a>
+    
+    <div class="d-sm-flex">
+        <div class="mr-auto p-1">
+            <h1 class="h4 mb-0 text-gray-800 text-center">Members</h1>
+        </div>
+        <div class="p-1">
+            <div class="search">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                    </div>
+                    <input type="text" id="search_member" value="<?php echo (empty($member_name)) ? '' : $member_name ?>" class="form-control" name="member_name" placeholder="Search Unit Number" aria-label="Unit Number" aria-describedby="basic-addon1">
+                    <input type="hidden" id="q_member" value="<?php echo (empty($member_id)) ? '' : $member_id ?>"/>      
+                </div>
+                <div id="list" class="autocomplete"></div>
+            </div>
+        </div>
+        <div class="p-1">
+            <a href="#" data-toggle="modal" data-target="#newMemberModal" class="btn btn-sm btn-primary btn-block shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Member</a>
+        </div>
     </div>
 
     <?php 
@@ -20,27 +37,20 @@
         }
     ?>
 
+    <?php if(!empty($display)): ?>
     <div class="alert alert-<?php echo $class ?> alert-dismissible fade <?php echo $display ?>" role="alert">
         <?php echo $message; ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <?php endif ?>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Information</h6>
-            </div>
-            <div class="card-body">
-                <?php if(empty($members)): // if empty units don't render tables ?>
-                <center>
-                    <h3>No records found.</h3>
-                    <i class="fas fa-folder-open fa-10x"></i>
-                </center>
-                <?php else: ?>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="units" width="100%" cellspacing="0">
+        <?php if(empty($members)): ?>
+            <div class="table-responsive">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Unit #</th>
@@ -53,10 +63,20 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tfoot>
+                </table>
+                <div class="text-center mt-5 mb-5">
+                    <h4>No records found.</h4>
+                    <i class="fas fa-folder-open fa-4x"></i>
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <th>Unit #</th>
+                            <th>Unit</th>
                             <th>Name</th>
+                            <th></th>
                             <th>Address</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -64,46 +84,42 @@
                             <th>Type</th>
                             <th></th>
                         </tr>
-                    </tfoot>
+                    </thead>
                     <tbody>
                         <?php foreach($members as $m): ?>
-                        <tr>
-                            <td><?php echo $m->number ?></td>
-                            <td>
-                                <img style="width:50px;height:auto;display:inline;" src="<?php echo base_url($m->image) ?>" alt="member_pic">
-                                <span><?php echo $m->f_name . " " . $m->l_name ?></span>
-                            </td>
-                            <td><?php echo $m->address ?></td>
-                            <td><?php echo $m->email ?></td>
-                            <td><?php echo $m->phone ?></td>
-                            <td><?php echo $m->mobile ?></td>
-                            <td><?php echo $m->type == 1 ? 'Owner' : 'Member' ?></td>
-                            <td>
-                                <!-- edit -->
-                                <a href="#" data-toggle="modal" data-target="#memberModal<?php echo $m->member_id ?>" class="btn btn-sm btn-info btn-icon-split mb-2">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-fw fa-pencil-alt"></i>
-                                    </span>
-                                    <span class="text">Edit</span>
-                                </a>
-                                <!-- delete -->
-                                <!-- edit -->
-                                <a href="#" data-toggle="modal" data-target="#dropMemberModal<?php echo $m->member_id ?>" class="btn btn-sm btn-danger btn-icon-split mb-2">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-fw fa-trash"></i>
-                                    </span>
-                                    <span class="text">Remove</span>
-                                </a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td><?php echo $m->number ?></td>
+                                <td><img class="shadow" style="width:50px;height:auto;display:inline;" src="<?php echo empty($m->image) ? base_url('src/img/no-profile-image.png') : base_url($m->image) ?>" alt="member_pic"></td>
+                                <td>
+                                    <span><?php echo $m->f_name . " " . $m->l_name ?></span>
+                                </td>
+                                <td><?php echo $m->address ?></td>
+                                <td><?php echo $m->email ?></td>
+                                <td><?php echo $m->phone ?></td>
+                                <td><?php echo $m->mobile ?></td>
+                                <td><?php echo $m->type == 1 ? 'Owner' : 'Member' ?></td>
+                                <td>
+                                    <!-- edit -->
+                                    <a href="#" data-toggle="modal" data-target="#memberModal<?php echo $m->member_id ?>" class="btn btn-sm btn-info mb-2">
+                                        <i class="fas fa-sm fa-pencil-alt"></i>
+                                    </a>
+                                    <!-- delete -->
+                                    <a href="#" data-toggle="modal" data-target="#dropMemberModal<?php echo $m->member_id ?>" class="btn btn-sm btn-danger mb-2">
+                                        <i class="fas fa-sm fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         <?php endforeach ?>
                     </tbody>
-                    </table>
-                </div>
-                <?php endif ?>
+                </table>
             </div>
-          </div>
+        <?php endif?>
+    </div>
 
+    <!-- Pagination -->
+    <div class="d-flex flex-row-reverse">
+    <?php echo !empty($pagination) ? $pagination : '' ?>
+    </div>
 <!-- page content close tag -->
 </div>
 <!-- /.container-fluid -->
@@ -121,26 +137,26 @@
             </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" id="member_id" value="<?php echo $m->member_id ?>" name="member_id">
+                <input type="hidden" value="<?php echo $m->member_id ?>" name="member_id">
                 <div class="form-group">
-                    <img style="width:200px; height:auto" src="<?php echo base_url($m->image) ?>" id="imagePreview" name="image" alt="profile picture" class="img-thumbnail">
+                    <img style="width:200px; height:auto" src="<?php echo empty($m->image) ? base_url('src/img/no-profile-image.png') : base_url($m->image) ?>" class="imagePreview" name="image" alt="profile picture" class="img-thumbnail">
                     <br/>
                     <br/>
                     <label class="btn btn-light">
-                        <input type="file" name="user_image" id="btnSelectImage" accept="image/*" style="display:none;" data-error-msg="Please place your image here.">
+                        <input type="file" name="user_image" accept="image/*" style="display:none;" data-error-msg="Please place your image here.">
                         Browse ...
                     </label>
                 </div>
                 <div class="form-group">
                     <label for="type">Member Type</label>
-                    <select name="type" id="type" class="selectpicker form-control" title="Ex. Owner">
+                    <select name="type" class="selectpicker form-control" title="Ex. Owner">
                         <option value="1" <?php echo ($m->type == 1) ? 'selected' : '' ?>>Owner</option>
                         <option value="2" <?php echo ($m->type == 2) ? 'selected' : '' ?>>Member</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="unit_id">Unit Number</label>
-                    <select name="unit_id" id="unit_id" class="selectpicker form-control" title="Ex. House Number">
+                    <select name="unit_id" class="selectpicker form-control" title="Ex. House Number">
                         <?php foreach($units as $u): ?>
                         <option value="<?php echo $u->unit_id ?>" <?php echo $u->unit_id == $m->unit_id ? 'selected' : '' ?>><?php echo $u->number ?></option>
                         <?php endforeach ?>
@@ -148,23 +164,23 @@
                 </div>
                 <div class="form-group">
                     <label for="l_name">Last Name</label>
-                    <input type="text" value="<?php echo $m->l_name ?>" name="l_name" class="form-control" id="l_name" placeholder="Ex. Dela Cruz" required>
+                    <input type="text" value="<?php echo $m->l_name ?>" name="l_name" class="form-control" placeholder="Ex. Dela Cruz" required>
                 </div>
                 <div class="form-group">
                     <label for="f_name">First Name</label>
-                    <input type="text" value="<?php echo $m->f_name ?>" name="f_name" class="form-control" id="f_name" placeholder="Ex. Juan" required>
+                    <input type="text" value="<?php echo $m->f_name ?>" name="f_name" class="form-control" placeholder="Ex. Juan" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" value="<?php echo $m->email ?>" name="email" class="form-control" id="email" placeholder="Ex. juandelacruz@email.com" required>
+                    <input type="email" value="<?php echo $m->email ?>" name="email" class="form-control" placeholder="Ex. juandelacruz@email.com" required>
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone #</label>
-                    <input type="number" value="<?php echo $m->phone ?>" name="phone" class="form-control" id="phone" placeholder="Ex. 021234567">
+                    <input type="number" value="<?php echo $m->phone ?>" name="phone" class="form-control" placeholder="Ex. 021234567">
                 </div>
                 <div class="form-group">
                     <label for="mobile">Mobile #</label>
-                    <input type="number" value="<?php echo $m->mobile ?>" name="mobile" class="form-control" id="mobile" placeholder="Ex. 091234567890">
+                    <input type="number" value="<?php echo $m->mobile ?>" name="mobile" class="form-control" placeholder="Ex. 091234567890">
                 </div>
                 
             </div>
@@ -188,7 +204,7 @@
             </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" id="member_id" value="<?php echo $m->member_id ?>" name="member_id">
+                <input type="hidden" value="<?php echo $m->member_id ?>" name="member_id">
                 <input type="hidden" value="<?php echo $m->f_name . " " . $m->l_name ?>" name="member_name">
                 Are you sure you want to remove <strong><?php echo $m->f_name . " " . $m->l_name ?></strong> from member list?
                 <hr>
@@ -221,7 +237,7 @@
                     <br/>
                     <br/>
                     <label class="btn btn-light">
-                        <input type="file" name="user_image" id="btnSelectImage" accept="image/*" style="display:none;" data-error-msg="Please place your image here.">
+                        <input type="file" name="user_image" accept="image/*" style="display:none;" data-error-msg="Please place your image here.">
                         Browse ...
                     </label>
                 </div>
@@ -234,7 +250,7 @@
                 </div>
                 <div class="form-group">
                     <label for="unit_id">Unit Number</label>
-                    <select name="unit_id" id="unit_id" class="selectpicker form-control" title="Ex. House Number"> 
+                    <select name="unit_id" class="selectpicker form-control" title="Ex. House Number"> 
                         <?php foreach($units as $u): ?>
                         <option value="<?php echo $u->unit_id ?>"><?php echo $u->number ?></option>
                         <?php endforeach ?>
@@ -242,23 +258,23 @@
                 </div>
                 <div class="form-group">
                     <label for="l_name">Last Name</label>
-                    <input type="text" name="l_name" class="form-control" id="l_name" placeholder="Ex. Dela Cruz" required>
+                    <input type="text" name="l_name" class="form-control" placeholder="Ex. Dela Cruz" required>
                 </div>
                 <div class="form-group">
                     <label for="f_name">First Name</label>
-                    <input type="text" name="f_name" class="form-control" id="f_name" placeholder="Ex. Juan" required>
+                    <input type="text" name="f_name" class="form-control" placeholder="Ex. Juan" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" name="email" class="form-control" id="email" placeholder="Ex. juandelacruz@email.com" required>
+                    <input type="email" name="email" class="form-control" placeholder="Ex. juandelacruz@email.com" required>
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone #</label>
-                    <input type="number" name="phone" class="form-control" id="phone" placeholder="Ex. 021234567">
+                    <input type="number" name="phone" class="form-control" placeholder="Ex. 021234567">
                 </div>
                 <div class="form-group">
                     <label for="mobile">Mobile #</label>
-                    <input type="number" name="mobile" class="form-control" id="mobile" placeholder="Ex. 091234567890">
+                    <input type="number" name="mobile" class="form-control" placeholder="Ex. 091234567890">
                 </div>
                 
             </div>

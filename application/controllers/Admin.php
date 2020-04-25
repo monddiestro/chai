@@ -123,7 +123,31 @@ class Admin extends CI_Controller {
         $this->load->view('modal');
         $this->load->view('footer');
 
-    } 
+    }
+    
+    function unit_member() {
+        // unit id from url
+        $unit_id = $this->uri->segment(3);
+
+        // pass data to header view
+        $head["nav"] = "members";
+        
+        // pull data from members_tbl using model
+        $data["members"] = $this->member_model->pull_members($unit_id,'','','');
+        $data["units"] = $this->unit_model->pull_units("","","");
+        // create json file
+        $json["members"] = $this->generateMemberJSON($this->member_model->pull_members('',''));
+        
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('members',$data);
+        $this->load->view('modal');
+        $this->load->view('footer',$json);
+
+
+
+    }
 
     function units_page() {
         // page number
@@ -181,14 +205,6 @@ class Admin extends CI_Controller {
         $config['num_tag_open'] = '<li class="page-item">';
         $config['num_tag_close'] = '</li>';
         return $config;
-    }
-
-    // create units pagination
-
-    function generate_pagination($config) {
-        
-        $this->pagination->initialize($config);
-        return $this->pagination->create_links();
     }
 
     // function on creating new unit
@@ -257,22 +273,124 @@ class Admin extends CI_Controller {
     // function to view members
     function members() {
 
-        $unit_id = $this->uri->segment(3);
+        // pass data to header view
+        $head["nav"] = "members";
+        
+        // pull data from members_tbl using model
+        $data["members"] = $this->member_model->pull_members('','',0,20);
+        $data["units"] = $this->unit_model->pull_units("","","");
+        // create json file
+        $json["members"] = $this->generateMemberJSON($this->member_model->pull_members('','','',''));
+        // create pagination
+        $members_cnt = $this->member_model->pull_member_cnt();
+        $pagination_config = $this->members_pagination($members_cnt);
+        $data["pagination"] = $this->generate_pagination($pagination_config);
+
+
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('members',$data);
+        $this->load->view('modal');
+        $this->load->view('footer',$json);
+    }
+
+    function members_page() {
+        // page number
+        $page = $this->uri->segment(3);
+        $page = empty($page) ? 0 : $page - 1;
+
+        // delimit query
+        $limit = 20;
+        $offset = empty($page) ? 0 : 20 * $page;
+
+        // pass data to header view
+        $head["nav"] = "members";
+
+        $data["members"] = $this->member_model->pull_members('','',$offset,$limit);
+        $data["units"] = $this->unit_model->pull_units("","","");
+        // create json file
+        $json["members"] = $this->generateMemberJSON($this->member_model->pull_members('','','',''));
+        // create pagination
+        $members_cnt = $this->member_model->pull_member_cnt();
+        $pagination_config = $this->members_pagination($members_cnt);
+        $data["pagination"] = $this->generate_pagination($pagination_config);
+
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('members',$data);
+        $this->load->view('modal');
+        $this->load->view('footer',$json);
+
+    }
+
+    // function for members search
+    function members_q() {
+        $member_id = $this->uri->segment(3);
 
         // pass data to header view
         $head["nav"] = "members";
 
         // pull data from members_tbl using model
-        $data["members"] = $this->member_model->pull_members($unit_id,'');
-        $data["units"] = $this->unit_model->pull_units();
+        $data["members"] = $this->member_model->pull_members("",$member_id);
+        $data["units"] = $this->unit_model->pull_units("","","");
+
+        // search value 
+        $data["member_name"] = $this->member_model->pull_member_name($member_id);
+        $data["member_id"] = $member_id;
+
+
+        // create json file
+        $json["members"] = $this->generateMemberJSON($this->member_model->pull_members('',''));
         
         $this->load->view('head',$head);
         $this->load->view('sidebar');
         $this->load->view('top-bar');
         $this->load->view('members',$data);
         $this->load->view('modal');
-        $this->load->view('footer');
+        $this->load->view('footer',$json);
     }
+
+    // generate members JSON
+    function generateMemberJSON($members) {
+        $data = array();
+        foreach ($members as $m) {
+            $data[] = array(
+                'label' => $m->f_name . " " . $m->l_name,
+                'value' => $m->f_name . " " . $m->l_name,
+                'member_id' => $m->member_id
+            );
+        }
+        return json_encode($data,TRUE);
+    }
+
+    // / units pagination config
+
+    function members_pagination($members_cnt) {
+        $config["base_url"] = base_url('admin/members_page/');
+        $config["total_rows"] = $members_cnt;
+        $config["per_page"] = 20;
+        $config['num_links'] = 1;
+        $config['attributes'] = array('class' => 'page-link');
+        $config['use_page_numbers'] = TRUE;
+        $config['full_tag_open'] = '<nav aria-label="Page navigation"><ul class="pagination justify-content-end">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['first_link'] = FALSE;
+        $config['last_link'] = FALSE;
+        $config['next_link'] = '<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_link'] = '<span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        return $config;
+    }
+
     // function to create new members
     function new_member() {
         // post data
@@ -431,17 +549,134 @@ class Admin extends CI_Controller {
         $head["nav"] = "cars";
 
         // pull data from members_tbl using model
-        $data["units"] = $this->unit_model->pull_units();
-        $data["cars"] = $this->car_model->pull_car("");
-        $data["members"] = $this->member_model->pull_members('');
+        $data["units"] = $this->unit_model->pull_units("","","");
+        $data["cars"] = $this->car_model->pull_car("",20,0,"");
+        $data["members"] = $this->member_model->pull_members('','',"","","");
 
+        $script["members"] = "";
+        // create json file
+        $script["car_list"] = $this->generateCarJSON($this->car_model->pull_car("","","","",""));
+
+        // create pagination
+        $cars_cnt = $this->car_model->pull_car_cnt();
+        $pagination_config = $this->cars_pagination($cars_cnt);
+        $data["pagination"] = $this->generate_pagination($pagination_config);
+        
         // views
         $this->load->view('head',$head);
         $this->load->view('sidebar');
         $this->load->view('top-bar');
         $this->load->view('cars',$data);
         $this->load->view('modal');
-        $this->load->view('footer');
+        $this->load->view('footer',$script);
+    }
+
+    // cars pagination view
+    function cars_page() {
+
+        $page = $this->uri->segment(3);
+
+        $page = empty($page) ? 0 : $page - 1;
+
+        // delimit query
+        $limit = 20;
+        $offset = empty($page) ? 0 : 20 * $page;
+
+        // pass data to header view
+        $head["nav"] = "cars";
+
+        // pull data from members_tbl using model
+        $data["units"] = $this->unit_model->pull_units("","","");
+        $data["cars"] = $this->car_model->pull_car("",$limit,$offset,"");
+        $data["members"] = $this->member_model->pull_members('','',"","");
+
+        // script data
+        $script["members"] = "";
+        // create json file
+        $script["car_list"] = $this->generateCarJSON($this->car_model->pull_car("","","","",""));
+
+        // create pagination
+        $cars_cnt = $this->car_model->pull_car_cnt();
+        $pagination_config = $this->cars_pagination($cars_cnt);
+        $data["pagination"] = $this->generate_pagination($pagination_config);
+        
+        // views
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('cars',$data);
+        $this->load->view('modal');
+        $this->load->view('footer',$script);
+        
+
+    }
+
+    function car_q() {
+        // car_id
+        $car_id = $this->uri->segment(3);
+
+        // pass data to header view
+        $head["nav"] = "cars";
+
+        // pull data from members_tbl using model
+        $data["units"] = $this->unit_model->pull_units("","","");
+        $data["cars"] = $this->car_model->pull_car("","","",$car_id);
+        $data["members"] = $this->member_model->pull_members('','',"","");
+        $data["car_name"] = $this->car_model->pull_car_name($car_id);
+        $data["car_id"] = $car_id;
+
+        // script data
+        $script["members"] = "";
+        // create json file
+        $script["car_list"] = $this->generateCarJSON($this->car_model->pull_car("","","",""));
+
+        
+        // views
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('cars',$data);
+        $this->load->view('modal');
+        $this->load->view('footer',$script);
+
+    }
+
+    // cars pagination
+    function cars_pagination($cars_cnt) {
+        $config["base_url"] = base_url('admin/cars_page/');
+        $config["total_rows"] = $cars_cnt;
+        $config["per_page"] = 20;
+        $config['num_links'] = 1;
+        $config['attributes'] = array('class' => 'page-link');
+        $config['use_page_numbers'] = TRUE;
+        $config['full_tag_open'] = '<nav aria-label="Page navigation"><ul class="pagination justify-content-end">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['first_link'] = FALSE;
+        $config['last_link'] = FALSE;
+        $config['next_link'] = '<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_link'] = '<span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        return $config;
+    }
+
+    // generate members JSON
+    function generateCarJSON($cars) {
+        $data = array();
+        foreach ($cars as $c) {
+            $data[] = array(
+                'label' => $c->make . " " . $c->model . "(" . $c->plate_number.")",
+                'value' => $c->make . " " . $c->model . "(" . $c->plate_number.")",
+                'car_id' => $c->id
+            );
+        }
+        return json_encode($data,TRUE);
     }
 
     // create new car entry
@@ -457,7 +692,7 @@ class Admin extends CI_Controller {
 
         // upload image
         $config["upload_path"] = './img/'; // directory for uploads
-        $config['allowed_types'] = 'gif|jpg|png'; // file types
+        $config['allowed_types'] = '*'; // file types
         $this->load->library('upload', $config); // load library
         if($this->upload->do_upload('car_image')) { // attempt to upload
             // if success set the file directory
@@ -494,6 +729,8 @@ class Admin extends CI_Controller {
 
     // function to modify car details
     function modify_car() {
+
+        
         $referer = $this->input->server('HTTP_REFERER');
         $car_id = $this->input->post('car_id');
         $image = "";
@@ -506,7 +743,7 @@ class Admin extends CI_Controller {
 
         // upload image
         $config["upload_path"] = './img/'; // directory for uploads
-        $config['allowed_types'] = 'gif|jpg|png'; // file types
+        $config['allowed_types'] = '*'; // file types
         $this->load->library('upload', $config); // load library
 
         if(!empty($_FILES["car_image"]["name"])) {
@@ -520,13 +757,14 @@ class Admin extends CI_Controller {
                 $data = array(
                     'image' => $image
                 );
+                
                 $this->car_model->push_update($data,$car_id);
                 // delete old
                 if(!empty($old_image)) {
                     unlink("./".$old_image);
                 }
             }
-        }
+        } 
         // data array to update columns
         $data = array(
             'unit_id' => $unit_id,
@@ -1313,7 +1551,7 @@ class Admin extends CI_Controller {
     // API 
     function unit_members(){
         $unit_id = $this->input->post('unit_id');
-        $members = $this->member_model->pull_members($unit_id);
+        $members = $this->member_model->pull_members($unit_id,"","","");
         $option = "";
         foreach($members as $m) {
             $option .= "<option value='".$m->member_id."'>".$m->f_name." ".$m->l_name."</option>";
@@ -1346,6 +1584,14 @@ class Admin extends CI_Controller {
         // call model to update password 
         $this->account_model->push_update($data,$user_id);
 
+    }
+
+    // create units pagination
+
+    function generate_pagination($config) {
+        
+        $this->pagination->initialize($config);
+        return $this->pagination->create_links();
     }
 
 
