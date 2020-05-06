@@ -44,8 +44,9 @@ class Admin extends CI_Controller {
         $data["unit_cnt"] = $this->unit_model->pull_unit_cnt();
         $data["car_cnt"] = $this->car_model->pull_car_cnt();
         $data["pending"] = $this->request_model->pull_request_details("pending");
+        $data["helpers_cnt"] = $this->helper_model->pull_helper_cnt();
         $data["helpers"] = $this->request_model->pull_helpers();
-        $data["log"] = $this->activity_model->pull_activity();
+        $data["log"] = $this->activity_model->pull_activity(10,0);
 
         $this->load->view('head',$head);
         $this->load->view('sidebar');
@@ -136,7 +137,7 @@ class Admin extends CI_Controller {
         $data["members"] = $this->member_model->pull_members($unit_id,'','','');
         $data["units"] = $this->unit_model->pull_units("","","");
         // create json file
-        $json["members"] = $this->generateMemberJSON($this->member_model->pull_members('',''));
+        $json["members"] = $this->generateMemberJSON($this->member_model->pull_members("","","",""));
         
         $this->load->view('head',$head);
         $this->load->view('sidebar');
@@ -144,8 +145,6 @@ class Admin extends CI_Controller {
         $this->load->view('members',$data);
         $this->load->view('modal');
         $this->load->view('footer',$json);
-
-
 
     }
 
@@ -333,7 +332,7 @@ class Admin extends CI_Controller {
         $head["nav"] = "members";
 
         // pull data from members_tbl using model
-        $data["members"] = $this->member_model->pull_members("",$member_id);
+        $data["members"] = $this->member_model->pull_members("",$member_id,"","");
         $data["units"] = $this->unit_model->pull_units("","","");
 
         // search value 
@@ -342,7 +341,7 @@ class Admin extends CI_Controller {
 
 
         // create json file
-        $json["members"] = $this->generateMemberJSON($this->member_model->pull_members('',''));
+        $json["members"] = $this->generateMemberJSON($this->member_model->pull_members('','',"",""));
         
         $this->load->view('head',$head);
         $this->load->view('sidebar');
@@ -365,7 +364,7 @@ class Admin extends CI_Controller {
         return json_encode($data,TRUE);
     }
 
-    // / units pagination config
+    // members pagination config
 
     function members_pagination($members_cnt) {
         $config["base_url"] = base_url('admin/members_page/');
@@ -794,6 +793,38 @@ class Admin extends CI_Controller {
 
     }
 
+    function drop_car() {
+
+         // post data
+         $referer = $this->input->server('HTTP_REFERER');
+         $car_id = $this->input->post('car_id');
+         $car_name = $this->input->post('car_name');
+ 
+         // get image url to remove also the photo
+         $old_image = $this->car_model->pull_car_image($car_id);
+         // delete the file
+         if(!empty($old_image)) {
+             unlink("./".$old_image);
+         }
+         // call model to drop member
+         $this->car_model->drop_car($car_id);
+         
+         // create flash data session for notification
+         $result_data = array(
+             'class' => "success",
+             'message' => "<strong>Success!</strong> " . $car_name .  " has been removed from database."
+         );
+         // store temporary session
+         $this->session->set_flashdata('result',$result_data);
+         // redirect page to referer
+ 
+         // push activity
+         $this->push_activity('removed vehicle '. $car_name);
+ 
+         redirect($referer);
+
+    }
+
     // view for the helpers work registered
     function helpers_work() {
 
@@ -913,10 +944,19 @@ class Admin extends CI_Controller {
         $data["works"] = $this->work_model->pull_work("");
 
         // pull helpers from db
-        $data["helpers"] = $this->helper_model->pull_data("");
+        $data["helpers"] = $this->helper_model->pull_data("",20,0);
 
         // pull works 
         $data["helpers_work"] = $this->helper_model->pull_helper_work("");
+        
+        // generate data for search
+        // create json file
+        $json["helpers_list"] = $this->generateHelperJSON($this->helper_model->pull_data("","",""));
+
+        // pagination
+        $helpers_cnt = $this->helper_model->pull_helper_cnt();
+        $pagination_config = $this->helpers_pagination($helpers_cnt);
+        $data["pagination"] = $this->generate_pagination($pagination_config);
 
         // views
         $this->load->view('head',$head);
@@ -924,8 +964,119 @@ class Admin extends CI_Controller {
         $this->load->view('top-bar');
         $this->load->view('helpers',$data);
         $this->load->view('modal');
-        $this->load->view('footer');
+        $this->load->view('footer',$json);
 
+    }
+
+    // helper search
+    function helpers_q() {
+        // helper id
+        $helper_id = $this->uri->segment(3);
+
+        // pass data to header view
+        $head["nav"] = "helpers";
+
+        // pull works from db
+        $data["works"] = $this->work_model->pull_work("");
+
+        // pull helpers from db
+        $data["helpers"] = $this->helper_model->pull_data($helper_id,"","");
+        // search data
+        $data["helper_name"] = $this->helper_model->pull_name($helper_id);
+        $data["helper_id"] = $helper_id;
+
+        // pull works 
+        $data["helpers_work"] = $this->helper_model->pull_helper_work("");
+        
+        // generate data for search
+        // create json file
+        $json["helpers_list"] = $this->generateHelperJSON($this->helper_model->pull_data("","",""));
+
+        // views
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('helpers',$data);
+        $this->load->view('modal');
+        $this->load->view('footer',$json);
+    }
+
+    function helpers_page() {
+
+        // page number
+        $page = $this->uri->segment(3);
+        $page = empty($page) ? 0 : $page - 1;
+
+        // delimit query
+        $limit = 20;
+        $offset = empty($page) ? 0 : 20 * $page;
+
+        // pass data to header view
+        $head["nav"] = "helpers";
+
+        // pull works from db
+        $data["works"] = $this->work_model->pull_work("");
+
+        // pull helpers from db
+        $data["helpers"] = $this->helper_model->pull_data("",$limit,$offset);
+
+        // pull works 
+        $data["helpers_work"] = $this->helper_model->pull_helper_work("");
+        
+        // generate data for search
+        // create json file
+        $json["helpers_list"] = $this->generateHelperJSON($this->helper_model->pull_data("","",""));
+
+        // create pagination
+        $helpers_cnt = $this->helper_model->pull_helper_cnt();
+        $pagination_config = $this->helpers_pagination($helpers_cnt);
+        $data["pagination"] = $this->generate_pagination($pagination_config);
+
+        // views
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('helpers',$data);
+        $this->load->view('modal');
+        $this->load->view('footer',$json);
+
+    }
+
+    function helpers_pagination($helpers_cnt) {
+        $config["base_url"] = base_url('admin/helpers_page/');
+        $config["total_rows"] = $helpers_cnt;
+        $config["per_page"] = 20;
+        $config['num_links'] = 1;
+        $config['attributes'] = array('class' => 'page-link');
+        $config['use_page_numbers'] = TRUE;
+        $config['full_tag_open'] = '<nav aria-label="Page navigation"><ul class="pagination justify-content-end">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['first_link'] = FALSE;
+        $config['last_link'] = FALSE;
+        $config['next_link'] = '<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_link'] = '<span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        return $config;
+    }
+
+    // generate members JSON
+    function generateHelperJSON($helpers) {
+        $data = array();
+        foreach ($helpers as $h) {
+            $data[] = array(
+                'label' => $h->f_name . " " . $h->l_name,
+                'value' => $h->f_name . " " . $h->l_name,
+                'helper_id' => $h->helper_id
+            );
+        }
+        return json_encode($data,TRUE);
     }
 
     // add new helper

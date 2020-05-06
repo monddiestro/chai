@@ -2,9 +2,13 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Registered Account</h1>
-        <a href="#" data-toggle="modal" data-target="#newUserModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Acocunt</a>
+    <div class="d-sm-flex mb-4">
+        <div class="mr-auto p-1">
+            <h1 class="h4 mb-0 text-gray-800 text-center">System Users</h1>
+        </div>
+        <div class="p-1">
+        <a href="#" data-toggle="modal" data-target="#newUserModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New User</a>
+        </div>
     </div>
 
     <?php 
@@ -19,87 +23,56 @@
            $display = $class = $hessage = "";
         }
     ?>
-
+    <?php if(!empty($display)): ?>
     <div class="alert alert-<?php echo $class ?> alert-dismissible fade <?php echo $display ?>" role="alert">
         <?php echo $hessage; ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <?php endif ?>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Information</h6>
-            </div>
-            <div class="card-body">
-                <?php if(empty($users)): // if empty units don't render tables ?>
-                <center>
-                    <h3>No records found.</h3>
-                    <i class="fas fa-folder-open fa-10x"></i>
-                </center>
-                <?php else: ?>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="units" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Username</th>
-                            <th>Date Created</th>
-                            <th>Role</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Username</th>
-                            <th>Date Created</th>
-                            <th>Role</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        <?php foreach($users as $u): ?>
-                        <tr>
-                            <td>
-                                <img style="width:50px;height:auto;display:inline;" src="<?php echo empty($u->image) ? base_url('src/img/no-profile-image.png') : base_url($u->image) ?>" alt="member_pic">
-                                <?php echo $u->f_name . " " . $u->l_name; ?>
-                            </td>
-                            <td><?php echo $u->username ?></td>
-                            <td><?php echo date('F d,Y',strtotime($u->date_created)) ?></td>
-                            <td><?php echo $u->uac ?></td>
-                            <td>
-                                <!-- edit -->
-                                <a href="#" data-toggle="modal" data-target="#editUserModal<?php echo $u->user_id ?>" class="btn btn-sm btn-info btn-icon-split mb-2">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-fw fa-pencil-alt"></i>
-                                    </span>
-                                    <span class="text">Edit</span>
-                                </a>
-                                <!-- delete -->
-                                <a href="#" data-toggle="modal" data-target="#dropUserModal<?php echo $u->user_id ?>" class="btn btn-sm btn-danger btn-icon-split mb-2">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-fw fa-trash"></i>
-                                    </span>
-                                    <span class="text">Remove</span>
-                                </a>
-                                <!-- password reset -->
-                                <a href="#"  data-toggle="modal" data-target="#resetPasswordModal<?php echo $u->user_id ?>" class="btn btn-sm btn-success btn-icon-split mb-2">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-fw fa-sync"></i>
-                                    </span>
-                                    <span class="text">Reset Password</span>
-                                </a>
-                            </td>
-                        </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                    </table>
-                </div>
-                <?php endif ?>
-            </div>
-          </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Date Created</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($users as $u): ?>
+                    <tr>
+                        <td>
+                            <img style="width:50px;height:auto;display:inline;" src="<?php echo empty($u->image) ? base_url('src/img/no-profile-image.png') : base_url($u->image) ?>" alt="member_pic">
+                            <?php echo $u->f_name . " " . $u->l_name; ?>
+                        </td>
+                        <td style="text-transform:capitalize"><?php echo $u->uac ?></td>
+                        <td><?php echo date('F d,Y',strtotime($u->date_created)) ?></td>
+                        <td>
+                            <!-- edit -->
+                            <a href="#" data-toggle="modal" data-target="#editUserModal<?php echo $u->user_id ?>" class="btn btn-sm btn-info mb-2">
+                                <i class="fas fa-fw fa-pencil-alt"></i>
+                            </a>
+                            <!-- delete -->
+                            <a href="#" data-toggle="modal" data-target="#dropUserModal<?php echo $u->user_id ?>" class="btn btn-sm btn-danger mb-2">
+                                <i class="fas fa-fw fa-trash"></i>
+                            </a>
+                            <!-- password reset -->
+                            <a href="#"  data-toggle="modal" data-target="#resetPasswordModal<?php echo $u->user_id ?>" class="btn btn-sm btn-success mb-2">
+                                <i class="fas fa-fw fa-sync"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 <!-- page content close tag -->
 </div>

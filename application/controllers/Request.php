@@ -32,7 +32,7 @@ class Request extends CI_Controller
         $head["nav"] = "inbox";
 
         // data for dashboard
-        $data["units"] = $this->unit_model->pull_units();
+        $data["units"] = $this->unit_model->pull_units("","","");
         $data["works"] = $this->work_model->pull_work("");
         $data["requests"] = $this->request_model->pull_request("",'in-progress');
         $data["helpers"] = $this->request_model->pull_helpers();

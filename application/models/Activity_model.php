@@ -5,12 +5,19 @@ class Activity_model extends CI_model
        $this->db->insert('activity_tbl',$data);
    } 
 
-   function pull_activity() {
+   function pull_activity($limit,$offset) {
+       empty($limit) ? '' : $this->db->limit($limit,$offset);
        $this->db->order_by('activity_tbl.date_created','DESC');
        $this->db->join('accounts_tbl','activity_tbl.user_id = accounts_tbl.user_id', 'left');
        $this->db->select('f_name,l_name,act_desc,activity_tbl.date_created,image,timestampdiff(minute,activity_tbl.date_created,now()) as date_diff');
        $query = $this->db->get('activity_tbl');
        return $query->result();
+   }
+
+   function pull_activity_cnt() {
+       $query = $this->db->get('activity_tbl');
+       $query = $query->num_rows();
+       return $query;
    }
    
 }

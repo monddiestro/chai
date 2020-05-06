@@ -89,11 +89,11 @@
             <div class="modal-body">
                 <input type="hidden" id="unit_id" value="" name="unit_id">
                 <div class="form-group">
-                    <img style="width:200px; height:auto" src="<?php echo base_url('src/img/no-profile-image.png') ?>" id="imagePreview" name="image" alt="profile picture" class="img-thumbnail">
+                    <img style="width:200px; height:auto" class="imagePreview" src="<?php echo base_url('src/img/no-profile-image.png') ?>" name="image" alt="profile picture" class="img-thumbnail">
                     <br/>
                     <br/>
                     <label class="btn btn-light">
-                        <input type="file" name="user_image" id="btnSelectImage" accept="image/*" style="display:none;" data-error-msg="Please place your image here.">
+                        <input type="file" name="user_image" accept="image/*" style="display:none;" data-error-msg="Please place your image here.">
                         Browse ...
                     </label>
                 </div>

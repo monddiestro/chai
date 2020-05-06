@@ -71,6 +71,7 @@
     });
   </script>
   <?php endif ?>
+
   <?php if(!empty($units_list)): ?>
   <!--  script for searching units -->
   <script>
@@ -105,8 +106,48 @@
   </script>
   <?php endif ?>
   
-  <?php if(!empty($car_list)): ?>
+  <?php if(!empty($helpers_list)): ?>
   <!--  script for searching cars -->
+  <script>
+    var helpers_json = <?php print_r($helpers_list) ?>;
+    $('#search_helper').autocomplete({
+      source:helpers_json,
+      select: function(event,ui) {
+        var selectedObj = ui.item;
+        $('#q_helper').val(selectedObj.helper_id);
+        search_helper(selectedObj.helper_id);
+      },
+        autoFocus: true,
+        appendTo: '#list',
+        minLength: 0
+      }).change(function(){
+        $(this).autocomplete('search', $(this).val()
+      );
+    });
+
+      
+    function search_helper(helper_id) {
+      var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
+      var search_url = ""; 
+      if(uac_id == "administrator") {
+        search_url = "<?php echo base_url('admin/helpers_q/') ?>";
+      } else if(uac_id == "editor") {
+        search_url = "<?php echo base_url('editor/helpers_q/') ?>";
+      } 
+      window.location.href = search_url + helper_id;
+    }
+    // script in clearing search bar
+    $('#search_helper').on('keyup' ,function() {
+        var q = $(this).val();
+        if(q=="") {
+            window.location.href = "<?php echo base_url('admin/helpers/'); ?>";
+        }
+    });
+  </script>
+  <?php endif ?>
+
+  <?php if(!empty($car_list)): ?>
+  <!--  script for cars -->
   <script>
     var cars_json = <?php print_r($car_list) ?>;
     $('#q_car').autocomplete({
@@ -124,9 +165,14 @@
       );
     });
 
-    var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
-    var search_url = "<?php echo base_url('admin/car_q/') ?>";   
     function search_car(car_id) {
+      var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
+      var search_url = "";
+      if(uac_id == "administrator") {
+        search_url = "<?php echo base_url('admin/car_q/') ?>";
+      } else if(uac_id == "editor") {
+        search_url = "<?php echo base_url('editor/car_q/') ?>";
+      } 
       window.location.href = search_url + car_id;
     }
     // script in clearing search bar
@@ -137,7 +183,6 @@
         }
     });
   </script>
-
   <?php endif ?>
 </body>
 

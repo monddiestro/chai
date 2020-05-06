@@ -2,9 +2,13 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Requests</h1>
-        <a href="#" data-toggle="modal" data-target="#newRequestModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Request</a>
+    <div class="d-sm-flex mb-4">
+        <div class="mr-auto p-1">
+            <h1 class="h4 mb-0 text-gray-800 text-center">Requests</h1>
+        </div>
+        <div class="p-1">
+            <a href="#" data-toggle="modal" data-target="#newRequestModal" class="btn btn-sm btn-primary btn-block shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Request</a>
+        </div>
     </div>
 
     <?php 
@@ -19,6 +23,7 @@
            $display = $class = $message = "";
         }
     ?>
+
     <?php if(!empty($display)): ?>
     <div class="alert alert-<?php echo $class ?> alert-dismissible fade <?php echo $display ?>" role="alert">
         <?php echo $message; ?>
@@ -30,53 +35,41 @@
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-            <div class="card-body">
-                <?php if(empty($requests)): // if empty units don't render tables ?>
-                    <div class="d-none d-md-block">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <span class="font-weight-bold">Unit No.</span>
-                            </div>
-                            <div class="col-sm-5">
-                                <span class="font-weight-bold">Request Type & Description</span>
-                            </div>
-                            <div class="col-sm-5">
-                                <span class="font-weight-bold">Request Date</span>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <center>
-                        <h3>No records found.</h3>
-                        <i class="fas fa-folder-open fa-10x"></i>
-                    </center>
-                <?php else: ?>
-                    <div class="d-none d-md-block">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <span class="font-weight-bold">Unit No.</span>
-                            </div>
-                            <div class="col-sm-6">
-                                <span class="font-weight-bold">Request Type & Description</span>
-                            </div>
-                            <div class="col-sm-4">
-                                <span class="font-weight-bold">Request Date</span>
-                            </div>
-                        </div>
-                    </div>
+        <?php if(empty($requests)): ?>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Unit No.</th>
+                        <th>Type & Description</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="text-center mt-5 mb-5">
+                <h4>No records found.</h4>
+                <i class="fas fa-folder-open fa-4x"></i>
+            </div>
+        </div>
+        <?php else: ?>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Unit No.</th>
+                        <th>Type & Description</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
                     <?php foreach($requests as $r): ?>
-                    <hr>
-                    <div class="row <?php echo $r->status == 'in-progress' ? 'border-left-success' : 'border-left-warning' ?>">
-                        <div class="col-sm-2">
-                            <?php echo $r->number ?>
-                        </div>
-                        <div class="col-sm-6">
-                            <?php echo $r->work_title . " : " . $r->request_desc ?>
-                        </div>
-                        <div class="col-sm-3 mb-3">
-                            <?php echo date('F d, Y',strtotime($r->date_request)) ?>
-                        </div>
-                        <div class="col-sm-1 text-right">
+                    <tr>
+                        <td><?php echo $r->number ?></td>
+                        <td><?php echo $r->work_title . " : " . $r->request_desc ?></td>
+                        <td><?php echo date('F d, Y',strtotime($r->date_request)) ?></td>
+                        <td>
                             <?php if($r->status == 'in-progress'): ?>
                             <button data-toggle="modal" data-target="#markDone_<?php echo $r->request_id?>" class="btn btn-primary btn-sm font-weight-bold">
                                 <i class="fas fa-fw fa-check" data-toggle="tooltip" data-placement="right" title="Mark as Done"></i>
@@ -86,14 +79,14 @@
                                 <i class="fas fa-fw fa-user-tag" data-toggle="tooltip" data-placement="right" title="Assign Helper"></i>
                             </button>
                             <?php endif ?>
-                        </div>
-                    </div>
-                    
+                        </td>
+                    </tr>
                     <?php endforeach ?>
-                <?php endif ?>
-                <hr/>
-            </div>
-          </div>
+                </tbody>
+            </table>
+        </div>
+        <?php endif ?>        
+    </div>
 
 <!-- page content close tag -->
 </div>
@@ -116,7 +109,7 @@
                     <label for="work_id">Request Type</label>
                     <select name="work_id" id="work_id" class="selectpicker form-control" title="Select Type Of Work" required>
                         <?php foreach($works as $w): ?>
-                        <option value="<?php echo $w->work_id ?>"><?php echo $w->work_desc ?></option>
+                        <option value="<?php echo $w->work_id ?>"><?php echo $w->work_title ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>

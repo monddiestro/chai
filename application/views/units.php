@@ -2,7 +2,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex">
+    <div class="d-sm-flex mb-4">
         <div class="mr-auto p-1">
             <h1 class="h4 mb-0 text-gray-800 text-center">Units</h1>
         </div>
@@ -53,7 +53,6 @@
                         <th>Number</th>
                         <th>Type</th>
                         <th>Address</th>
-                        <th>Date Created</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -71,7 +70,6 @@
                         <th>Number</th>
                         <th>Type</th>
                         <th>Address</th>
-                        <th>Date Created</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -81,7 +79,6 @@
                         <td><?php echo $u->number ?></td>
                         <td><?php echo $u->type ?></td>
                         <td><?php echo $u->address ?></td>
-                        <td><?php echo date("F d, Y h:i A",strtotime($u->date_created)); ?></td>
                         <td class="text-right">
                         <!-- edit -->
                             <a href="#" data-toggle="modal" data-target="#unitModal<?php echo $u->unit_id ?>" class="btn btn-sm btn-info mb-2">
@@ -147,6 +144,6 @@
     </div>
     <?php echo form_close(); ?>
   </div>
-  <?php endforeach ?>
+<?php endforeach ?>
 
   

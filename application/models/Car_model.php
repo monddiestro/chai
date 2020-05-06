@@ -53,6 +53,12 @@ class Car_model extends CI_Model
         $query = $this->db->get('cars_tbl');
         return $query->result();
     }
+
+    function drop_car($car_id) {
+        $this->db->where('id',$car_id);
+        $this->db->delete('cars_tbl');
+
+    }
     
 
     

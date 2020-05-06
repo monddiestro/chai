@@ -2,8 +2,10 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Archive</h1>
+    <div class="d-sm-flex mb-4">
+        <div class="mr-auto p-1">
+            <h1 class="h4 mb-0 text-gray-800 text-center">Archives</h1>
+        </div>
     </div>
 
     <?php 
@@ -18,58 +20,50 @@
            $display = $class = $message = "";
         }
     ?>
-
+    <?php if(!empty($display)): ?>
     <div class="alert alert-<?php echo $class ?> alert-dismissible fade <?php echo $display ?>" role="alert">
         <?php echo $message; ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <?php endif ?>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-            <div class="card-body">
-                <?php if(empty($requests)): // if empty archive don't render tables ?>
-                <center>
-                    <h3>No records found.</h3>
-                    <i class="fas fa-folder-open fa-10x"></i>
-                </center>
-                <?php else: ?>
-                    <div class="d-none d-md-block">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <span class="font-weight-bold">Unit No.</span>
-                            </div>
-                            <div class="col-sm-6">
-                                <span class="font-weight-bold">Request Type & Description</span>
-                            </div>
-                            <div class="col-sm-4">
-                                <span class="font-weight-bold">Request Date</span>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                <?php foreach($requests as $r): ?>
-                    <div class="row border-left-primary mb-3">
-                        <div class="col-sm-2">
-                            <?php echo $r->number ?>
-                        </div>
-                        <div class="col-sm-6">
-                            <?php echo $r->work_title . " : " . $r->request_desc ?>
-                        </div>
-                        <div class="col-sm-3 mb-3">
-                            <?php echo date('F d, Y',strtotime($r->date_request)) ?>
-                        </div>
-                        <div class="col-sm-1 text-right">
-                            <button data-toggle="modal" data-target="#info_<?php echo $r->request_id?>" class="btn btn-primary btn-sm font-weight-bold">
-                                <i class="fas fa-fw fa-info-circle" data-toggle="tooltip" data-placement="right" title="Assign Helper"></i>
-                            </button>
-                        </div>
-                    </div>
-                <?php endforeach ?>
-                <?php endif ?>
+        <div class="table-responsive">
+            <?php if(!empty($requests)): ?>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Unit No.</th>
+                            <th>Type & Description</th>
+                            <th>Date of Request</th>
+                            <th>Date Accomplished</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($requests as $r): ?>
+                        <tr>
+                            <td><?php echo $r->number ?></td>
+                            <td><?php echo $r->work_title . " : " . $r->request_desc ?></td>
+                            <td><?php echo date('F d, Y',strtotime($r->date_request)) ?></td>
+                            <td><?php echo date('F d, Y',strtotime($r->date_done)) ?></td>
+                            <td>
+                                <button data-toggle="modal" data-target="#info_<?php echo $r->request_id?>" class="btn btn-primary btn-sm font-weight-bold">
+                                    <i class="fas fa-fw fa-info-circle" data-toggle="tooltip" data-placement="right" title="Assign Helper"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
             </div>
-          </div>
+            <?php endif ?>
+        </div>
+    </div>
 
 <!-- page content close tag -->
 </div>

@@ -2,8 +2,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    
-    <div class="d-sm-flex">
+    <div class="d-sm-flex mb-4">
         <div class="mr-auto p-1">
             <h1 class="h4 mb-0 text-gray-800 text-center">Members</h1>
         </div>
@@ -233,7 +232,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <img style="width:200px; height:auto" src="<?php echo base_url('src/img/no-profile-image.png') ?>" id="imagePreview" name="image" alt="profile picture" class="img-thumbnail">
+                    <img style="width:200px; height:auto" src="<?php echo base_url('src/img/no-profile-image.png') ?>" name="image" alt="profile picture" class="imagePreview">
                     <br/>
                     <br/>
                     <label class="btn btn-light">

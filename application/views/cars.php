@@ -2,9 +2,9 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex">
+    <div class="d-sm-flex mb-4">
         <div class="mr-auto p-1">
-            <h1 class="h4 mb-0 text-gray-800 text-center">Cars</h1>
+            <h1 class="h4 mb-0 text-gray-800 text-center">Vehicles</h1>
         </div>
         <div class="p-1">
             <div class="search">
@@ -12,14 +12,14 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
                     </div>
-                    <input type="text" id="q_car" value="<?php echo (empty($car_name)) ? '' : $car_name ?>" class="form-control" name="car_name" placeholder="Search Car" aria-label="Unit Number" aria-describedby="basic-addon1">
+                    <input type="text" id="q_car" value="<?php echo (empty($car_name)) ? '' : $car_name ?>" class="form-control" name="car_name" placeholder="Search Vehicle" aria-label="Unit Number" aria-describedby="basic-addon1">
                     <input type="hidden" id="car_id" value="<?php echo (empty($car_id)) ? '' : $car_id ?>"/>      
                 </div>
                 <div id="list" class="autocomplete"></div>
             </div>
         </div>
         <div class="p-1">
-            <a href="#" data-toggle="modal" data-target="#newCarModal" class="btn btn-sm btn-primary btn-block shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Car</a>
+            <a href="#" data-toggle="modal" data-target="#newCarModal" class="btn btn-sm btn-primary btn-block shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Vehicle</a>
         </div>
     </div>
 
@@ -107,7 +107,7 @@
                                 <i class="fas fa-sm fa-pencil-alt"></i>
                             </a>
                             <!-- add -->
-                            <a href="#" data-toggle="modal" data-target="#delCarModal<?php echo $c->id ?>" class="btn btn-sm btn-danger mb-2">
+                            <a href="#" data-toggle="modal" data-target="#dropCarModal<?php echo $c->id ?>" class="btn btn-sm btn-danger mb-2">
                                 <i class="fas fa-sm fa-trash"></i>
                             </a>
                         </td>
@@ -129,12 +129,12 @@
 <!-- /.container-fluid -->
 
 <!-- New Car Modal -->
-<div class="modal fade" id="newCarModal" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true">
+<div class="modal fade" id="newCarModal" tabindex="-1" role="dialog" aria-labelledby="newCarModalLabel" aria-hidden="true">
     <?php echo form_open_multipart(base_url('admin/add_car/')) ?>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="unitModalLabel">New Car Information</h5>
+            <h5 class="modal-title" id="unitModalLabel">Vehicle Information</h5>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">×</span>
             </button>
@@ -190,12 +190,12 @@
 
 <!-- Modals -->
 <?php foreach($cars as $c): ?>
-<div class="modal fade" id="editCarModal<?php echo $c->id ?>" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true">
+<div class="modal fade" id="editCarModal<?php echo $c->id ?>" tabindex="-1" role="dialog" aria-labelledby="editCarModalLabel" aria-hidden="true">
     <?php echo form_open_multipart(base_url('admin/modify_car/')) ?>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="unitModalLabel">New Car Information</h5>
+            <h5 class="modal-title" id="unitModalLabel">Vehicle Information</h5>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">×</span>
             </button>
@@ -254,4 +254,29 @@
     <?php echo form_close(); ?>
 </div>
 
+<div class="modal fade" id="dropCarModal<?php echo $c->id ?>" tabindex="-1" role="dialog" aria-labelledby="dropCarModalLabel" aria-hidden="true">
+    <?php echo form_open(base_url('admin/drop_car/')) ?>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <strong class="modal-title text-danger" id="unitModalLabel"><i class="fas fa-fw fa-exclamation-circle"></i> Warning</strong>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" value="<?php echo $c->id ?>" name="car_id">
+                <input type="hidden" value="<?php echo $c->make . " " . $c->model . "(" . $c->plate_number . ")" ?>" name="car_name">
+                Are you sure you want to remove <strong><?php echo $c->make . " " . $c->model . "(" . $c->plate_number . ")" ?></strong> from vehicle list?
+                <hr>
+                <small>This will remove all data of the vehicle</small>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" type="submit">Yes</button>
+            </div>
+        </div>
+    </div>
+    <?php echo form_close(); ?>
+</div>
 <?php endforeach; ?>

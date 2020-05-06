@@ -9,8 +9,9 @@ class Helper_model extends CI_Model
         return $query->helper_id;
     }
 
-    function pull_data($helper_id) {
+    function pull_data($helper_id,$limit,$offset) {
         empty($helper_id) ? '' : $this->db->where('helper_id',$helper_id);
+        empty($limit) ? '' : $this->db->limit($limit,$offset);
         $query = $this->db->get('helpers_tbl');
         return $query->result();
     }
@@ -48,6 +49,20 @@ class Helper_model extends CI_Model
     function drop_helper($helper_id) {
         $this->db->where('helper_id', $helper_id);
         $this->db->delete('helpers_tbl');
+    }
+
+    function pull_name($helper_id) {
+        $this->db->where('helper_id',$helper_id);
+        $this->db->select('CONCAT(f_name, " ", l_name) as name');
+        $query = $this->db->get('helpers_tbl');
+        $query = $query->row();
+        return $query->name;
+    }
+
+    function pull_helper_cnt() {
+        $query = $this->db->get('helpers_tbl');
+        $query = $query->num_rows();
+        return $query;
     }
 
 }

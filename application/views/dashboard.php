@@ -2,8 +2,10 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    <div class="d-sm-flex mb-4">
+        <div class="mr-auto p-1">
+            <h1 class="h4 mb-0 text-gray-800 text-center">Dashboard</h1>
+        </div>
     </div>
 
     <?php 
@@ -18,19 +20,21 @@
            $display = $class = $message = "";
         }
     ?>
-
+    <?php if(!empty($display)): ?>
     <div class="alert alert-<?php echo $class ?> alert-dismissible fade <?php echo $display ?>" role="alert">
         <?php echo $message; ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <?php endif ?>
+    
     <div class="row">
         <!-- 1st division -->
         <div class="col-sm-9 mb-3">
             <div class="row">
-                <!-- Earnings (Monthly) Card Example -->
-                <div class="col-xl-4 col-md-6 mb-4">
+                <!-- Members -->
+                <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-left-primary shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
@@ -46,8 +50,8 @@
                     </div>
                 </div>
 
-                <!-- Earnings (Monthly) Card Example -->
-                <div class="col-xl-4 col-md-6 mb-4">
+                <!-- Units-->
+                <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-left-success shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
@@ -63,8 +67,8 @@
                     </div>
                 </div>
 
-                <!-- Earnings (Monthly) Card Example -->
-                <div class="col-xl-4 col-md-6 mb-4">
+                <!-- Cars -->
+                <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-left-info shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
@@ -79,6 +83,24 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Helpers -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Helpers</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo empty($helpers_cnt) ? '0' : $helpers_cnt ?></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-hands-helping fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="row">
                 <!-- request -->
@@ -91,10 +113,16 @@
                                 </div>
                             </div>
                             <hr>
+                            <?php if(empty($pending)): ?>
+                            <div class="text-center mt-5 mb-5">
+                                <h4>No pending request</h4>
+                                <i class="fas fa-folder-open fa-4x"></i>
+                            </div>
+                            <?php else: ?>
                             <?php foreach($pending as $p): ?>
                             <div class="row">
                                 <div class="col-sm-9 border-left-warning mb-2"> 
-                                    <h6 class="font-weight-bold"><?php echo $p->number ?> | <?php echo $p->work_title ?></h6>
+                                    <h6 class="font-weight-bold"><?php echo $p->number ?> | <?php echo $p->work_title ?> | <?php echo date("F d, Y",strtotime($p->date_request)) ?></h6>
                                     <span><?php echo $p->work_desc ?></span><br/>
                                     <small><?php echo $p->request_desc ?></small>
                                 </div>
@@ -104,6 +132,7 @@
                             </div>
                             <hr/>
                             <?php endforeach ?>
+                            <?php endif ?>
                         </div>
                     </div>
                 </div>
@@ -124,7 +153,7 @@
                             <img style="width:50px;height:50px;" class="img-profile rounded-circle" src="<?php echo empty($a->image) ? base_url('src/img/no-image.png') : base_url($a->image) ?>" alt="">
                         </div>
                         <div class="col-9">
-                            <span><?php echo $a->act_desc    ?></span>
+                            <span style='font-weight:600'><?php echo $a->f_name . " " . $a->l_name ?></span><span> <?php echo $a->act_desc ?></span>
                             <br/>
                             <?php
                                 $activity_time = "";
