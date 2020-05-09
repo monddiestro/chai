@@ -72,11 +72,11 @@
                         <td>
                             <?php if($r->status == 'in-progress'): ?>
                             <button data-toggle="modal" data-target="#markDone_<?php echo $r->request_id?>" class="btn btn-primary btn-sm font-weight-bold">
-                                <i class="fas fa-fw fa-check" data-toggle="tooltip" data-placement="right" title="Mark as Done"></i>
+                                <i class="fas fa-sm fa-check" data-toggle="tooltip" data-placement="right" title="Mark as Done"></i>
                             </button>
                             <?php else: ?>
                             <button data-toggle="modal" data-target="#assign_<?php echo $r->request_id?>" class="btn btn-primary btn-sm font-weight-bold">
-                                <i class="fas fa-fw fa-user-tag" data-toggle="tooltip" data-placement="right" title="Assign Helper"></i>
+                                <i class="fas fa-sm fa-user-tag" data-toggle="tooltip" data-placement="right" title="Assign Helper"></i>
                             </button>
                             <?php endif ?>
                         </td>

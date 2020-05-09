@@ -18,6 +18,19 @@
     <i class="fas fa-fw fa-tachometer-alt"></i>
     <span>Dashboard</span></a>
 </li>
+<!-- Logs -->
+<li class="nav-item <?php echo $nav == "logs" ? 'active' : '' ?>">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true" aria-controls="collapseTwo">
+    <i class="fas fa-fw fa-file-alt"></i>
+    <span>Track Record</span>
+  </a>
+  <div id="collapseLogs" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+      <a class="collapse-item" href="<?php echo  base_url('logs') ?>">Activity Logs</a>
+      <a class="collapse-item" href="<?php echo base_url('logs/visitors') ?>">Visitor Logs</a>
+    </div>
+  </div>
+</li>
 <?php if($this->session->userdata('uac') != 'user'): ?>
 <li class="nav-item <?php echo $nav == "inbox" ? 'active' : '' ?>">
   <a class="nav-link" href="<?php echo base_url('request'); ?>">
@@ -36,7 +49,7 @@
 
 <!-- Heading -->
 <div class="sidebar-heading">
-  Records
+  Data
 </div>
 
 <!-- Units Nav -->
@@ -72,19 +85,6 @@
   <a class="nav-link" href="<?php echo ($this->session->userdata('uac') == 'administrator') ? base_url('admin/helpers') : base_url('editor/helpers') ?>">
     <i class="fas fa-fw fa-hands-helping"></i>
     <span>Helpers</span></a>
-</li>
-<!-- Logs -->
-<li class="nav-item <?php echo $nav == "logs" ? 'active' : '' ?>">
-  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs" aria-expanded="true" aria-controls="collapseTwo">
-    <i class="fas fa-fw fa-file-alt"></i>
-    <span>Track Record</span>
-  </a>
-  <div id="collapseLogs" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-      <a class="collapse-item" href="<?php echo ($this->session->userdata('uac') == 'administrator') ? base_url('logs') : base_url('logs')  ?>">Activity Logs</a>
-      <a class="collapse-item" href="<?php echo base_url('admin/account') ?>">Visitor Logs</a>
-    </div>
-  </div>
 </li>
 
 <!-- Divider -->

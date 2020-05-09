@@ -53,7 +53,7 @@
                             <td><?php echo date('F d, Y',strtotime($r->date_done)) ?></td>
                             <td>
                                 <button data-toggle="modal" data-target="#info_<?php echo $r->request_id?>" class="btn btn-primary btn-sm font-weight-bold">
-                                    <i class="fas fa-fw fa-info-circle" data-toggle="tooltip" data-placement="right" title="Assign Helper"></i>
+                                    <i class="fas fa-sm fa-info-circle" data-toggle="tooltip" data-placement="right" title="Assign Helper"></i>
                                 </button>
                             </td>
                         </tr>

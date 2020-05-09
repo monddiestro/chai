@@ -2,9 +2,13 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Helpers Type of Work</h1>
-        <a href="#" data-toggle="modal" data-target="#newWorkModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Work</a>
+    <div class="d-sm-flex mb-4">
+        <div class="mr-auto p-1">
+            <h1 class="h4 mb-0 text-gray-800 text-center">Work Settings</h1>
+        </div>
+        <div class="p-1">
+            <a href="#" data-toggle="modal" data-target="#newWorkModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Work</a>
+        </div>
     </div>
 
     <?php 
@@ -19,28 +23,51 @@
            $display = $class = $message = "";
         }
     ?>
-
+    <?php if(!empty($display)): ?>
     <div class="alert alert-<?php echo $class ?> alert-dismissible fade <?php echo $display ?>" role="alert">
         <?php echo $message; ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <?php endif ?>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Information</h6>
-            </div>
-            <div class="card-body">
-                <?php if(empty($works)): // if empty units don't render tables ?>
-                <center>
-                    <h3>No records found.</h3>
-                    <i class="fas fa-folder-open fa-10x"></i>
-                </center>
-                <?php else: ?>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="units" width="100%" cellspacing="0">
+        <?php if(!empty($works)): ?>
+        <div class="table-responsive">
+            <table class='table table-striped'>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($works as $w): ?>
+                        <tr>
+                            <td><?php echo $w->work_title ?></td>
+                            <td><?php echo $w->work_desc ?></td>
+                            <td>
+                                <!-- edit -->
+                                <a href="#" data-toggle="modal" data-target="#editWorkModal<?php echo $w->work_id ?>" class="btn btn-sm btn-info mb-2">
+                                    <i class="fas fa-sm fa-pencil-alt"></i>
+                                </a>
+                                <!-- delete -->
+                                <!-- edit -->
+                                <a href="#" data-toggle="modal" data-target="#dropWorkModal<?php echo $w->work_id ?>" class="btn btn-sm btn-danger mb-2">
+                                    <i class="fas fa-sm fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </div>
+        <?php else: ?>
+            <div class="table-responsive">
+                <table class="table table-responsive">
                     <thead>
                         <tr>
                             <th>Title</th>
@@ -48,43 +75,14 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        <?php foreach($works as $w): ?>
-                            <tr>
-                                <td><?php echo $w->work_title ?></td>
-                                <td><?php echo $w->work_desc ?></td>
-                                <th>
-                                    <!-- edit -->
-                                    <a href="#" data-toggle="modal" data-target="#editWorkModal<?php echo $w->work_id ?>" class="btn btn-sm btn-info btn-icon-split mb-2">
-                                        <span class="icon text-white-50">
-                                        <i class="fas fa-fw fa-pencil-alt"></i>
-                                        </span>
-                                        <span class="text">Edit</span>
-                                    </a>
-                                    <!-- delete -->
-                                    <!-- edit -->
-                                    <a href="#" data-toggle="modal" data-target="#dropWorkModal<?php echo $w->work_id ?>" class="btn btn-sm btn-danger btn-icon-split mb-2">
-                                        <span class="icon text-white-50">
-                                        <i class="fas fa-fw fa-trash"></i>
-                                        </span>
-                                        <span class="text">Remove</span>
-                                    </a>
-                                </th>
-                            </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                    </table>
-                </div>
-                <?php endif ?>
+                </table>
             </div>
-          </div>
+            <div class="text-center mt-5 mb-5">
+                <h4>No records found.</h4>
+                <i class="fas fa-folder-open fa-4x"></i>
+            </div>
+        <?php endif ?>
+    </div>
 
 <!-- page content close tag -->
 </div>

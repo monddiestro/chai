@@ -1745,7 +1745,47 @@ class Admin extends CI_Controller {
         return $this->pagination->create_links();
     }
 
+    // new visitor
+    function new_visitor() {
+        // referer link
+        $referer = $this->input->server('HTTP_REFERER');
+        // post data
+        $l_name = $this->input->post('l_name');
+        $f_name = $this->input->post('f_name');
+        $unit_id = $this->input->post('unit_id');
+        $id_presented = $this->input->post('id_presented');
+        $id_number = $this->input->post('id_number');
+        $vehicle = $this->input->post('vehicle');
+        $date_in = date("Y-m-d H:i:s");
 
+        // create data array
+        $data = array(
+            'last_name' => $l_name,
+            'first_name' => $f_name,
+            'unit_id' => $unit_id,
+            'id_presented' => $id_presented,
+            'id_number' => $id_number,
+            'vehicle' => $vehicle,
+            'date_in' => $date_in
+        );
+
+        // call model pass data
+        $visitor_id = $this->activity_model->push_visitor($data);
+
+        // insert activity
+        $this->push_activity("Create visitor record with id: ".$visitor_id);
+
+        // create flash data session for notification
+        $result_data = array(
+            'class' => "success",
+            'message' => "<strong>Success!</strong> " . $f_name . " " . $l_name .  " data was added to database."
+        );
+        // store temporary session
+        $this->session->set_flashdata('result',$result_data);
+
+        redirect($referer);
+
+    }
 
     
 }

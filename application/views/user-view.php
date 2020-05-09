@@ -2,8 +2,35 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <div class="mr-auto p-1">
+            <h1 class="h4 mb-0 text-gray-800 text-center">Dashboard</h1>
+        </div>
+        <div class="p-1">
+            <a href="#" data-toggle="modal" data-target="#newVisitorModal" class="btn btn-sm btn-primary btn-block shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> New Visitor</a>
+        </div>
     </div>
+
+    <?php 
+        // check flash session for notification
+        $session = $this->session->flashdata('result');
+        // if not empty add values from session
+        if(!empty($session)) {
+           $display = "show";
+           $class = $session["class"];
+           $message = $session["message"];
+        } else {
+           $display = $class = $message = "";
+        }
+    ?>
+
+    <?php if(!empty($display)): ?>
+    <div class="alert alert-<?php echo $class ?> alert-dismissible fade <?php echo $display ?>" role="alert">
+        <?php echo $message; ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <?php endif ?>
 
     <div class="row">
         <!-- fist col -->
@@ -33,7 +60,7 @@
                             <tr>
                                 <td><?php echo $m->f_name . " " . $m->l_name ?></td>
                                 <td><?php echo $m->number ?></td>
-                                <td><a href="<?php echo base_url('user/details/'.$m->member_id) ?>" class="btn btn-primary">View Details</a></td>
+                                <td class="text-right"><a href="<?php echo base_url('user/details/'.$m->member_id) ?>" class="btn btn-sm btn-primary">View  </a></td>
                             </tr>
                         <?php endforeach; ?>
                         <?php endif ?>
@@ -57,7 +84,7 @@
                 <div class="card-body">
                     <?php $count = 0 ?>
                     <?php foreach($log as $a): ?>
-                    <?php if($count <= 5): ?>
+                    <?php if($count <= 10): ?>
                     <div class="row">
                         <div class="col-3 align-self-center">
                             <img style="width:50px;height:50px;" class="img-profile rounded-circle" src="<?php echo empty($a->image) ? base_url('src/img/no-image.png') : base_url($a->image) ?>" alt="">

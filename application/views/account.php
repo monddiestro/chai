@@ -56,15 +56,15 @@
                         <td>
                             <!-- edit -->
                             <a href="#" data-toggle="modal" data-target="#editUserModal<?php echo $u->user_id ?>" class="btn btn-sm btn-info mb-2">
-                                <i class="fas fa-fw fa-pencil-alt"></i>
+                                <i class="fas fa-sm fa-pencil-alt"></i>
                             </a>
                             <!-- delete -->
                             <a href="#" data-toggle="modal" data-target="#dropUserModal<?php echo $u->user_id ?>" class="btn btn-sm btn-danger mb-2">
-                                <i class="fas fa-fw fa-trash"></i>
+                                <i class="fas fa-sm fa-trash"></i>
                             </a>
                             <!-- password reset -->
                             <a href="#"  data-toggle="modal" data-target="#resetPasswordModal<?php echo $u->user_id ?>" class="btn btn-sm btn-success mb-2">
-                                <i class="fas fa-fw fa-sync"></i>
+                                <i class="fas fa-sm fa-sync"></i>
                             </a>
                         </td>
                     </tr>

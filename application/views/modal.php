@@ -165,5 +165,55 @@
         <?php echo form_close(); ?>
   </div>
 
+  <!-- new visitor modal -->
+  <div class="modal fade" id="newVisitorModal" tabindex="-1" role="dialog" aria-labelledby="newVisitorModal" aria-hidden="true">
+    <?php echo form_open(base_url('admin/new_visitor/')) ?>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h6 class="modal-title font-weight-bold" id="unitModalLabel">Visitor Information</h6>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                  <div class="form-group">
+                    <small class="font-weight-bold">Last Name</small>
+                    <input type="text" name="l_name" class="form-control" placeholder="Ex. Dela Cruz" required>
+                  </div>
+                  <div class="form-group">
+                    <small class="font-weight-bold">First Name</small>
+                    <input type="text" name="f_name" class="form-control" placeholder="Ex. Juan" required>
+                  </div>
+                  <div class="form-group">
+                    <small class="font-weight-bold">Unit Number</small>
+                    <select name="unit_id" class="selectpicker form-control" title="Ex. 2301" data-live-search="true" required>
+                        <?php foreach($units as $u): ?>
+                        <option value="<?php echo $u->unit_id ?>"><?php echo $u->number ?></option>
+                        <?php endforeach ?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <small class="font-weight-bold">ID Presented</small>
+                    <input type="text" name="id_presented" class="form-control" placeholder="Ex. Drivers License" required>
+                  </div>
+                  <div class="form-group">
+                    <small class="font-weight-bold">ID Number</small>
+                    <input type="text" name="id_number" class="form-control" placeholder="Ex. N01234567890123" required>
+                  </div>
+                  <div class="form-group">
+                    <small class="font-weight-bold">Vehicle</small>
+                    <input type="text" name="vehicle" class="form-control" placeholder="Ex. Toyota Vios (XVA 1234) (Optional)">
+                  </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-sm btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+              <button class="btn btn-sm btn-primary" type="submit">Save</button>
+            </div>
+        </div>
+    </div>
+    <?php echo form_close(); ?>
+</div>
+
 
   

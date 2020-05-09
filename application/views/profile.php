@@ -3,8 +3,10 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Account Profile</h1>
+    <div class="d-sm-flex mb-4">
+        <div class="mr-auto p-1">
+            <h1 class="h4 mb-0 text-gray-800 text-center">User Profile</h1>
+        </div>
     </div>
 
     <?php 
@@ -31,10 +33,7 @@
     <div class="row">
         <div class="col-md-8 mb-2">
             <!-- personal information -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="font-weight-bold">Personal Information</span>
-                </div>
+            <div class="card shadow">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
@@ -70,10 +69,7 @@
         </div>
         <div class="col-md-4">
             <!-- password -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="font-weight-bold">Account Security</span>
-                </div>
+            <div class="card shadow">
                 <div class="card-body">
                     <div class="alert alert-success alert-dismissible fade show" style="display:none"  role="alert" id="successPassword">
                         <strong>Success!</strong> Your new password was saved.

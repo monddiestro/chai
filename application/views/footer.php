@@ -42,16 +42,16 @@
       );
     });
 
-    var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
-    var search_url = "";
-    if(uac_id == "administrator") {
-      search_url = "<?php echo base_url('admin/members_q/') ?>";
-    } else if(uac_ud == "editor") {
-      search_url = "<?php echo base_url('editor/members_q/') ?>";
-    } else {
-      search_url = "<?php echo base_url('user/q/') ?>";
-    }
     function search_user(member_id) {
+      var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
+      var search_url = "";
+      if(uac_id == "administrator") {
+        search_url = "<?php echo base_url('admin/members_q/') ?>";
+      } else if(uac_id == "editor") {
+        search_url = "<?php echo base_url('editor/members_q/') ?>";
+      } else {
+        search_url = "<?php echo base_url('user/q/') ?>";
+      }
       window.location.href = search_url + member_id;
     }
 
@@ -91,16 +91,31 @@
       );
     });
 
-    var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
-    var search_url = "<?php echo base_url('admin/unit_q/') ?>";   
+    
     function search_unit(unit_id) {
+      var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
+      var search_url = "";
+      if(uac_id == "administrator") {
+        search_url = "<?php echo base_url('admin/unit_q/') ?>";
+      } else if(uac_id == "editor") {
+        search_url = "<?php echo base_url('editor/unit_q/') ?>";
+      } else {
+        search_url = "<?php echo base_url('user/q/') ?>";
+      } 
       window.location.href = search_url + unit_id;
     }
     // script in clearing search bar
     $('#unit_number').on('keyup' ,function() {
+        var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
         var q = $(this).val();
+        var search_url = "";
+        if(uac_id == "administrator") {
+          search_url = "<?php echo base_url('admin/units/') ?>";
+        } else if(uac_id == "editor") {
+          search_url = "<?php echo base_url('editor/units/') ?>";
+        }
         if(q=="") {
-            window.location.href = "<?php echo base_url('admin/units/'); ?>";
+            window.location.href = search_url;
         }
     });
   </script>
@@ -139,8 +154,15 @@
     // script in clearing search bar
     $('#search_helper').on('keyup' ,function() {
         var q = $(this).val();
+        var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
+        var search_url = ""; 
+        if(uac_id == "administrator") {
+          search_url = "<?php echo base_url('admin/helpers/') ?>";
+        } else if(uac_id == "editor") {
+          search_url = "<?php echo base_url('editor/helpers/') ?>";
+        } 
         if(q=="") {
-            window.location.href = "<?php echo base_url('admin/helpers/'); ?>";
+            window.location.href = search_url;
         }
     });
   </script>
@@ -178,8 +200,51 @@
     // script in clearing search bar
     $('#q_car').on('keyup' ,function() {
         var q = $(this).val();
+        var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
+        var search_url = "";
+        if(uac_id == "administrator") {
+          search_url = "<?php echo base_url('admin/cars/') ?>";
+        } else if(uac_id == "editor") {
+          search_url = "<?php echo base_url('editor/cars/') ?>";
+        } 
         if(q=="") {
-            window.location.href = "<?php echo base_url('admin/cars/'); ?>";
+            window.location.href = search_url;
+        }
+    });
+  </script>
+  <?php endif ?>
+
+  <?php if(!empty($visitors_list)): ?>
+  <!--  script for visitors -->
+  <script>
+    var visitors_json = <?php print_r($visitors_list) ?>;
+    $('#visitor_name').autocomplete({
+      source:visitors_json,
+      select: function(event,ui) {
+        var selectedObj = ui.item;
+        $('#visitor_id').val(selectedObj.visitor_id);
+        search_visitor(selectedObj.visitor_id);
+      },
+        autoFocus: true,
+        appendTo: '#list',
+        minLength: 0
+      }).change(function(){
+        $(this).autocomplete('search', $(this).val()
+      );
+    });
+
+    function search_visitor(visitor_id) {
+      var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
+      var search_url = "<?php echo base_url("logs/visitor_q/") ?>";
+      window.location.href = search_url + visitor_id;
+    }
+    // script in clearing search bar
+    $('#visitor_name').on('keyup' ,function() {
+        var q = $(this).val();
+        var uac_id = "<?php echo $this->session->userdata('uac')  ?>";
+        var search_url = "<?php echo base_url("logs/visitors/") ?>";
+        if(q=="") {
+            window.location.href = search_url;
         }
     });
   </script>

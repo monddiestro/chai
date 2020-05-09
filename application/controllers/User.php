@@ -39,20 +39,20 @@ class User extends CI_Controller
 
         // data for dashboard
         // pull units with owner
-        $data["units"] = $this->unit_model->pull_units();
+        $data["units"] = $this->unit_model->pull_units('','','');
         // pull all members
-        $data["members"] = $this->member_model->pull_members('','');
+        $data["members"] = $this->member_model->pull_members('','',0,20);
         // set homepage query to empty
         $data["q_member"] = "";
         $data["q_name"] = "";
         // create json file
-        $json["members"] = $this->generateJSON($this->member_model->pull_members('',''));
+        $json["members"] = $this->generateJSON($this->member_model->pull_members('','','',''));
         // pull all cars
-        $data["cars"] = $this->car_model->pull_car('');
+        $data["cars"] = $this->car_model->pull_car('','','','');
 
 
         // pull all logs
-        $data["log"] = $this->activity_model->pull_activity();
+        $data["log"] = $this->activity_model->pull_activity('','');
 
         $this->load->view('head',$head);
         $this->load->view('sidebar');
@@ -74,20 +74,20 @@ class User extends CI_Controller
 
         // data for dashboard
         // pull units with owner
-        $data["units"] = $this->unit_model->pull_units();
+        $data["units"] = $this->unit_model->pull_units('','','','');
         // pull all members
-        $data["members"] = $this->member_model->pull_members('',$member_id);
+        $data["members"] = $this->member_model->pull_members('',$member_id,'','');
         // set homepage query to empty
         $data["q_member"] = $member_id;
         $data["q_name"] = $this->member_model->pull_member_name($member_id);
         // create json file
-        $json["members"] = $this->generateJSON($this->member_model->pull_members('',''));
+        $json["members"] = $this->generateJSON($this->member_model->pull_members('','','',''));
         // pull all carspull
-        $data["cars"] = $this->car_model->pull_car('');
+        $data["cars"] = $this->car_model->pull_car('','','','');
 
 
         // pull all logs
-        $data["log"] = $this->activity_model->pull_activity();
+        $data["log"] = $this->activity_model->pull_activity('','');
 
         $this->load->view('head',$head);
         $this->load->view('sidebar');

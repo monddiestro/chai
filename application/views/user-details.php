@@ -77,32 +77,6 @@
                     </div>
                 </div>
             </div>
-            <hr>
-            <h6>Pets Registered</h6>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Type</th>
-                                    <th>Breed</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach($pets as $p): ?>
-                                <tr>
-                                    <td><img style="width:100px" src="<?php echo empty($p->image) ? base_url('src/img/no-image.png') : base_url($p->image) ?>" alt=""></td>
-                                    <td><?php echo $p->type_desc ?></td>
-                                    <td><?php echo $p->breed ?></td>
-                                </tr>
-                            <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

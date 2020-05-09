@@ -160,6 +160,32 @@ class Editor extends CI_Controller
         return $config;
     }
 
+    // query units
+    function unit_q() {
+
+        $q_unit = $this->uri->segment(3);
+
+        // pass data to header view
+        $head["nav"] = "units";
+
+        // call units model and get the data and pass it to units view
+        $data["units"]= $this->unit_model->pull_units($q_unit,"","");
+        // set homepage query to empty
+        $data["q_unit"] = $q_unit;
+        $data["q_number"] = $this->unit_model->pull_unit_number($q_unit);
+        // create json file 
+        $data["units_list"] = $this->generateUnitJSON($this->unit_model->pull_units("","",""));
+        
+
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('units',$data);
+        $this->load->view('modal');
+        $this->load->view('footer');
+
+    }
+
     function members() {
         // pass data to header view
         $head["nav"] = "members";
