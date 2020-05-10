@@ -2,7 +2,7 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <div class="d-sm-flex mb-4">
+        <div class="d-sm-flex mb-3">
             <div class="mr-auto p-1">
                 <h1 class="h4 mb-0 text-gray-800 text-center">Visitor Logs</h1>
             </div>

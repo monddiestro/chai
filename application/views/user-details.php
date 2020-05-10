@@ -1,17 +1,26 @@
 <!-- begin page content -->
 <div class="container-fluid">
-   <div class="row mt-5">
-        <div class="col-sm-12 text-center"> 
-            <img class="img-profile rounded-circle shadow" style="width:150px" src="http://localhost/chai/src/img/no-profile-image.png" alt="">
-            <h2 class="mt-2">Reymond Diestro</h2>
-            <h6><i class="fas fa-home fa-fw"></i> 1001 <i class="fas fa-mobile-alt fa-fw"></i>09167367735 <i class="fas fa-envelope fa-fw"></i> reymonddiestro@gmail.com</h6>
+   <div class="row mt-3">
+        <div class="">
+            <a href="<?php echo $referer ?>" class="btn btn-sm btn-light mb-2 font-weight-bold">
+                <i class="fas fa-chevron-left"></i>  Go Back
+            </a>
+        </div>
+        <div class="col-sm-12 text-center">
+            <?php foreach($member_details as $mb): ?>
+            <img class="img-profile rounded-circle shadow" style="width:150px" src="<?php echo empty($mb->image) ? base_url('src/img/no-profile-image.png') : base_url($mb->image) ?>" alt="">
+            <h2 class="mt-2"><?php echo $mb->f_name . " " . $mb->l_name ?></h2>
+            <h6><i class="fas fa-home fa-fw"></i> <?php echo $mb->number ?> <i class="fas fa-mobile-alt fa-fw"></i><?php echo $mb->phone ?> / <?php echo $mb->mobile ?> <i class="fas fa-envelope fa-fw"></i> <?php echo $mb->email ?></h6>
+            <?php endforeach ?>
         </div>
    </div>
    <div class="card mt-3 shadow">
         <div class="card-body">
             <div class="row">
-                <div class="col-sm-3"><span class="font-weight-bold">Unit Number:</span> 1001</div>
-                <div class="col-sm-9"><span class="font-weight-bold">Address:</span> 9 Iris St. West Fairview Quezon City</div>
+                <?php foreach($member_details as $mb): ?>
+                <div class="col-sm-3"><span class="font-weight-bold">Unit Number:</span> <?php echo $mb->number ?></div>
+                <div class="col-sm-9"><span class="font-weight-bold">Address:</span> <?php  echo $mb->address ?></div>
+                <?php endforeach ?>
             </div>
             <hr>
             <h6 class="font-weight-bold">House Members</h6>

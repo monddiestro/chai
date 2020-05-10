@@ -41,7 +41,7 @@ class User extends CI_Controller
         // pull units with owner
         $data["units"] = $this->unit_model->pull_units('','','');
         // pull all members
-        $data["members"] = $this->member_model->pull_members('','',0,20);
+        $data["members"] = $this->member_model->pull_members('','',0,5);
         // set homepage query to empty
         $data["q_member"] = "";
         $data["q_name"] = "";
@@ -49,10 +49,13 @@ class User extends CI_Controller
         $json["members"] = $this->generateJSON($this->member_model->pull_members('','','',''));
         // pull all cars
         $data["cars"] = $this->car_model->pull_car('','','','');
-
-
         // pull all logs
         $data["log"] = $this->activity_model->pull_activity('','');
+        // visitors
+        // website data
+        $data["visitors"] = $this->activity_model->pull_visitors(4,0,"");
+        // autocomplete data
+        $json["visitors_list"] = $this->generateVisitorJSON($this->activity_model->pull_visitors("","",""));
 
         $this->load->view('head',$head);
         $this->load->view('sidebar');
@@ -84,6 +87,11 @@ class User extends CI_Controller
         $json["members"] = $this->generateJSON($this->member_model->pull_members('','','',''));
         // pull all carspull
         $data["cars"] = $this->car_model->pull_car('','','','');
+        // visitors
+        // website data
+        $data["visitors"] = $this->activity_model->pull_visitors(4,0,"");
+        // autocomplete data
+        $json["visitors_list"] = $this->generateVisitorJSON($this->activity_model->pull_visitors("","",""));
 
 
         // pull all logs
@@ -100,9 +108,9 @@ class User extends CI_Controller
 
 
     function details() {
-
         // member id to show details
         $member_id = $this->uri->segment(3);
+        $referer = $this->input->server('HTTP_REFERER');
         
         // pass data to header view
         $head["nav"] = "details";
@@ -117,6 +125,11 @@ class User extends CI_Controller
         $data["cars"] = $this->car_model->pull_unit_cars($unit_id);
         // pull pet
         $data["pets"] = $this->pet_model->pull_unit_pet($unit_id);
+        // member details
+        $data["member_details"] = $this->member_model->pull_members("",$member_id,"","");
+
+        // back link
+        $data["referer"] = $referer;
 
         $this->load->view('head',$head);
         $this->load->view('sidebar');
@@ -134,6 +147,20 @@ class User extends CI_Controller
                 'label' => $m->f_name . " " . $m->l_name,
                 'value' => $m->f_name . " " . $m->l_name,
                 'member_id' => $m->member_id
+            );
+        }
+        return json_encode($data,TRUE);
+    }
+
+    // generate json for autocomplete
+    // create json file
+    function generateVisitorJSON($visitors) {
+        $data = array();
+        foreach ($visitors as $v) {
+            $data[] = array(
+                'label' => $v->first_name . " " . $v->last_name,
+                'value' => $v->first_name . " " . $v->last_name,
+                'visitor_id' => $v->visitor_id
             );
         }
         return json_encode($data,TRUE);

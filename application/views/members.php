@@ -2,7 +2,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex mb-4">
+    <div class="d-sm-flex mb-3">
         <div class="mr-auto p-1">
             <h1 class="h4 mb-0 text-gray-800 text-center">Members</h1>
         </div>
@@ -106,6 +106,9 @@
                                     <a href="#" data-toggle="modal" data-target="#dropMemberModal<?php echo $m->member_id ?>" class="btn btn-sm btn-danger mb-2">
                                         <i class="fas fa-sm fa-trash"></i>
                                     </a>
+                                    <a href="<?php echo ($this->session->userdata('uac') == 'administrator') ? base_url('admin/member_details/'.$m->member_id) : base_url('editor/member_details/'.$m->member_id) ?>" class="btn btn-sm btn-success mb-2">
+                                        <i class="fas fa-clipboard-list"></i>
+                                    </a> 
                                 </td>
                             </tr>
                         <?php endforeach ?>

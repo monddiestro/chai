@@ -1,13 +1,6 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
-
-    <!-- Page Heading -->
-    <div class="d-sm-flex mb-4">
-        <div class="mr-auto p-1">
-            <h1 class="h4 mb-0 text-gray-800 text-center">Dashboard</h1>
-        </div>
-    </div>
-
+   
     <?php 
         // check flash session for notification
         $session = $this->session->flashdata('result');
@@ -102,10 +95,58 @@
                 </div>
 
             </div>
+            
             <div class="row">
+                <div class="col-sm-12">
+                    <div class="search">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                            </div>
+                            <input type="text" id="visitor_name" value="<?php echo (empty($visitor_name)) ? '' : $visitor_name ?>" class="form-control" name="member_name" placeholder="Search Visitor Name" aria-label="Unit Number" aria-describedby="basic-addon1">
+                            <input type="hidden" id="visitor_id" value="<?php echo (empty($visitor_id)) ? '' : $visitor_id ?>"/>     
+                        </div>
+                        <div id="list" class="autocomplete shadow"></div>
+                    </div>
+                    <div class="table-responsive shadow">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Visited Unit</th>
+                                    <th>Vehicle</th>
+                                    <th>Date and Time of Enter</th>
+                                    <th>Date and Time of Exit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if(!empty($visitors)): ?>
+                                <?php foreach($visitors as $v): ?>
+                                    <tr>
+                                        <td><?php echo $v->first_name . " " . $v->last_name ?></td>
+                                        <td><?php echo $v->number ?></td>
+                                        <td><?php echo $v->vehicle ?></td>
+                                        <td><?php echo date('F d, Y h:i a',strtotime($v->date_in)) ?></td>
+                                        <td><?php echo empty($v->date_out) ? '<a href="#" data-toggle="modal" data-target="#outModal'.$v->visitor_id.'" class="btn btn-sm btn-primary shadow-sm"> Exit Now</a>' : date('F d, Y h:i a',strtotime($v->date_out)) ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                                <?php endif ?>
+                            </tbody>
+                        </table>
+                        <?php if(empty($visitors)): ?>
+                        <div style="text-align:center" class="mb-5">
+                            <i class="fas fa-inbox fa-7x"></i>
+                            <h4>No data to show</h4>
+                        </div>
+                        <?php endif ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
                 <!-- request -->
                 <div class="col-sm-12">
-                    <div class="card">
+                    <div class="card shadow">
                         <div class="card-body">
                             <div class="row align-items-center mb-3">
                                 <div class="col mr-12">

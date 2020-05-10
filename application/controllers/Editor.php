@@ -42,8 +42,14 @@ class Editor extends CI_Controller
         $data["unit_cnt"] = $this->unit_model->pull_unit_cnt();
         $data["car_cnt"] = $this->car_model->pull_car_cnt();
         $data["pending"] = $this->request_model->pull_request_details("pending");
+        $data["helpers_cnt"] = $this->helper_model->pull_helper_cnt();
         $data["helpers"] = $this->request_model->pull_helpers();
         $data["log"] = $this->activity_model->pull_activity(10,0);
+
+        // website data
+        $data["visitors"] = $this->activity_model->pull_visitors(6,0,"");
+        // autocomplete data
+        $script["visitors_list"] = $this->generateVisitorJSON($this->activity_model->pull_visitors("","",""));
 
         $this->load->view('head',$head);
         $this->load->view('sidebar');
@@ -264,6 +270,36 @@ class Editor extends CI_Controller
         $this->load->view('members',$data);
         $this->load->view('modal');
         $this->load->view('footer',$json);
+    }
+
+    // member_details
+    function member_details() {
+        // member id to show details
+        $member_id = $this->uri->segment(3);
+        $referer = $this->input->server('HTTP_REFERER');
+        
+        // pass data to header view
+        $head["nav"] = "details";
+
+        // get unit number
+        $unit_id = $this->member_model->pull_member_unit($member_id);
+        // pull unit information
+        $data["unit"] = $this->unit_model->pull_unit($unit_id);
+        // pull unit members
+        $data["members"] = $this->member_model->pull_unit_members($member_id,$unit_id);
+        // pull cars in unit
+        $data["cars"] = $this->car_model->pull_unit_cars($unit_id);
+        // pull pet
+        $data["pets"] = $this->pet_model->pull_unit_pet($unit_id);
+        // back link
+        $data["referer"] = $referer;
+
+        $this->load->view('head',$head);
+        $this->load->view('sidebar');
+        $this->load->view('top-bar');
+        $this->load->view('user-details',$data);
+        $this->load->view('modal');
+        $this->load->view('footer');
     }
 
     // generate members JSON
@@ -638,6 +674,19 @@ class Editor extends CI_Controller
     function generate_pagination($config) {
         $this->pagination->initialize($config);
         return $this->pagination->create_links();
+    }
+
+     // create json file
+     function generateVisitorJSON($visitors) {
+        $data = array();
+        foreach ($visitors as $v) {
+            $data[] = array(
+                'label' => $v->first_name . " " . $v->last_name,
+                'value' => $v->first_name . " " . $v->last_name,
+                'visitor_id' => $v->visitor_id
+            );
+        }
+        return json_encode($data,TRUE);
     }
 
 
