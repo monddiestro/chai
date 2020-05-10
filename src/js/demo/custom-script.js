@@ -176,5 +176,16 @@ $('#btnSave').on('click',function(){
     });
 });
 
+$('#btnUpdate').on('click',function(){
+    $(this).hide();
+    $('#btnSaveInfo').show();
+    $('#btnCancel').show();
+    $('#account_file').prop('disabled',false);
+    $('#account_fname').prop('readonly',false);
+    $('#account_lname').prop('readonly',false);
+    $('#account_contact').prop('readonly',false);
+    $('#account_email').prop('readonly',false);
+});
+
 
 

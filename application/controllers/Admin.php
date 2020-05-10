@@ -1615,7 +1615,7 @@ class Admin extends CI_Controller {
         // create flash data session for notification
         $result_data = array(
             'class' => "success",
-            'message' => "<strong>Success!</strong> ".$f_name . " " . $l_name ." information has been added updated."
+            'message' => "<strong>Success!</strong> ".$f_name . " " . $l_name ." information has been updated."
         );
         // store temporary session
         $this->session->set_flashdata('result',$result_data);

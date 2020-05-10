@@ -115,10 +115,14 @@ class Account extends CI_Controller
         // check session if user still using the system
         $this->check_session();
 
+        // pull account data
+        $data["account_info"] = $this->account_model->pull_account($this->session->userdata('user_id'));
+
+
         $this->load->view('head',$head);
         $this->load->view('sidebar');
         $this->load->view('top-bar');
-        $this->load->view('profile');
+        $this->load->view('profile',$data);
         $this->load->view('modal');
         $this->load->view('footer');
     }

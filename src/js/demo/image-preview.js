@@ -3,6 +3,10 @@ $('input[name="user_image"]').on('change',function() {
     var image_preview = $(this).closest('.modal-content').find('.imagePreview');
     readURL(this,image_preview);
 });
+$('#account_file').on('change',function() {
+    var image_preview = $(this).closest('.col-md-6').find('.imagePreview');
+    readURL(this,image_preview);
+});
 $('input[name="car_image"]').on('change',function() {
     var image_preview = $(this).closest('.modal-content').find('.imagePreview');
     readURL(this,image_preview);
